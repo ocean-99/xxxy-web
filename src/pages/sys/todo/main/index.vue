@@ -52,7 +52,7 @@ onMounted(() => {
 });
 
 const pageView=(link:string)=>{
-	window.open(link);
+	window.open(import.meta.env.VITE_PUBLIC_PATH+link);
 }
 
 </script>

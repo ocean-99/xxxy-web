@@ -70,15 +70,15 @@ export const pageAdd = (url: string) => {
 	// }else{
 	// 	window.open('/#/page/'+url+'?type=add');
 	// }
-	window.open('/#/page/'+url);
+	window.open(import.meta.env.VITE_PUBLIC_PATH+'#/page/'+url);
 };
 
 export const pageEdit = (url: string) => {
-	window.open('/#/page/'+url);
+	window.open(import.meta.env.VITE_PUBLIC_PATH+'#/page/'+url);
 };
 
 export const pageView = (url: string) => {
-	window.open('/#/page/'+url);
+	window.open(import.meta.env.VITE_PUBLIC_PATH+'#/page/'+url);
 };
 
 

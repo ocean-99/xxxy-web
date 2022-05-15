@@ -496,6 +496,55 @@ export const sysDynamicRoutes: Array<RouteRecordRaw> = [
 					},
 				],
 			},
+			{
+				path: '/demo',
+				name: 'Demo',
+				component: () => import('/@/layout/routerView/parent.vue'),
+				redirect: '/sa/cust/main',
+				meta: {
+					title: 'DEMO',
+					isLink: '',
+					isHide: false,
+					isKeepAlive: true,
+					isAffix: false,
+					isIframe: false,
+					roles: ['admin'],
+					icon: 'iconfont icon-xitongshezhi',
+				},
+				children: [
+					{
+						path: '/sa/cust/main',
+						name: 'saCustMain',
+						component: () => import('/@/pages/sa/cust/main/index.vue'),
+						meta: {
+							title: '客户清单',
+							isLink: '',
+							isHide: false,
+							isKeepAlive: true,
+							isAffix: false,
+							isIframe: false,
+							roles: ['admin'],
+							icon: 'iconfont icon-caidan',
+						},
+					},
+					{
+						path: '/sa/cust/main/edit',
+						name: 'saCustMainEdit',
+						component: () => import('/@/pages/sa/cust/main/edit.vue'),
+						meta: {
+							title: '客户维护',
+							isLink: '',
+							isHide: true,
+							isKeepAlive: true,
+							isAffix: false,
+							isIframe: false,
+							roles: ['admin'],
+							icon: 'iconfont icon-caidan',
+						},
+					},
+				],
+			},
+
 		],
 	},
 ];
@@ -548,6 +597,30 @@ export const staticRoutes: Array<RouteRecordRaw> = [
 		component: () => import('/@/views/visualizing/demo2.vue'),
 		meta: {
 			title: 'message.router.visualizingLinkDemo2',
+		},
+	},
+	{
+		path: '/page/ofte',
+		name: 'pageOfte',
+		component: () => import('/@/pages/oa/flow/temp/edit.vue'),
+		meta: {
+			title: 'OA模板设置',
+		},
+	},
+	{
+		path: '/page/ofme',
+		name: 'pageOfme',
+		component: () => import('/@/pages/oa/flow/main/edit.vue'),
+		meta: {
+			title: '流程编辑',
+		},
+	},
+	{
+		path: '/page/ofmv',
+		name: 'pageOfmv',
+		component: () => import('/@/pages/oa/flow/main/view.vue'),
+		meta: {
+			title: '流程查看',
 		},
 	},
 ];
