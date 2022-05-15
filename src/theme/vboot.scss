@@ -1,0 +1,94 @@
+.el-card__header{
+  padding: 8px 12px;
+}
+.el-card__body{
+  padding: 6px;
+}
+
+.el-table--small .el-table__cell{
+  padding: 2px 0;
+}
+
+.el-table--small .cell{
+  padding: 0 4px;
+}
+
+.zform .el-form-item--default .el-form-item__label {
+  line-height: 38px;
+}
+
+.zform .el-form-item__label{
+  padding: 0 2px 0 0;
+}
+
+.zform .el-form-item__content{
+  background-color: white;
+  border-left: 1px solid #d2d2d2;
+}
+
+.zform .el-form-item--mini.el-form-item,
+.zform .el-form-item--small.el-form-item {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.zform .el-row {
+  border-bottom: 1px solid #d2d2d2;
+  border-left: 1px solid #d2d2d2;
+  background-color: #f6f6f6;
+  padding: 0;
+}
+
+.zform .zinput {
+  padding: 4px;
+  border-right: 1px solid #d2d2d2;
+  //border-left: 1px solid #d2d2d2;
+  height: 40px;
+  width: 100%;
+  //min-width: 200px;
+  background-color: white;
+  white-space: nowrap;
+  text-overflow:ellipsis;
+  //overflow-x: auto;
+  //overflow-y: hidden;
+  overflow: hidden;
+
+}
+
+
+.p-flex {
+  display: flex;
+  background-color: white;
+}
+
+.p-left {
+  width: 250px;
+  min-width: 250px;
+  margin-right: 6px;
+}
+
+.p-right {
+  flex: 1;
+  width: 100%;
+}
+
+
+.more-button{
+  border:1px dashed #409EFF;background-color: #ecf5ff !important;color:#409eff;
+}
+
+.more-params{
+  border: 1px dashed #409EFF;padding-top:10px;margin-top: 10px;
+}
+
+.layout-container .layout-scrollbar{
+  padding: 6px;
+}
+
+.znotes{
+color: red;border: 1px dashed red;margin-top: 10px;margin-bottom: 10px;padding: 5px
+}
+
+.main-header{
+  display: none !important;
+}

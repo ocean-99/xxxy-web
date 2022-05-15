@@ -1,0 +1,120 @@
+<template>
+	<el-card class='box-card' style='height: 100%;' body-style='height: 100%;overflow: auto'>
+		<template #header>
+			<div class='card-header'>
+				<div class='tree-h-flex'>
+					<div class='tree-h-left'>
+						<el-input :prefix-icon='Search' v-model='filterText' placeholder=' ' />
+					</div>
+					<div class='tree-h-right'>
+						<el-dropdown @command='handleCommand'>
+							<el-button style='margin-left: 10px;width: 30px'>
+								<el-icon class='el-icon--right'>
+									<MoreFilled />
+								</el-icon>
+							</el-button>
+							<template #dropdown>
+								<el-dropdown-menu>
+									<el-dropdown-item command='expandAll'>全部展开</el-dropdown-item>
+									<el-dropdown-item command='collapseAll'>全部折叠</el-dropdown-item>
+									<el-dropdown-item command='refresh'>刷新</el-dropdown-item>
+								</el-dropdown-menu>
+							</template>
+						</el-dropdown>
+					</div>
+				</div>
+			</div>
+		</template>
+		<div style='margin-bottom: 45px'>
+			<el-tree ref='treeRef' class='filter-tree' :data='state.data' :props='defaultProps' :filter-node-method='filterNode' />
+		</div>
+	</el-card>
+</template>
+
+<script lang='ts' setup>
+import { onMounted, reactive, ref, watch } from 'vue';
+import type { ElTree } from 'element-plus';
+import { Search, MoreFilled } from '@element-plus/icons-vue';
+import request from '/@/utils/request';
+import { ElMessage } from 'element-plus';
+
+const props = defineProps({
+	url: String,
+});
+
+
+interface Tree {
+	id: number;
+	name: string;
+	children?: Tree[];
+}
+
+const filterText = ref('');
+const treeRef = ref<InstanceType<typeof ElTree>>();
+
+
+const defaultProps = {
+	children: 'children',
+	label: 'name',
+};
+
+watch(filterText, (val) => {
+	treeRef.value!.filter(val);
+});
+
+const filterNode = (value: string, data: Tree) => {
+	if (!value) return true;
+	return data.name.includes(value);
+};
+
+
+const state = reactive({
+	data: [] as any,
+});
+
+
+const handleCommand = (command: string | number | object) => {
+	if ('expandAll' == command) {
+		for (let i = 0; i < treeRef.value!.store._getAllNodes().length; i++) {
+			treeRef.value!.store._getAllNodes()[i].expanded = true;
+		}
+	} else if ('collapseAll' == command) {
+		for (let i = 0; i < treeRef.value!.store._getAllNodes().length; i++) {
+			treeRef.value!.store._getAllNodes()[i].expanded = false;
+		}
+	}
+	ElMessage(`click on item ${command}`);
+};
+
+
+// // 初始化表格数据
+const initTreeData = async () => {
+	state.data = await request({
+		url: props.url,
+		method: 'get',
+	});
+	// for (let i = 0; i < treeRef.value!.store._getAllNodes().length; i++) {
+	// 	treeRef.value!.store._getAllNodes()[i].expanded = true;
+	// }
+};
+
+onMounted(() => {
+	initTreeData();
+});
+
+</script>
+<style scoped>
+.tree-h-flex {
+	display: flex;
+}
+
+.tree-h-left {
+	flex: 1;
+	width: 100%;
+}
+
+.tree-h-right {
+	width: 40px;
+	min-width: 40px;
+}
+</style>
