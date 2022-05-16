@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { ElMessage, ElMessageBox } from 'element-plus';
-import { Cookie, Session } from '/@/utils/storage';
+import { Cookie,Session } from '/@/utils/storage';
 
 // 配置新建一个 axios 实例
 const service = axios.create({
@@ -14,12 +14,9 @@ service.interceptors.request.use(
 	(config) => {
 		// 在发送请求之前做些什么 token
 		// if (Session.get('token')) {
-			// (<any>config.headers).common['Authorization'] = `${Session.get('token')}`;
-			// (<any>config.headers).common['Authorization'] = `${Session.get('token')}`;
+		// 	(<any>config.headers).common['Authorization'] = `${Session.get('token')}`;
 		// }
 		if (Cookie.get('token')) {
-			// (<any>config.headers).common['Authorization'] = `${Session.get('token')}`;
-			// (<any>config.headers).common['Authorization'] = `${Session.get('token')}`;
 			(<any>config.headers).common['Authorization'] = `${Cookie.get('token')}`;
 		}
 		return config;
@@ -57,6 +54,14 @@ service.interceptors.response.use(
 			ElMessage.error('网络超时');
 		} else if (error.message == 'Network Error') {
 			ElMessage.error('网络连接错误');
+		} else if (error.response.status == 401) {
+			Session.clear(); // 清除浏览器全部临时缓存
+			window.location.href = '/'; // 去登录页
+			ElMessageBox.alert('你已被登出，请重新登录', '提示', {})
+				.then(() => {})
+				.catch(() => {});
+		} else if (error.response.status == 403) {
+			ElMessage.error('权限不足');
 		} else {
 			if (error.response.data) ElMessage.error(error.response.statusText);
 			else ElMessage.error('接口路径找不到');

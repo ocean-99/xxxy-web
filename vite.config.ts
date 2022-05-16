@@ -12,7 +12,6 @@ const alias: Record<string, string> = {
 	'vue-i18n': 'vue-i18n/dist/vue-i18n.cjs.js',
 };
 
-
 const viteConfig = defineConfig((mode: ConfigEnv) => {
 	const env = loadEnv(mode.mode, process.cwd());
 	return {
@@ -20,6 +19,7 @@ const viteConfig = defineConfig((mode: ConfigEnv) => {
 		root: process.cwd(),
 		resolve: { alias },
 		base: mode.command === 'serve' ? './' : env.VITE_PUBLIC_PATH,
+		hmr: true,
 		optimizeDeps: {
 			include: ['element-plus/lib/locale/lang/zh-cn', 'element-plus/lib/locale/lang/en', 'element-plus/lib/locale/lang/zh-tw'],
 		},
@@ -47,19 +47,9 @@ const viteConfig = defineConfig((mode: ConfigEnv) => {
 					assetFileNames: `assets/[name].${new Date().getTime()}.[ext]`,
 					compact: true,
 					manualChunks: {
-						vue: ['vue', 'vue-router', 'vuex'],
+						vue: ['vue', 'vue-router', 'pinia'],
 						echarts: ['echarts'],
 					},
-				},
-			},
-			terserOptions: {
-				compress: {
-					drop_console: true,
-					drop_debugger: true,
-				},
-				ie8: true,
-				output: {
-					comments: true,
 				},
 			},
 		},

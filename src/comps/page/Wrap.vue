@@ -7,13 +7,18 @@
 <script lang='ts' setup>
 
 //设置高度为100%
-import { useStore } from '/@/store';
+import { storeToRefs } from 'pinia';
 import { computed } from 'vue';
+import { useTagsViewRoutes } from '/@/stores/tagsViewRoutes';
+import { useThemeConfig } from '/@/stores/themeConfig';
 
-const store = useStore();
 const initTagViewHeight = computed(() => {
-	let { isTagsview } = store.state.themeConfig.themeConfig;
-	let { isTagsViewCurrenFull } = store.state.tagsViewRoutes;
+	const storesTagsViewRoutes = useTagsViewRoutes();
+	const storesThemeConfig = useThemeConfig();
+	const { themeConfig } = storeToRefs(storesThemeConfig);
+	const { isTagsViewCurrenFull } = storeToRefs(storesTagsViewRoutes);
+	// 设置 header 的高度
+	let { isTagsview } = themeConfig.value;
 	if (isTagsViewCurrenFull) {
 		return `13px`;
 	} else {

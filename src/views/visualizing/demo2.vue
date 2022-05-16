@@ -233,9 +233,11 @@ import { toRefs, reactive, onMounted, onUnmounted, getCurrentInstance, defineCom
 import * as echarts from 'echarts';
 import 'echarts-gl';
 import { formatDate } from '/@/utils/formatTime';
+import { NextLoading } from '/@/utils/loading';
 import { dropdownList, skyList, dBtnList, earth3DBtnList, chartData4List } from './mock/demo2';
 import worldImg from './images/world.jpg';
 import bathymetryImg from './images/bathymetry.jpg';
+
 export default defineComponent({
 	name: 'visualizingLinkDemo2',
 	setup() {
@@ -764,6 +766,7 @@ export default defineComponent({
 		};
 		// 页面加载时
 		onMounted(async () => {
+			NextLoading.done();
 			initTime();
 			await initRightChartData1();
 			await initRightChartData4();
@@ -788,7 +791,7 @@ export default defineComponent({
 	height: 100%;
 	width: 100%;
 	overflow: hidden;
-	background: url(https://gitee.com/lyt-top/vue-next-admin-images/raw/master/visualizing/demo2.jpg);
+	background: url(https://img-blog.csdnimg.cn/6267533849444025811bf0840f9366e3.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAbHl0LXRvcA==,size_20,color_FFFFFF,t_70,g_se,x_16);
 	background-size: 100% 100%;
 	display: flex;
 	flex-direction: column;

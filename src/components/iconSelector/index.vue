@@ -1,6 +1,6 @@
 <template>
-	<div class="icon-selector">
-		<el-popover placement="bottom" :width="fontIconWidth" v-model:visible="fontIconVisible" popper-class="icon-selector-popper">
+	<div class="icon-selector w100 h100">
+		<el-popover placement="bottom" :width="fontIconWidth" trigger="click" transition="el-zoom-in-top" popper-class="icon-selector-popper">
 			<template #reference>
 				<el-input
 					v-model="fontIconSearch"
@@ -23,8 +23,8 @@
 					</template>
 				</el-input>
 			</template>
-			<transition name="el-zoom-in-top">
-				<div class="icon-selector-warp" v-show="fontIconVisible">
+			<template #default>
+				<div class="icon-selector-warp">
 					<div class="icon-selector-warp-title flex">
 						<div class="flex-auto">{{ title }}</div>
 						<div class="icon-selector-warp-title-tab" v-if="type === 'all'">
@@ -50,7 +50,7 @@
 						</el-scrollbar>
 					</div>
 				</div>
-			</transition>
+			</template>
 		</el-popover>
 	</div>
 </template>
@@ -58,6 +58,7 @@
 <script lang="ts">
 import { ref, toRefs, reactive, onMounted, nextTick, computed, watch, defineComponent } from 'vue';
 import initIconfont from '/@/utils/getStyleSheets';
+
 export default defineComponent({
 	name: 'iconSelector',
 	emits: ['update:modelValue', 'get', 'clear'],
@@ -102,8 +103,9 @@ export default defineComponent({
 			type: String,
 			default: () => '无相关图标',
 		},
-		// 双向绑定值，字段名为固定，改了之后将不生效
+		// 双向绑定值，默认为 modelValue，
 		// 参考：https://v3.cn.vuejs.org/guide/migration/v-model.html#%E8%BF%81%E7%A7%BB%E7%AD%96%E7%95%A5
+		// 参考：https://v3.cn.vuejs.org/guide/component-custom-events.html#%E5%A4%9A%E4%B8%AA-v-model-%E7%BB%91%E5%AE%9A
 		modelValue: String,
 	},
 	setup(props, { emit }) {
@@ -111,7 +113,6 @@ export default defineComponent({
 		const selectorScrollbarRef = ref();
 		const state = reactive({
 			fontIconPrefix: '',
-			fontIconVisible: false,
 			fontIconWidth: 0,
 			fontIconSearch: '',
 			fontIconTabsIndex: 0,
@@ -122,10 +123,10 @@ export default defineComponent({
 		});
 		// 处理 input 获取焦点时，modelValue 有值时，改变 input 的 placeholder 值
 		const onIconFocus = () => {
-			state.fontIconVisible = true;
 			if (!props.modelValue) return false;
 			state.fontIconSearch = '';
 			state.fontIconPlaceholder = props.modelValue;
+			initFontIconTypeEcho();
 		};
 		// 处理 input 失去焦点时，为空将清空 input 值，为点击选中图标时，将取原先值
 		const onIconBlur = () => {
@@ -139,6 +140,13 @@ export default defineComponent({
 			if (props.modelValue === '') return false;
 			(<string | undefined>state.fontIconPlaceholder) = props.modelValue;
 			(<string | undefined>state.fontIconPrefix) = props.modelValue;
+		};
+		// 处理 icon type 类型为 all 时，类型 ali、ele、awe 回显问题
+		const initFontIconTypeEcho = () => {
+			if ((<any>props.modelValue)?.indexOf('iconfont') > -1) onIconChange('ali');
+			else if ((<any>props.modelValue)?.indexOf('ele-') > -1) onIconChange('ele');
+			else if ((<any>props.modelValue)?.indexOf('fa') > -1) onIconChange('awe');
+			else onIconChange('ali');
 		};
 		// 图标搜索及图标数据显示
 		const fontIconSheetsFilterList = computed(() => {
@@ -194,7 +202,6 @@ export default defineComponent({
 		// 获取当前点击的 icon 图标
 		const onColClick = (v: any) => {
 			state.fontIconPlaceholder = v;
-			state.fontIconVisible = false;
 			state.fontIconPrefix = v;
 			emit('get', state.fontIconPrefix);
 			emit('update:modelValue', state.fontIconPrefix);
@@ -208,14 +215,8 @@ export default defineComponent({
 		// 页面加载时
 		onMounted(() => {
 			// 判断默认进来是什么类型图标，进行 tab 回显
-			if (props.type === 'all') {
-				if ((<any>props.modelValue)?.indexOf('iconfont') > -1) onIconChange('ali');
-				else if ((<any>props.modelValue)?.indexOf('ele-') > -1) onIconChange('ele');
-				else if ((<any>props.modelValue)?.indexOf('fa') > -1) onIconChange('awe');
-				else onIconChange('ali');
-			} else {
-				onIconChange(props.type);
-			}
+			if (props.type === 'all') initFontIconTypeEcho();
+			else onIconChange(props.type);
 			initResize();
 			getInputWidth();
 		});

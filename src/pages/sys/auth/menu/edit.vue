@@ -60,7 +60,7 @@
 					<el-row style='height: 48px'>
 						<el-col :span='12'>
 							<el-form-item label='权限标识：' prop='perm' :rules="[{ required: true, message: '名称不能为空'}]">
-								<el-select v-model='form.perm' placeholder='请选择权限标识' filterable style='width: 100%'>
+								<el-select v-model='form.perm' placeholder='请选择权限标识' clearable filterable style='width: 100%'>
 									<el-option
 										v-for='item in state.perms'
 										:key='item.id'

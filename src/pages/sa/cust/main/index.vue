@@ -47,6 +47,7 @@
 import { Plus, Delete } from '@element-plus/icons-vue';
 import { onMounted, reactive } from 'vue';
 import { listQuery, listDelete, tabAdd, tabEdit, listSelect } from '/@/comps/page/index';
+import request from '/@/utils/request';
 
 const state = reactive({
 	url: '/sa/cust/main', loading: true, ids: [],cates:[] as any,
@@ -56,6 +57,17 @@ const state = reactive({
 onMounted(() => {
 	listQuery(state);
 });
+
+ async function listQuery2(state: any) {
+	const data: any = await request({
+		url: state.url+"/fdsa",
+		method: 'get',
+		params: state.form,
+	});
+	state.list = data.items;
+	state.total = data.total;
+	state.loading = false;
+}
 
 </script>
 

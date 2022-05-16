@@ -52,6 +52,7 @@ export const Session = {
 	},
 };
 
+
 export const Cookie = {
 	// 设置临时缓存
 	set(key: string, val: any) {
@@ -79,4 +80,3 @@ export const Cookie = {
 
 	},
 };
-

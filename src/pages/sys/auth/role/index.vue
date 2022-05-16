@@ -9,6 +9,7 @@
 					</el-col>
 					<el-col :span='13' style='text-align: right'>
 						<el-button type='success' :icon='Plus' @click='tabAdd(state.url)' plain>新增</el-button>
+						<el-button type='warning' :icon='Refresh' @click='refreshPerm()' plain>刷新权限</el-button>
 						<el-button type='danger' :icon='Delete' :disabled='state.multiple' @click='listDelete(state)' plain>删除</el-button>
 					</el-col>
 				</el-row>
@@ -41,9 +42,11 @@
 export default { name: 'sysAuthRole' };
 </script>
 <script lang='ts' setup>
-import { Plus, Delete } from '@element-plus/icons-vue';
+import { Plus, Delete,Refresh } from '@element-plus/icons-vue';
 import { onMounted, reactive } from 'vue';
 import { listQuery, listDelete, tabAdd, tabEdit, listSelect } from '/@/comps/page/index';
+import request from '/@/utils/request';
+import { ElMessage } from 'element-plus';
 
 const state = reactive({
 	url: '/sys/auth/role', loading: true, ids: [],
@@ -53,6 +56,15 @@ const state = reactive({
 onMounted(() => {
 	listQuery(state);
 });
+
+const refreshPerm=async ()=>{
+	await request({
+		url: state.url+'/reperm',
+		method: 'post'
+	});
+	ElMessage.success("刷新成功");
+}
+
 
 </script>
 

@@ -60,17 +60,23 @@ import { toRefs, reactive, defineComponent, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { ElMessage } from 'element-plus';
 import { useI18n } from 'vue-i18n';
+import { storeToRefs } from 'pinia';
+import { useThemeConfig } from '/@/stores/themeConfig';
 import { initFrontEndControlRoutes } from '/@/router/frontEnd';
 import { initBackEndControlRoutes } from '/@/router/backEnd';
-import { useStore } from '/@/store/index';
+import { useUserInfo } from '/@/stores/userInfo';
 import { Cookie, Session } from '/@/utils/storage';
 import { formatAxis } from '/@/utils/formatTime';
+import { NextLoading } from '/@/utils/loading';
 import request from '/@/utils/request';
+
 export default defineComponent({
 	name: 'loginAccount',
 	setup() {
 		const { t } = useI18n();
-		const store = useStore();
+		const stores = useUserInfo();
+		const storesThemeConfig = useThemeConfig();
+		const { themeConfig } = storeToRefs(storesThemeConfig);
 		const route = useRoute();
 		const router = useRouter();
 		const state = reactive({
@@ -95,7 +101,6 @@ export default defineComponent({
 				method: 'post',
 				data:{username:state.ruleForm.userName,password:state.ruleForm.password},
 			});
-
 			// 模拟数据
 			state.loading.signIn = true;
 			let defaultRoles: Array<string> = [];
@@ -131,15 +136,14 @@ export default defineComponent({
 				authBtnList: defaultAuthBtnList,
 			};
 			// 存储 token 到浏览器缓存
-			// Session.set('token', Math.random().toString(36).substr(0));
-			Session.set("token","Bearer "+result.token);//vboot添加
+			Session.set('token', Math.random().toString(36).substr(0));
 			// 存储用户信息到浏览器缓存
 			Session.set('userInfo', userInfos);
-			Cookie.set('userid',userInfos.userid);
-			Cookie.set('token',"Bearer "+result.token);
+			Cookie.set('userid',userInfos.userid);//vboot添加
+			Cookie.set('token',"Bearer "+result.token);//vboot添加
 			// 1、请注意执行顺序(存储用户信息到vuex)
-			store.dispatch('userInfos/setUserInfos', userInfos);
-			if (!store.state.themeConfig.themeConfig.isRequestRoutes) {
+			stores.setUserInfos({ ...userInfos });
+			if (!themeConfig.value.isRequestRoutes) {
 				// 前端控制路由，2、请注意执行顺序
 				await initFrontEndControlRoutes();
 				signInSuccess();
@@ -156,7 +160,6 @@ export default defineComponent({
 			// 初始化登录成功时间问候语
 			let currentTimeInfo = currentTime.value;
 			// 登录成功，跳到转首页
-			// 添加完动态路由，再进行 router 跳转，否则可能报错 No match found for location with path "/"
 			// 如果是复制粘贴的路径，非首页/登录页，那么登录成功后重定向到对应的路径中
 			if (route.query?.redirect) {
 				router.push({
@@ -171,6 +174,8 @@ export default defineComponent({
 			state.loading.signIn = true;
 			const signInText = t('message.signInText');
 			ElMessage.success(`${currentTimeInfo}，${signInText}`);
+			// 添加 loading，防止第一次进入界面时出现短暂空白
+			NextLoading.start();
 		};
 		return {
 			onSignIn,
