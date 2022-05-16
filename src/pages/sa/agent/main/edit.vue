@@ -3,7 +3,7 @@
 		<template #header>
 			<el-row>
 				<el-col :span='10'>
-					<div style='line-height: 32px'>客户维护</div>
+					<div style='line-height: 32px'>代理商维护</div>
 				</el-col>
 				<el-col :span='14' style='text-align: right'>
 					<el-button type='success' @click='tabSave(state,proxy,route)' plain>保 存</el-button>
@@ -17,7 +17,7 @@
 					<el-tab-pane label='基本信息' name='tab1'>
 						<el-row style='border-top: 1px solid #d2d2d2;'>
 							<el-col :span='24'>
-								<el-form-item label='客户名称：' prop='name' :rules="[{ required: true, message: '名称不能为空'}]">
+								<el-form-item label='代理商名称：' prop='name' :rules="[{ required: true, message: '名称不能为空'}]">
 									<div class='zinput'>
 										<el-input v-model='form.name'></el-input>
 									</div>
@@ -26,7 +26,7 @@
 						</el-row>
 						<el-row>
 							<el-col :span='12'>
-								<el-form-item label='客户地址：'>
+								<el-form-item label='代理商地址：'>
 									<div class='zinput'>
 										<el-input v-model='form.addre'></el-input>
 									</div>
@@ -43,7 +43,7 @@
 						</el-row>
 						<el-row>
 							<el-col :span='24'>
-								<el-form-item label='客户经办人：'>
+								<el-form-item label='代理商经办人：'>
 									<div class='zinput'>
 										<el-input v-model='opmna' @click='openOrgModal' readonly></el-input>
 									</div>
@@ -110,7 +110,7 @@
 	</el-card>
 </template>
 <script lang='ts'>
-export default { name: 'saCustMainEdit' };
+export default { name: 'saAgentMainEdit' };
 </script>
 <script lang='ts' setup>
 import { computed, getCurrentInstance, onMounted, reactive, ref, toRaw, toRefs } from 'vue';
@@ -122,7 +122,7 @@ const route = useRoute();
 const { proxy } = getCurrentInstance() as any;
 
 const state = reactive({
-	url: '/sa/cust/main',
+	url: '/sa/agent/main',
 	params: { path: '', query: '' }, checks: [] as any,
 	form: { avtag: true, items: [] as any } as any,
 });

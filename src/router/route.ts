@@ -513,6 +513,36 @@ export const saDynamicRoutes: Array<RouteRecordRaw> = [
 				},
 				children: [
 					{
+						path: '/sa/agent/main',
+						name: 'saAgentMain',
+						component: () => import('/@/pages/sa/agent/main/index.vue'),
+						meta: {
+							title: '代理商清单',
+							isLink: '',
+							isHide: false,
+							isKeepAlive: true,
+							isAffix: false,
+							isIframe: false,
+							roles: ['admin'],
+							icon: 'iconfont icon-caidan',
+						},
+					},
+					{
+						path: '/sa/agent/main/edit',
+						name: 'saAgentMainEdit',
+						component: () => import('/@/pages/sa/agent/main/edit.vue'),
+						meta: {
+							title: '代理商维护',
+							isLink: '',
+							isHide: true,
+							isKeepAlive: true,
+							isAffix: false,
+							isIframe: false,
+							roles: ['admin'],
+							icon: 'iconfont icon-caidan',
+						},
+					},
+					{
 						path: '/sa/cust/main',
 						name: 'saCustMain',
 						component: () => import('/@/pages/sa/cust/main/index.vue'),
@@ -544,7 +574,6 @@ export const saDynamicRoutes: Array<RouteRecordRaw> = [
 					},
 				],
 			},
-
 		],
 	},
 ];
