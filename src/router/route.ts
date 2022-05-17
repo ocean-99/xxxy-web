@@ -201,10 +201,10 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 						],
 					},
 					{
-						path: '/sys/auth',
-						name: 'SysAuth',
+						path: '/sys/perm',
+						name: 'sysPerm',
 						component: () => import('/@/layout/routerView/parent.vue'),
-						redirect: '/sys/auth/menu',
+						redirect: '/sys/perm/menu',
 						meta: {
 							title: '权限管理',
 							isLink: '',
@@ -217,9 +217,9 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 						},
 						children: [
 							{
-								path: '/sys/auth/menu',
-								name: 'sysAuthMenu',
-								component: () => import('/@/pages/sys/auth/menu/index.vue'),
+								path: '/sys/perm/menu',
+								name: 'sysPermMenu',
+								component: () => import('/@/pages/sys/perm/menu/index.vue'),
 								meta: {
 									title: '菜单管理',
 									isLink: '',
@@ -232,9 +232,9 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 								},
 							},
 							{
-								path: '/sys/auth/role',
-								name: 'sysAuthRole',
-								component: () => import('/@/pages/sys/auth/role/index.vue'),
+								path: '/sys/perm/role',
+								name: 'sysPermRole',
+								component: () => import('/@/pages/sys/perm/role/index.vue'),
 								meta: {
 									title: '角色管理',
 									isLink: '',
@@ -247,9 +247,9 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 								},
 							},
 							{
-								path: '/sys/auth/role/edit',
-								name: 'sysAuthRoleEdit',
-								component: () => import('/@/pages/sys/auth/role/edit.vue'),
+								path: '/sys/perm/role/edit',
+								name: 'sysPermRoleEdit',
+								component: () => import('/@/pages/sys/perm/role/edit.vue'),
 								meta: {
 									title: '角色编辑',
 									isLink: '',
@@ -549,6 +549,21 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 						component: () => import('/@/pages/sa/cust/main/index.vue'),
 						meta: {
 							title: '客户清单',
+							isLink: '',
+							isHide: false,
+							isKeepAlive: true,
+							isAffix: false,
+							isIframe: false,
+							roles: ['admin'],
+							icon: 'iconfont icon-caidan',
+						},
+					},
+					{
+						path: '/sa/cust/main2',
+						name: 'saCustMain2',
+						component: () => import('/@/pages/sa/cust/main/index.vue'),
+						meta: {
+							title: '客户清单2',
 							isLink: '',
 							isHide: false,
 							isKeepAlive: true,

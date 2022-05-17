@@ -28,7 +28,7 @@
 						<el-col :span='12'>
 							<el-form-item label='上级菜单：'>
 								<el-input v-model='form.parna' readonly :suffix-icon='Search' @click='openParentModal'></el-input>
-								<ParentModal url='/sys/auth/menu/tree' ref='parentModal' @close='closeParentModal' />
+								<ParentModal url='/sys/perm/menu/tree' ref='parentModal' @close='closeParentModal' />
 							</el-form-item>
 						</el-col>
 					</el-row>
@@ -62,7 +62,7 @@
 							<el-form-item label='权限标识：' prop='perm' :rules="[{ required: true, message: '名称不能为空'}]">
 								<el-select v-model='form.perm' placeholder='请选择权限标识' clearable filterable style='width: 100%'>
 									<el-option
-										v-for='item in state.perms'
+										v-for='item in state.apis'
 										:key='item.id'
 										:label='item.name'
 										:value='item.id'
@@ -157,7 +157,7 @@ import request from '/@/utils/request';
 import ParentModal from '/@/comps/gen/GenModal.vue';
 
 const state = reactive({
-	url: '/sys/auth/menu', show: false, perms: [] as any,
+	url: '/sys/perm/menu', show: false, apis: [] as any,
 	form: {
 		avtag: true,
 		catag: true,
@@ -194,15 +194,15 @@ const confirm = async () => {
 
 
 //页面初始化
-const permsInit = async () => {
-	state.perms = await request({
-		url: '/sys/auth/perm/list',
+const apisInit = async () => {
+	state.apis = await request({
+		url: '/sys/perm/api/list',
 		method: 'get',
 	});
 };
 
 onMounted(() => {
-	permsInit();
+	apisInit();
 });
 
 

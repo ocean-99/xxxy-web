@@ -39,7 +39,7 @@
 	</div>
 </template>
 <script lang='ts'>
-export default { name: 'sysAuthRole' };
+export default { name: 'sysPermRole' };
 </script>
 <script lang='ts' setup>
 import { Plus, Delete,Refresh } from '@element-plus/icons-vue';
@@ -49,7 +49,7 @@ import request from '/@/utils/request';
 import { ElMessage } from 'element-plus';
 
 const state = reactive({
-	url: '/sys/auth/role', loading: true, ids: [],
+	url: '/sys/perm/role', loading: true, ids: [],
 	form: {}, single: true, multiple: true, list: [], total: 0,
 });
 

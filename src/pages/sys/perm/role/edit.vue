@@ -109,7 +109,7 @@
 	</el-card>
 </template>
 <script lang='ts'>
-export default { name: 'sysAuthRole' };
+export default { name: 'sysPermRole' };
 </script>
 <script lang='ts' setup>
 import { computed, getCurrentInstance, onMounted, reactive, ref, toRaw, toRefs } from 'vue';
@@ -123,7 +123,7 @@ const { proxy } = getCurrentInstance() as any;
 const activeName = ref('tab1');
 
 const state = reactive({
-	url: '/sys/auth/role',
+	url: '/sys/perm/role',
 	params: { path: '', query: '' },
 	form: { avtag: true } as any,
 	treeData: [] as any,
@@ -194,7 +194,7 @@ const orgsName = computed(() => {
 
 //region -----b 菜单分配逻辑-----
 async function treeDataInit() {
-	treeData.value = await request({ url: '/sys/auth/menu/tree', method: 'get' });
+	treeData.value = await request({ url: '/sys/perm/menu/tree', method: 'get' });
 	const menus = [];
 	for (const menu of form.value.menus) {
 		menus.push(menu.id);

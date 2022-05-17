@@ -46,7 +46,7 @@
 	</div>
 </template>
 <script lang='ts'>
-export default { name: 'sysAuthMenu' };
+export default { name: 'sysPermMenu' };
 </script>
 <script lang='ts' setup>
 import { Plus, Delete,Edit,CirclePlus } from '@element-plus/icons-vue';
@@ -56,7 +56,7 @@ import DrawerEdit from './edit.vue';
 const drawer = ref();
 
 const state = reactive({
-	url: '/sys/auth/menu', loading: true, ids: [],
+	url: '/sys/perm/menu', loading: true, ids: [],
 	form: {}, single: true, multiple: true, list: [], total: 0,
 });
 

@@ -22,9 +22,9 @@
 				<el-table-column label='序号' type='index' width='55' align='center' />
 				<el-table-column label='客户名称' width='180'>
 					<template #default='scope'>
-						<span style='cursor:pointer;color: #3e9ece' @click='tabEdit(state.url,scope.row.id)'>
-							{{ scope.row.name }}
-						</span>
+                        <span style='cursor:pointer;color: #3e9ece' @click='tabEdit(state.url,scope.row.id)'>
+                            {{ scope.row.name }}
+                        </span>
 					</template>
 				</el-table-column>
 				<el-table-column label='客户地址' prop='addre' />
@@ -44,30 +44,18 @@
 </template>
 
 <script lang='ts' setup>
-import { Plus, Delete } from '@element-plus/icons-vue';
-import { onMounted, reactive } from 'vue';
-import { listQuery, listDelete, tabAdd, tabEdit, listSelect } from '/@/comps/page/index';
-import request from '/@/utils/request';
+	import { Plus, Delete } from '@element-plus/icons-vue';
+	import { onMounted, reactive } from 'vue';
+	import { listQuery, listDelete, tabAdd, tabEdit, listSelect } from '/@/comps/page/index';
 
-const state = reactive({
-	url: '/sa/cust/main', loading: true, ids: [],cates:[] as any,
-	form: {}, single: true, multiple: true, list: [], total: 0,
-});
-
-onMounted(() => {
-	listQuery(state);
-});
-
- async function listQuery2(state: any) {
-	const data: any = await request({
-		url: state.url+"/fdsa",
-		method: 'get',
-		params: state.form,
+	const state = reactive({
+		url: '/sa/cust/main', loading: true, ids: [],cates:[] as any,
+		form: {}, single: true, multiple: true, list: [], total: 0,
 	});
-	state.list = data.items;
-	state.total = data.total;
-	state.loading = false;
-}
+
+	onMounted(() => {
+		listQuery(state);
+	});
 
 </script>
 

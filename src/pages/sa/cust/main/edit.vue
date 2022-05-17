@@ -41,25 +41,6 @@
 								</el-form-item>
 							</el-col>
 						</el-row>
-						<el-row>
-							<el-col :span='24'>
-								<el-form-item label='客户经办人：'>
-									<div class='zinput'>
-										<el-input v-model='opmna' @click='openOrgModal' readonly></el-input>
-									</div>
-								</el-form-item>
-							</el-col>
-						</el-row>
-						<el-row>
-							<el-col :span='24'>
-								<el-form-item label='可查看者：'>
-									<div class='zinput' style='height: auto'>
-										<el-input type='textarea' :rows='4' v-model='viewersName' readonly @click='openOrgsModal'>
-										</el-input>
-									</div>
-								</el-form-item>
-							</el-col>
-						</el-row>
 					</el-tab-pane>
 					<el-tab-pane label='其他信息' name='tab3'>
 						<el-row style='border-top: 1px solid #d2d2d2;'>
@@ -106,91 +87,31 @@
 				</el-tabs>
 			</el-form>
 		</div>
-		<OrgModal ref='orgModal' @close='closeOrgModal' />
 	</el-card>
 </template>
 <script lang='ts'>
-export default { name: 'saCustMainEdit' };
+	export default { name: 'saCustMainEdit' };
 </script>
 <script lang='ts' setup>
-import { computed, getCurrentInstance, onMounted, reactive, ref, toRaw, toRefs } from 'vue';
-import { editInit, tabSave, tabClose } from '/@/comps/page/edit';
-import { useRoute } from 'vue-router';
-import OrgModal from '/@/comps/sys/OrgModal.vue';
+	import { getCurrentInstance, onMounted, reactive, ref, toRefs } from 'vue';
+	import { editInit, tabSave, tabClose } from '/@/comps/page/edit';
+	import { useRoute } from 'vue-router';
 
-const route = useRoute();
-const { proxy } = getCurrentInstance() as any;
+	const route = useRoute();
+	const { proxy } = getCurrentInstance() as any;
 
-const state = reactive({
-	url: '/sa/cust/main',
-	params: { path: '', query: '' }, checks: [] as any,
-	form: { avtag: true, items: [] as any } as any,
-});
-
-const { form } = toRefs(state);
-const activeName = ref('tab1');
-
-onMounted(async () => {
-	await editInit(state, route);
-});
-
-
-//region 经办人与可查看者选择逻辑
-const orgModal = ref();
-
-const openOrgModal = () => {
-	orgModal.value.openModal({
-		opener: 'opman',
-		orgType: 8,
+	const state = reactive({
+		url: '/sa/cust/main',
+		params: { path: '', query: '' }, checks: [] as any,
+		form: { avtag: true, items: [] as any } as any,
 	});
-};
 
-const openOrgsModal = () => {
-	orgModal.value.openModal({
-		opener: 'viewers',
-		orgType: 11,
-		selectMode: 2,
-		orgs: toRaw(form.value.viewers),
+	const { form } = toRefs(state);
+	const activeName = ref('tab1');
+
+	onMounted(async () => {
+		await editInit(state, route);
 	});
-};
-
-const closeOrgModal = (data: any) => {
-	if(data.opener=="opman"){
-		if (data.orgs && data.orgs.length > 0) {
-			form.value.opman = { id: data.orgs[0].id, name: data.orgs[0].name };
-			form.value.opmid = data.orgs[0].id;
-		} else {
-			form.value.opman = null;
-			form.value.opmid = null;
-		}
-	}else if(data.opener=="viewers"){
-		if (data.orgs && data.orgs.length > 0) {
-			form.value.viewers = data.orgs;
-		} else {
-			form.value.viewers = null;
-		}
-	}
-};
-
-const opmna = computed(() => {
-	let name = '';
-	if (form.value.opman) {
-		name = form.value.opman.name;
-	}
-	return name;
-});
-
-const viewersName = computed(() => {
-	let names = '';
-	if (form.value.viewers && form.value.viewers.length > 0) {
-		for (const user of form.value.viewers) {
-			names += user.name + '；';
-		}
-	}
-	return names;
-});
-//endregion
-
 </script>
 
 <style scoped>
