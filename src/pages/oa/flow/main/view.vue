@@ -51,6 +51,7 @@ import { viewEdit, viewClose } from '/@/comps/page/view';
 import { useRoute } from 'vue-router';
 import BpmView from '/@/comps/bpm/view.vue';
 import request from '/@/utils/request';
+import {NextLoading} from "/@/utils/loading";
 
 
 const route = useRoute();
@@ -83,6 +84,7 @@ const submit = () => {
 };
 
 onMounted(() => {
+  NextLoading.done();
 	viewInitx(state, route);
 });
 

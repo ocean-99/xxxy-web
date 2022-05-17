@@ -47,6 +47,7 @@ import { pageSave, pageClose } from '/@/comps/page/edit';
 import { useRoute } from 'vue-router';
 import BpmEdit from '/@/comps/bpm/edit.vue';
 import request from '/@/utils/request';
+import {NextLoading} from "/@/utils/loading";
 
 const bpmRef = ref() as any;
 const route = useRoute();
@@ -63,6 +64,7 @@ const { form, formJson } = toRefs(state);
 const activeName = ref('tab1');
 
 onMounted(() => {
+  NextLoading.done();
 	editInitx(state, route);
 });
 
