@@ -3,7 +3,7 @@ import { storeToRefs } from 'pinia';
 import pinia from '/@/stores/index';
 import { useUserInfo } from '/@/stores/userInfo';
 import { useRequestOldRoutes } from '/@/stores/requestOldRoutes';
-import { Session } from '/@/utils/storage';
+import { Cookie, Session } from '/@/utils/storage';
 import { NextLoading } from '/@/utils/loading';
 import { dynamicRoutes, notFoundAndNoPower } from '/@/router/route';
 import { formatTwoStageRoutes, formatFlatteningRoutes, router } from '/@/router/index';
@@ -14,7 +14,8 @@ import { useMenuApi } from '/@/api/menu/index';
 const menuApi = useMenuApi();
 
 const layouModules: any = import.meta.glob('../layout/routerView/*.{vue,tsx}');
-const viewsModules: any = import.meta.glob('../views/**/*.{vue,tsx}');
+// const viewsModules: any = import.meta.glob('../views/**/*.{vue,tsx}');
+const viewsModules: any = import.meta.glob('../pages/**/*.{vue,tsx}');
 
 // 后端控制路由
 
@@ -38,15 +39,16 @@ export async function initBackEndControlRoutes() {
 	// 界面 loading 动画开始执行
 	if (window.nextLoading === undefined) NextLoading.start();
 	// 无 token 停止执行下一步
-	if (!Session.get('token')) return false;
+	// if (!Session.get('token')) return false;
+	if (!Cookie.get('token')) return false;
 	// 触发初始化用户信息 pinia
 	useUserInfo().setUserInfos();
 	// 获取路由菜单数据
 	const res = await getBackEndControlRoutes();
 	// 存储接口原始路由（未处理component），根据需求选择使用
-	useRequestOldRoutes().setRequestOldRoutes(JSON.parse(JSON.stringify(res.data)));
+	useRequestOldRoutes().setRequestOldRoutes(JSON.parse(JSON.stringify(res.menus)));
 	// 处理路由（component），替换 dynamicRoutes（/@/router/route）第一个顶级 children 的路由
-	dynamicRoutes[0].children = await backEndComponent(res.data);
+	dynamicRoutes[0].children = await backEndComponent(res.menus);
 	// 添加动态路由
 	await setAddRoute();
 	// 设置路由到 vuex routesList 中（已处理成多级嵌套路由）及缓存多级嵌套数组处理后的一维数组
@@ -107,7 +109,7 @@ export function getBackEndControlRoutes() {
 	const { userInfos } = storeToRefs(stores);
 	const auth = userInfos.value.roles[0];
 	// 管理员 admin
-	if (auth === 'admin') return menuApi.getMenuAdmin();
+	if (auth === 'admin'||auth === 'sa') return menuApi.getMenuAdmin();
 	// 其它用户 test
 	else return menuApi.getMenuTest();
 }
@@ -144,14 +146,19 @@ export function backEndComponent(routes: any) {
 export function dynamicImport(dynamicViewsModules: Record<string, Function>, component: string) {
 	const keys = Object.keys(dynamicViewsModules);
 	const matchKeys = keys.filter((key) => {
-		const k = key.replace(/..\/views|../, '');
+		// const k = key.replace(/..\/views|../, '');
+		const k = key.replace(/..\/pages|../, '');
+		console.log(k);
+		console.log(`${component}`);
 		return k.startsWith(`${component}`) || k.startsWith(`/${component}`);
 	});
+	console.log(matchKeys);
 	if (matchKeys?.length === 1) {
 		const matchKey = matchKeys[0];
 		return dynamicViewsModules[matchKey];
 	}
 	if (matchKeys?.length > 1) {
+		// return dynamicViewsModules[matchKeys[1]];
 		return false;
 	}
 }

@@ -10,14 +10,16 @@ export function useMenuApi() {
 	return {
 		getMenuAdmin: (params?: object) => {
 			return request({
-				url: '/gitee/lyt-top/vue-next-admin-images/raw/master/menu/adminMenu.json',
+				// url: 'https://gitee.com/lyt-top/vue-next-admin-images/raw/master/menu/adminMenu.json',
+				url: 'getUserInfo',
 				method: 'get',
 				params,
 			});
 		},
 		getMenuTest: (params?: object) => {
 			return request({
-				url: '/gitee/lyt-top/vue-next-admin-images/raw/master/menu/testMenu.json',
+				// url: 'https://gitee.com/lyt-top/vue-next-admin-images/raw/master/menu/testMenu.json',
+				url: 'getUserInfo',
 				method: 'get',
 				params,
 			});

@@ -168,7 +168,7 @@ const state = reactive({
 		query: '',
 	},
 	audits: [] as any,
-	chtag: false,
+	chtag: true,
 	autag: true,
 	xml: null as any,
 	refNodes: [] as any,
