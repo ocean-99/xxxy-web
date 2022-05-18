@@ -83,7 +83,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 								name: 'sysOrgDept',
 								component: () => import('/@/pages/sys/org/dept/index.vue'),
 								meta: {
-									title: 'message.router.system',
+									title: '部门管理',
 									isLink: '',
 									isHide: false,
 									isKeepAlive: true,

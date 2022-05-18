@@ -118,6 +118,14 @@ export const tabAdd = (url: string) => {
 	});
 };
 
+export const tabAddx = (data:any) => {
+	data.uuid=uuid();
+	router.push({
+		path: data.url + '/edit',
+		query: data,
+	});
+};
+
 
 export const tabEdit = (url: string, id: string) => {
 	router.push({

@@ -1,9 +1,3 @@
-.el-card__header{
-  padding: 8px 12px;
-}
-.el-card__body{
-  padding: 6px;
-}
 
 .el-table--small .el-table__cell{
   padding: 2px 0;
@@ -73,6 +67,33 @@
 }
 
 
+.list-search{
+  width: 200px;margin-right: 10px;height: 32px;
+}
+
+.p-right .box-card{
+  height: 100%;position:relative;overflow-y: auto;
+}
+
+.el-card__header{
+  padding: 8px;
+}
+.el-card__body{
+  padding: 8px;
+}
+
+//.lr-card .el-card__header{
+//  padding: 8px;
+//}
+
+.p-right .el-card__body{
+  position: absolute;width: 100%;
+}
+
+//.lr-card-body{
+//  padding:3px 13px 3px 2px;position: absolute;width: 100%;
+//}
+
 .more-button{
   border:1px dashed #409EFF;background-color: #ecf5ff !important;color:#409eff;
 }
@@ -91,6 +112,10 @@ color: red;border: 1px dashed red;margin-top: 10px;margin-bottom: 10px;padding: 
 
 .main-header{
   display: none !important;
+}
+
+.el-table .cell{
+  padding: 0 6px;
 }
 
 

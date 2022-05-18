@@ -6,7 +6,7 @@
 		</template>
 		<template #default>
 			<div style='padding: 20px;border-top: 1px solid #ccc'>
-				<el-form ref='ruleFormRef' :model='form' label-width='160px'>
+				<el-form ref='formRef' :model='form' label-width='160px'>
 					<el-row style='height: 48px'>
 						<el-col :span='24'>
 							<el-form-item label='菜单类型：' prop='type' :rules="[{ required: true, message: '类型不能为空'}]">
@@ -155,6 +155,9 @@ import { drawerOpen, drawerSave } from '/@/comps/page/edit';
 import IconSelector from '/@/components/iconSelector/index.vue';
 import request from '/@/utils/request';
 import ParentModal from '/@/comps/gen/GenModal.vue';
+import {FormInstance} from "element-plus";
+
+const formRef = ref<FormInstance>();
 
 const state = reactive({
 	url: '/sys/perm/menu', show: false, apis: [] as any,
@@ -188,7 +191,7 @@ defineExpose({ open });
 //取得父组件listQuery方法的调用权
 const emits = defineEmits(['treeQuery']);
 const confirm = async () => {
-	await drawerSave(state);
+	await drawerSave(formRef.value,state);
 	emits('treeQuery');
 };
 

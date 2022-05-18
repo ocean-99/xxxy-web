@@ -8,7 +8,7 @@
 					</div>
 					<div class='tree-h-right'>
 						<el-dropdown @command='handleCommand'>
-							<el-button style='margin-left: 10px;width: 30px'>
+							<el-button style='margin-left: 8px;width: 30px'>
 								<el-icon class='el-icon--right'>
 									<more-filled />
 								</el-icon>

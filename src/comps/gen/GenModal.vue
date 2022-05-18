@@ -34,8 +34,9 @@
 
 		<template #footer>
       <span class='dialog-footer'>
-        <el-button @click='dialogVisible = false'>取消</el-button>
 				<el-button type='primary' @click='handleConfirm'>确认</el-button>
+        <el-button @click='dialogVisible = false'>取消</el-button>
+        <el-button @click='clearAndcloseModal'>清空选择</el-button>
       </span>
 		</template>
 	</el-dialog>
@@ -118,14 +119,20 @@ onMounted(() => {
 
 const emits = defineEmits(['close']);
 const handleConfirm = () => {
-	emits('close', { id: state.id, name: state.name, pid: state.pid });
+	emits('close', { id: state.id, name: state.name, pid: state.pid,type:state.type });
 	dialogVisible.value = false;
+};
+
+const clearAndcloseModal = () => {
+  emits('close', null);
+  dialogVisible.value = false;
 };
 
 const nodeClick = (node: any) => {
 	state.id = node.id;
 	state.name = node.name;
 	state.pid = node.pid;
+	state.type = node.type;
 };
 
 

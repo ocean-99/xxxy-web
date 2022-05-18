@@ -4,11 +4,11 @@
 			<div class='card-header'>
 				<div class='tree-h-flex'>
 					<div class='tree-h-left'>
-						<el-input :prefix-icon='Search' v-model='filterText' placeholder=' ' />
+						<el-input :prefix-icon='Search' v-model='filterText' placeholder='输入名称查询' />
 					</div>
 					<div class='tree-h-right'>
 						<el-dropdown @command='handleCommand'>
-							<el-button style='margin-left: 10px;width: 30px'>
+							<el-button style='margin-left: 8px;width: 30px'>
 								<el-icon class='el-icon--right'>
 									<MoreFilled />
 								</el-icon>
@@ -17,6 +17,7 @@
 								<el-dropdown-menu>
 									<el-dropdown-item command='expandAll'>全部展开</el-dropdown-item>
 									<el-dropdown-item command='collapseAll'>全部折叠</el-dropdown-item>
+									<el-dropdown-item command='rootNode'>根节点</el-dropdown-item>
 									<el-dropdown-item command='refresh'>刷新</el-dropdown-item>
 								</el-dropdown-menu>
 							</template>
@@ -26,7 +27,7 @@
 			</div>
 		</template>
 		<div style='margin-bottom: 45px'>
-			<el-tree ref='treeRef' class='filter-tree' :data='state.data' :props='defaultProps' :filter-node-method='filterNode' />
+			<el-tree ref='treeRef' class='filter-tree' :data='state.data' :props='defaultProps' :filter-node-method='filterNode' @node-click="nodeClick"/>
 		</div>
 	</el-card>
 </template>
@@ -36,7 +37,6 @@ import { onMounted, reactive, ref, watch } from 'vue';
 import type { ElTree } from 'element-plus';
 import { Search, MoreFilled } from '@element-plus/icons-vue';
 import request from '/@/utils/request';
-import { ElMessage } from 'element-plus';
 
 const props = defineProps({
 	url: String,
@@ -73,7 +73,7 @@ const state = reactive({
 });
 
 
-const handleCommand = (command: string | number | object) => {
+const handleCommand =async (command: string | number | object) => {
 	if ('expandAll' == command) {
 		for (let i = 0; i < treeRef.value!.store._getAllNodes().length; i++) {
 			treeRef.value!.store._getAllNodes()[i].expanded = true;
@@ -82,8 +82,11 @@ const handleCommand = (command: string | number | object) => {
 		for (let i = 0; i < treeRef.value!.store._getAllNodes().length; i++) {
 			treeRef.value!.store._getAllNodes()[i].expanded = false;
 		}
-	}
-	ElMessage(`click on item ${command}`);
+	}else if('refresh' == command){
+    await initTreeData();
+  }else if('rootNode' == command){
+    emits('node-click', { id: '', name: '' });
+  }
 };
 
 
@@ -96,6 +99,11 @@ const initTreeData = async () => {
 	// for (let i = 0; i < treeRef.value!.store._getAllNodes().length; i++) {
 	// 	treeRef.value!.store._getAllNodes()[i].expanded = true;
 	// }
+};
+
+const emits = defineEmits(['node-click']);
+const nodeClick = (node:any) => {
+  emits('node-click', { id: node.id, name: node.name });
 };
 
 onMounted(() => {

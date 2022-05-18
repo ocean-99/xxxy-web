@@ -13,7 +13,7 @@
 			</el-row>
 		</template>
 		<div style='margin-top: 8px;margin-bottom: 8px'>
-			<el-form :model='form' label-width='140px'>
+			<el-form ref="formRef" :model='form' label-width='140px'>
 				<el-tabs type='card' v-model='activeName'>
 					<el-tab-pane label='基本信息' name='tab1'>
 						<el-row>
@@ -48,9 +48,14 @@ import { useRoute } from 'vue-router';
 import BpmEdit from '/@/comps/bpm/edit.vue';
 import request from '/@/utils/request';
 import {NextLoading} from "/@/utils/loading";
+import {FormInstance} from "element-plus";
+
+const route = useRoute();
+const formRef = ref<FormInstance>();
+const activeName = ref('tab1');
 
 const bpmRef = ref() as any;
-const route = useRoute();
+
 
 const state = reactive({
 	url: '/oa/flow/main',
@@ -61,7 +66,7 @@ const state = reactive({
 });
 
 const { form, formJson } = toRefs(state);
-const activeName = ref('tab1');
+
 
 onMounted(() => {
   NextLoading.done();
@@ -92,7 +97,7 @@ const editInitx = async (state: any, route: any) => {
 
 const save = async () => {
 	form.value.zbpm = bpmRef.value.getOperateInfo();
-	await pageSave(state);
+	await pageSave(formRef.value,state);
 };
 
 /* 注意：formJson是指表单设计器导出的json，此处演示的formJson只是一个空白表单json！！ */

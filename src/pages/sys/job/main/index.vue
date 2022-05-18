@@ -3,11 +3,11 @@
 		<el-card class='box-card'>
 			<template #header>
 				<el-row>
-					<el-col :span='11'>
-						<el-input v-model='state.form.name' placeholder='输入名称回车查询' clearable style='width: 200px;margin-right: 10px' @keyup.enter='listQuery(state)' />
+					<el-col :span='14'>
+						<el-input v-model='state.form.name' placeholder='输入名称回车查询' clearable class="list-search" @keyup.enter='listQuery(state)' />
 						<el-button type='primary' @click='listQuery(state)' plain>查 询</el-button>
 					</el-col>
-					<el-col :span='13' style='text-align: right'>
+					<el-col :span='10' style='text-align: right'>
 						<el-button type='success' :icon='Plus' @click='tabAdd(state.url)' plain>新增</el-button>
 						<el-button :disabled='state.multiple' @click='startEvent(state)' plain>启 用</el-button>
 						<el-button :disabled='state.multiple' @click='stopEvent(state)' plain>禁 用</el-button>

@@ -13,9 +13,9 @@
         </el-col>
       </el-row>
     </template>
-
+    <CateModal url='oa/flow/cate/tree' ref='cateModal' @close='cateChoose'/>
     <div style='margin-top: 8px;margin-bottom: 8px'>
-      <el-form :model='form' label-width='140px'>
+      <el-form ref="formRef" :model='form' label-width='140px'>
         <el-tabs type='card' v-model='activeName'>
           <el-tab-pane label='基本信息' name='tab1' class='zform'>
             <el-row style='border-top: 1px solid #d2d2d2;'>
@@ -27,8 +27,9 @@
                 </el-form-item>
               </el-col>
               <el-col :span='12'>
-                <el-form-item label='上级分类：' prop='catid' :rules="[{ required: true, message: '分类不能为空'}]">
+                <el-form-item label='所属分类：' prop='cate' :rules="[{ required: true, message: '分类不能为空'}]">
                   <div class='zinput'>
+                    <el-input :value='form.cate?.name' :suffix-icon='Search' :readonly='true' @click='openCateModal'></el-input>
                   </div>
                 </el-form-item>
               </el-col>
@@ -145,9 +146,12 @@ import Panel from '/@/comps/Activiti/panel';
 import BpmnActions from '/@/comps/Activiti/bpmn-actions';
 import {BpmnStore} from '/@/bpmn/store';
 import {NextLoading} from "/@/utils/loading";
-
+import CateModal from '/@/comps/gen/GenModal.vue';
+import {FormInstance} from "element-plus";
 
 const route = useRoute();
+const formRef = ref<FormInstance>();
+const activeName = ref('tab1');
 
 const state = reactive({
   url: '/oa/flow/temp',
@@ -156,14 +160,14 @@ const state = reactive({
 });
 
 const {form} = toRefs(state);
-const activeName = ref('tab1');
+
 
 
 onMounted(async () => {
   NextLoading.done();
   await editInit(state, route);
   if (form.value.id) {
-    await BpmnStore.importXML(form.value.xml);
+    await BpmnStore.importXML(form.value.prxml);
   } else {
     await BpmnStore.importXML(defxml);
   }
@@ -172,13 +176,14 @@ onMounted(async () => {
 
 
 async function save(state: any) {
+
   const bpmn = await BpmnStore.getXML();
   // console.log(typeof (bpmn.xml));
   // xFlow.value.getData();
   form.value.vform = JSON.stringify(vform.value.getFormJson());
-  form.value.xml = bpmn.xml;
+  form.value.prxml = bpmn.xml;
   console.log(bpmn.xml);
-  await pageSave(state);
+  await pageSave(formRef.value,state);
 }
 
 const vform = ref();
@@ -353,6 +358,22 @@ const defxml = '<?xml version="1.0" encoding="UTF-8"?>\n' +
     '    </bpmndi:BPMNPlane>\n' +
     '  </bpmndi:BPMNDiagram>\n' +
     '</bpmn2:definitions>\n';
+
+
+//region -----分类弹框逻辑-----
+const cateModal = ref();
+const openCateModal = () => {
+  cateModal.value.openModal();
+};
+const cateChoose=(node:any)=>{
+  if(node==null){
+    form.value.cate=null;
+  }else{
+    form.value.cate={id:node.id,name:node.name};
+  }
+}
+//endregion
+
 </script>
 
 <style scoped>
