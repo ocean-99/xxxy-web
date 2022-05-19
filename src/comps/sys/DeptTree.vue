@@ -17,6 +17,7 @@
 								<el-dropdown-menu>
 									<el-dropdown-item command='expandAll'>全部展开</el-dropdown-item>
 									<el-dropdown-item command='collapseAll'>全部折叠</el-dropdown-item>
+                  <el-dropdown-item command='rootNode'>根节点</el-dropdown-item>
 									<el-dropdown-item command='refresh'>刷新</el-dropdown-item>
 								</el-dropdown-menu>
 							</template>
@@ -36,7 +37,6 @@ import { defineExpose, onMounted, reactive, ref, watch } from 'vue';
 import type { ElTree } from 'element-plus';
 import { Search, MoreFilled } from '@element-plus/icons-vue';
 import request from '/@/utils/request';
-import { ElMessage } from 'element-plus';
 
 
 interface Tree {
@@ -70,7 +70,7 @@ const state = reactive({
 });
 
 
-const handleCommand = (command: string | number | object) => {
+const handleCommand =async (command: string | number | object) => {
 	if ('expandAll' == command) {
 		for (let i = 0; i < treeRef.value!.store._getAllNodes().length; i++) {
 			treeRef.value!.store._getAllNodes()[i].expanded = true;
@@ -79,8 +79,11 @@ const handleCommand = (command: string | number | object) => {
 		for (let i = 0; i < treeRef.value!.store._getAllNodes().length; i++) {
 			treeRef.value!.store._getAllNodes()[i].expanded = false;
 		}
-	}
-	ElMessage(`click on item ${command}`);
+	}else if('refresh' == command){
+    await initTreeData();
+  }else if('rootNode' == command){
+    emits('node-click', { id: '', name: '' });
+  }
 };
 
 

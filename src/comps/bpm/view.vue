@@ -4,7 +4,7 @@
 			<el-col :span='24'>
 				<el-form-item label='流程说明' style='margin-left: 10px;'>
 					<div class='zinput'>
-						xxxxxx
+						这是一个测试的流程，目前功能还不完善
 					</div>
 				</el-form-item>
 			</el-col>
@@ -196,6 +196,7 @@ const props = defineProps({
 
 onMounted(async () => {
 	await bpmInit();
+  await toggleFlowChart();
 	// state.params = <any>route;
 	// if (params.value.query?.id) {
 	//也可以拿到alert(params.value.query?.id);
@@ -251,9 +252,6 @@ const bpmInit = async () => {
 const emit = defineEmits(['submit']);
 
 const bpmSubmit = async () => {
-	console.log('86811');
-	emit('submit');
-	console.log('86822');
 
 	if (form.value.opkey == 'pass') {
 		await request({
@@ -273,6 +271,9 @@ const bpmSubmit = async () => {
 		});
 	}
 
+  console.log('86811');
+  emit('submit');
+  console.log('86822');
 };
 
 const toggleFlowChart = async () => {

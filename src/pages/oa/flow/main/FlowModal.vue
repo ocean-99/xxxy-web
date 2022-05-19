@@ -109,7 +109,7 @@ async function onSearch() {
 
 const receInit = async () => {
 	receItems.value = await request({
-		url: '/gen/org/rece?type=' + p_flow_type,
+		url: '/oa/flow/rece/list?type=' + p_flow_type,
 		method: 'get',
 	});
 };
@@ -117,6 +117,11 @@ const receInit = async () => {
 function receItemClick(item: any) {
 	item.checked = !item.checked;
 	if(item.checked==true){
+    for (let i = 0; i < receItems.value.length; i++) {
+      if (receItems.value[i].id !== item.id) {
+        receItems.value[i].checked = false;
+      }
+    }
 		seldItem.value=item;
 	}else{
 		seldItem.value = null;
@@ -141,6 +146,11 @@ async function nodeClick(node: any) {
 function tierItemClick(item: any) {
 	item.checked = !item.checked;
 	if(item.checked==true){
+    for (let i = 0; i < tierItems.value.length; i++) {
+      if (tierItems.value[i].id !== item.id) {
+        tierItems.value[i].checked = false;
+      }
+    }
 		seldItem.value=item;
 	}else{
 		seldItem.value = null;
@@ -161,6 +171,7 @@ function tierItemClick(item: any) {
 
 //region 与父组件的交互逻辑
 const openModal = async () => {
+  await receInit();
 	state.isShow = true;
 };
 
@@ -173,21 +184,21 @@ const closeModal = () => {
 		return false;
 	}
 	const rawSeldItem = toRaw(seldItem.value) as any;
-	// if (rawSeldItem && rawSeldItem.id) {
-	// 	//更新后台数据库最近使用的TEMPS
-	// 	request({
-	// 		url: '/gen/org/rece',
-	// 		method: 'post',
-	// 		data: rawSeldItem,
-	// 	});
-	// }
-	emits('close', rawSeldItem);
+	if (rawSeldItem && rawSeldItem.id) {
+		//更新后台数据库最近使用的TEMPS
+		request({
+			url: '/oa/flow/rece',
+			method: 'post',
+			data: [rawSeldItem],
+		});
+	}
 	state.isShow = false;
+	emits('close', rawSeldItem);
 };
 
 const clearAndcloseModal = () => {
-	emits('close', null);
 	state.isShow = false;
+	emits('close', null);
 };
 
 //endregion

@@ -9,8 +9,8 @@
 						<div style='line-height: 32px'>流程实例</div>
 					</el-col>
 					<el-col :span='14' style='text-align: right'>
-						<el-button type='success' @click='viewEdit(state,proxy,route)' plain>编 辑</el-button>
-						<el-button type='info' @click='viewClose(proxy,route)' plain>关 闭</el-button>
+						<el-button type='success' @click='tabEdit(state,proxy,route)' plain>编 辑</el-button>
+						<el-button type='info' @click='pageClose()' plain>关 闭</el-button>
 					</el-col>
 				</el-row>
 			</template>
@@ -47,7 +47,7 @@ export default { name: 'oaFlowMainView' };
 </script>
 <script lang='ts' setup>
 import { getCurrentInstance, onMounted, reactive, ref, toRefs } from 'vue';
-import { viewEdit, viewClose } from '/@/comps/page/view';
+import { tabEdit,pageClose} from '/@/comps/page/view';
 import { useRoute } from 'vue-router';
 import BpmView from '/@/comps/bpm/view.vue';
 import request from '/@/utils/request';
@@ -81,6 +81,7 @@ const viewInitx = async (state: any, route: any) => {
 
 const submit = () => {
 	console.log('submit');
+  pageClose(2000);
 };
 
 onMounted(() => {

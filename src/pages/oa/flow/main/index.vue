@@ -6,7 +6,8 @@
 					<el-col :span='14'>
 						<el-input v-model='state.form.name' placeholder='输入名称回车查询' clearable class="list-search" @keyup.enter='listQuery(state)' />
 						<el-button type='primary' @click='listQuery(state)' plain>查 询</el-button>
-						<el-button class='more-button' :icon='state.moreParams?ArrowUp:ArrowDown' plain @click='state.moreParams=!state.moreParams'>更多</el-button>
+            <span style="margin-left: 10px;color: green">流程测试：张三账号z3,李四账号l4,王五账号w5,赵六账号zhao6。密码都是1</span>
+<!--						<el-button class='more-button' :icon='state.moreParams?ArrowUp:ArrowDown' plain @click='state.moreParams=!state.moreParams'>更多</el-button>-->
 					</el-col>
 					<el-col :span='10' style='text-align: right'>
 						<el-button type='success' :icon='Plus' @click='openFlowModal()' plain>新增</el-button>
@@ -92,9 +93,11 @@ const openFlowModal = () => {
 	flowModalRef.value.openModal();
 };
 const closeFlowModal=(node:any)=>{
-	if(node&&node.id){
-		window.open("#/page/ofme?temid="+node.id);
-	}
+  setTimeout(() => {
+    if(node&&node.id){
+      window.open("#/page/ofme?temid="+node.id);
+    }
+  }, 50);
 }
 
 
