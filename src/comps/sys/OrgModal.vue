@@ -432,17 +432,17 @@ const clearAndcloseModal = () => {
 }
 
 /*最近*/
-.z-org-recently li {
-	width: 33%;
-	float: left;
-	cursor: pointer;
-	padding: 5px;
-	list-style-type: none;
-}
+/*.z-org-recently li {*/
+/*	width: 33%;*/
+/*	float: left;*/
+/*	cursor: pointer;*/
+/*	padding: 5px;*/
+/*	list-style-type: none;*/
+/*}*/
 
-.z-org-recently li:hover {
-	background-color: #f7efec;
-}
+/*.z-org-recently li:hover {*/
+/*	background-color: #f7efec;*/
+/*}*/
 
 /*搜索查询*/
 .z-org-search li {

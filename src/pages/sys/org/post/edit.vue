@@ -119,6 +119,14 @@ const state = reactive({
 const {form} = toRefs(state);
 
 onMounted(async () => {
+	state.params = <any>route;
+	const deptid = state.params.query?.deptid;
+	const deptna = state.params.query?.deptna;
+	if (deptid) {
+		form.value.dept = { id: deptid, name: deptna };
+		form.value.deptid = deptid;
+		form.value.deptna = deptna;
+	}
   await editInit(state, route);
   if (form.value.dept) {
     form.value.deptna = form.value.dept.name;

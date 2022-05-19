@@ -13,7 +13,7 @@
               <el-button class='more-button' :icon='state.moreParams?ArrowUp:ArrowDown' plain @click='state.moreParams=!state.moreParams'>更多</el-button>
             </el-col>
             <el-col :span='10' style='text-align: right'>
-              <el-button type='success' :icon='Plus' @click='tabAdd(state.url)' plain>新增</el-button>
+              <el-button type='success' :icon='Plus' @click='tabAdd(state.url,{deptid:state.form.deptid,deptna:state.form.deptna})' plain>新增</el-button>
               <el-button type='danger' :icon='Delete' :disabled='state.multiple' @click='listDelete(state)' plain>删除</el-button>
             </el-col>
           </el-row>
@@ -78,6 +78,7 @@ onMounted(() => {
 //region a 左侧部门树点击
 const nodeClick = async (node: any) => {
   state.form.deptid = node.id;
+  state.form.deptna = node.name;
   await listQuery(state);
 };
 //endregion

@@ -19,20 +19,21 @@
 								:tree-props="{ children: 'children', hasChildren: 'hasChildren' }">
 				<el-table-column type='selection' width='55' align='center' />
 				<el-table-column label='序号' type='index' width='55' align='center' />
-				<el-table-column label='名称' width='180'>
+				<el-table-column label='名称' width='250'>
 					<template #default='scope'>
-						<span style='cursor:pointer;color: #3e9ece' @click='toggle(scope.row)'>{{ scope.row.name }}</span>
+						<span style='cursor:pointer;color:#972fcb' @click='toggle(scope.row)'>{{ scope.row.name }}</span>
 					</template>
 				</el-table-column>
-				<el-table-column label='类型' prop='type' width='70'>
+				<el-table-column label='类型' prop='type' width='60' header-align='center'>
 					<template #default="scope">
 						<el-tag v-show="scope.row.type==='D'" type="success" size="small">目录</el-tag>
 						<el-tag v-show="scope.row.type==='M'" type="warning" size="small">菜单</el-tag>
-						<el-tag v-show="scope.row.type==='B'" type="info" size="small">按钮</el-tag>
+						<el-tag v-show="scope.row.type==='B'" type="primary" size="small">按钮</el-tag>
 					</template>
 				</el-table-column>
-				<el-table-column label='更新时间' prop='uptim' width='160' />
 				<el-table-column label='备注' prop='notes' />
+				<el-table-column label='创建时间' prop='crtim' width='150' />
+				<el-table-column label='更新时间' prop='uptim' width='150' />
 				<el-table-column label='操作' width='114' header-align='center' align="right">
 					<template #default="scope">
 						<el-icon @click='drawer.open({pid:scope.row.id,pname:scope.row.name})' v-show="scope.row.type==='D'||scope.row.type==='M'" style="cursor: pointer;font-size: 18px;top:2px;margin-left: 10px;color: #52C41A"><circle-plus/></el-icon>

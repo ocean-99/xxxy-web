@@ -33,13 +33,14 @@
 </template>
 
 <script lang='ts' setup>
-import { onMounted, reactive, ref, watch } from 'vue';
+import { defineExpose, onMounted, reactive, ref, watch } from 'vue';
 import type { ElTree } from 'element-plus';
 import { Search, MoreFilled } from '@element-plus/icons-vue';
 import request from '/@/utils/request';
 
 const props = defineProps({
 	url: String,
+	maInit: Boolean,
 });
 
 
@@ -106,9 +107,17 @@ const nodeClick = (node:any) => {
   emits('node-click', { id: node.id, name: node.name });
 };
 
+
 onMounted(() => {
-	initTreeData();
+	if(props.maInit==false){
+		initTreeData();
+	}
 });
+
+const init = async () => {
+	await initTreeData();
+};
+defineExpose({ init });
 
 </script>
 <style scoped>

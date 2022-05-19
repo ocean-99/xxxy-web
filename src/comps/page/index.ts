@@ -111,21 +111,16 @@ export const treeItemDelete = async (state: any, id: string) => {
 };
 
 
-export const tabAdd = (url: string) => {
-	router.push({
-		path: url + '/edit',
-		query: { uuid: uuid() },
-	});
-};
-
-export const tabAddx = (data:any) => {
+export const tabAdd = (url: string,data:any) => {
+	if(!data){
+		data = {};
+	}
 	data.uuid=uuid();
 	router.push({
-		path: data.url + '/edit',
+		path: url + '/edit',
 		query: data,
 	});
 };
-
 
 export const tabEdit = (url: string, id: string) => {
 	router.push({
@@ -149,6 +144,7 @@ export const pageAdd = (url: string) => {
 	// }
 	window.open(import.meta.env.VITE_PUBLIC_PATH + '#/page/' + url);
 };
+
 
 export const pageEdit = (url: string) => {
 	window.open(import.meta.env.VITE_PUBLIC_PATH + '#/page/' + url);

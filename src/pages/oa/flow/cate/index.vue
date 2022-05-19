@@ -29,7 +29,7 @@
 				<el-table-column label='备注' prop='notes' />
 				<el-table-column label='操作' width='114' header-align='center' align="right">
 					<template #default="scope">
-						<el-icon @click='tabAddx({url:state.url,pid:scope.row.id,pname:scope.row.name})' style="cursor: pointer;font-size: 18px;top:2px;margin-left: 10px;color: #52C41A"><circle-plus/></el-icon>
+						<el-icon @click='tabAdd(state.url,{pid:scope.row.id,pname:scope.row.name})' style="cursor: pointer;font-size: 18px;top:2px;margin-left: 10px;color: #52C41A"><circle-plus/></el-icon>
 						<el-icon @click='tabEdit(state.url,scope.row.id)' style="cursor: pointer;font-size: 18px;top:2px;margin-left: 11px;color: #2874C5"><edit/></el-icon>
 						<el-icon @click='treeItemDelete(state,scope.row.id)' style="cursor: pointer;font-size: 18px;top:2px;margin-left: 10px;color: #ED6F6F"><delete/></el-icon>
 					</template>
@@ -41,7 +41,7 @@
 <script lang='ts' setup>
 import { Plus, Delete,Edit,CirclePlus } from '@element-plus/icons-vue';
 import { onMounted, reactive, ref } from 'vue';
-import { treeDelete,treeItemDelete,treeSelect,treeQuery,tabAdd,tabAddx,tabEdit} from '/@/comps/page/index';
+import { treeDelete,treeItemDelete,treeSelect,treeQuery,tabAdd,tabEdit} from '/@/comps/page/index';
 
 const state = reactive({
 	url: '/oa/flow/cate', loading: true, ids: [],

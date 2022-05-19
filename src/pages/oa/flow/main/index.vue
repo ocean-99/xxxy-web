@@ -9,7 +9,7 @@
 						<el-button class='more-button' :icon='state.moreParams?ArrowUp:ArrowDown' plain @click='state.moreParams=!state.moreParams'>更多</el-button>
 					</el-col>
 					<el-col :span='10' style='text-align: right'>
-						<el-button type='success' :icon='Plus' @click='openTempModal()' plain>新增</el-button>
+						<el-button type='success' :icon='Plus' @click='openFlowModal()' plain>新增</el-button>
 						<el-button type='danger' :icon='Delete' :disabled='state.multiple' @click='listDelete(state)' plain>删除</el-button>
 					</el-col>
 				</el-row>
@@ -25,8 +25,8 @@
 					</el-form>
 				</div>
 			</template>
-
-			<TempModal url='oa/flow/temp/tree' ref='tempModal' @close='tempModalClose'/>
+			<FlowModal ref='flowModalRef' @close='closeFlowModal'/>
+			<TempModal url='oa/flow/temp/tree' ref='tempModal' />
 
 			<el-table height='400' :cell-style="{padding:'2px'}" :row-style="{height: '36px'}" v-loading='state.loading' :data='state.list'
 								border stripe @selection-change='listSelect($event,state)'>
@@ -60,7 +60,7 @@ import { Plus, Delete,ArrowDown, ArrowUp } from '@element-plus/icons-vue';
 import { onMounted, reactive, ref } from 'vue';
 import { listQuery, listDelete, listSelect,pageView} from '/@/comps/page/index';
 import TempModal from '/@/comps/gen/GenModal.vue';
-import {ElMessage} from "element-plus";
+import FlowModal from './FlowModal.vue';
 
 const state = reactive({
 	url: '/oa/flow/main', loading: true, ids: [],	moreParams: false,
@@ -69,22 +69,32 @@ const state = reactive({
 
 onMounted(() => {
 	listQuery(state);
-	console.log(111);
 });
 
 
 
 //分类弹框逻辑
-const tempModal = ref();
-const openTempModal = () => {
-	tempModal.value.openModal();
+// const tempModal = ref();
+// const openTempModal = () => {
+// 	tempModal.value.openModal();
+// };
+// const tempModalClose=(node:any)=>{
+//   if(node.type=="temp"){
+//     window.open("#/page/ofme?temid="+node.id);
+//   }else if(node.type=="cate"){
+//     ElMessage.info("当前选择的是流程分类，请选择最下级的流程模板节点，比如请假申请");
+//   }
+// }
+
+//弹框逻辑
+const flowModalRef = ref();
+const openFlowModal = () => {
+	flowModalRef.value.openModal();
 };
-const tempModalClose=(node:any)=>{
-  if(node.type=="temp"){
-    window.open("#/page/ofme?temid="+node.id);
-  }else if(node.type=="cate"){
-    ElMessage.info("当前选择的是流程分类，请选择最下级的流程模板节点，比如请假申请");
-  }
+const closeFlowModal=(node:any)=>{
+	if(node&&node.id){
+		window.open("#/page/ofme?temid="+node.id);
+	}
 }
 
 
