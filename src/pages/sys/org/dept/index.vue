@@ -11,7 +11,7 @@
               <el-input v-model='state.form.name' placeholder='输入名称回车查询' clearable style='height: 32px;width: 200px;margin-right: 10px'
                         @keyup.enter='listQuery(state)'/>
               <el-button type='primary' @click='listQuery(state)' plain>查 询</el-button>
-              <el-button class='more-button' :icon='state.moreParams?ArrowUp:ArrowDown' plain @click='state.moreParams=!state.moreParams'>更多</el-button>
+              <el-button class='more-button' :icon='state.moreParams?ArrowUp:ArrowDown' plain @click='state.moreParams=!state.moreParams'/>
             </el-col>
             <el-col :span='11' style='text-align: right'>
               <el-button type='success' :icon='Plus' @click='tabAdd(state.url,{pid:state.form.pid,pname:state.form.pname})' plain>新增</el-button>

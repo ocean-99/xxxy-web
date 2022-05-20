@@ -324,6 +324,53 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 							},
 						],
 					},
+					{
+						path: '/sys/log',
+						name: 'SysLog',
+						component: () => import('/@/layout/routerView/parent.vue'),
+						redirect: '/sys/log/login',
+						meta: {
+							title: '系统日志',
+							isLink: '',
+							isHide: false,
+							isKeepAlive: true,
+							isAffix: false,
+							isIframe: false,
+							roles: ['admin'],
+							icon: 'ele-Notification',
+						},
+						children: [
+							{
+								path: '/sys/log/login',
+								name: 'sysLogLogin',
+								component: () => import('/@/pages/sys/log/login/index.vue'),
+								meta: {
+									title: '登录日志',
+									isLink: '',
+									isHide: false,
+									isKeepAlive: true,
+									isAffix: false,
+									isIframe: false,
+									roles: ['admin'],
+									icon: 'ele-Notification',
+								},
+							},
+							// {
+							// 	path: '/sys/log/login/view',
+							// 	name: 'sysLogLoginView',
+							// 	component: () => import('/@/pages/sys/log/login/view.vue'),
+							// 	meta: {
+							// 		title: '登录日志查看',
+							// 		isLink: '',
+							// 		isHide: true,
+							// 		isKeepAlive: true,
+							// 		isAffix: false,
+							// 		isIframe: false,
+							// 		roles: ['admin'],
+							// 	},
+							// },
+						],
+					},
 				],
 			},
 			{
@@ -339,7 +386,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 					isAffix: false,
 					isIframe: false,
 					roles: ['admin'],
-					icon: 'iconfont icon-xitongshezhi',
+					icon: 'ele-Connection',
 				},
 				children: [
 					{
@@ -354,7 +401,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 							isAffix: false,
 							isIframe: false,
 							roles: ['admin'],
-							icon: 'iconfont icon-caidan',
+							icon: 'ele-Tickets',
 						},
 					},
 					{
@@ -369,7 +416,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 							isAffix: false,
 							isIframe: false,
 							roles: ['admin'],
-							icon: 'iconfont icon-caidan',
+							icon: 'ele-Tickets',
 						},
 					},
 					{
@@ -384,7 +431,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 							isAffix: false,
 							isIframe: false,
 							roles: ['admin'],
-							icon: 'iconfont icon-caidan',
+							icon: 'ele-Tickets',
 						},
 					},
 					{
@@ -399,7 +446,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 							isAffix: false,
 							isIframe: false,
 							roles: ['admin'],
-							icon: 'iconfont icon-caidan',
+							icon: 'ele-Tickets',
 						},
 					},
 					{
@@ -414,7 +461,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 							isAffix: false,
 							isIframe: false,
 							roles: ['admin'],
-							icon: 'iconfont icon-caidan',
+							icon: 'ele-Tickets',
 						},
 					},
 					{
@@ -429,7 +476,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 							isAffix: false,
 							isIframe: false,
 							roles: ['admin'],
-							icon: 'iconfont icon-caidan',
+							icon: 'ele-Tickets',
 						},
 					},
 					{
@@ -444,7 +491,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 							isAffix: false,
 							isIframe: false,
 							roles: ['admin'],
-							icon: 'iconfont icon-caidan',
+							icon: 'ele-Tickets',
 						},
 					},
 				],
@@ -462,7 +509,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 					isAffix: false,
 					isIframe: false,
 					roles: ['admin'],
-					icon: 'iconfont icon-xitongshezhi',
+					icon: 'ele-Bell',
 				},
 				children: [
 					{
@@ -477,7 +524,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 							isAffix: false,
 							isIframe: false,
 							roles: ['admin'],
-							icon: 'iconfont icon-caidan',
+							icon: 'ele-Tickets',
 						},
 					},
 					{
@@ -492,7 +539,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 							isAffix: false,
 							isIframe: false,
 							roles: ['admin'],
-							icon: 'iconfont icon-caidan',
+							icon: 'ele-Tickets',
 						},
 					},
 				],
@@ -510,7 +557,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 					isAffix: false,
 					isIframe: false,
 					roles: ['admin'],
-					icon: 'iconfont icon-xitongshezhi',
+					icon: 'ele-GobletSquare',
 				},
 				children: [
 					{
@@ -525,7 +572,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 							isAffix: false,
 							isIframe: false,
 							roles: ['admin'],
-							icon: 'iconfont icon-caidan',
+							icon: 'ele-Tickets',
 						},
 					},
 					{
@@ -540,7 +587,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 							isAffix: false,
 							isIframe: false,
 							roles: ['admin'],
-							icon: 'iconfont icon-caidan',
+							icon: 'ele-Tickets',
 						},
 					},
 				],

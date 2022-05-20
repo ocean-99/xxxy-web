@@ -143,7 +143,8 @@ export default defineComponent({
 			Cookie.set('token',"Bearer "+result.token);//vboot添加
 			// 1、请注意执行顺序(存储用户信息到vuex)
 			stores.setUserInfos({ ...userInfos });
-			if (!themeConfig.value.isRequestRoutes) {
+			const { isRequestRoutes } = themeConfig.value;
+			if (!isRequestRoutes) {
 				// 前端控制路由，2、请注意执行顺序
 				await initFrontEndControlRoutes();
 				signInSuccess();

@@ -4,14 +4,26 @@
 			<template #header>
 				<el-row>
 					<el-col :span='14'>
-						<el-input v-model='state.form.name' placeholder='输入名称回车查询' class="list-search" clearable @keyup.enter='listQuery(state)' />
-						<el-button type='primary' @click='listQuery(state)' plain>查 询</el-button>
+						<el-input v-model='state.form.name' placeholder='输入名称回车查询' class='list-search' clearable @keyup.enter='listQuery(state)' />
+						<el-button type='primary' @click='listQuery(state)' plain v-waves='purple'>查 询</el-button>
+						<el-button class='more-button' :icon='state.moreParams?ArrowUp:ArrowDown' plain @click='state.moreParams=!state.moreParams' />
 					</el-col>
 					<el-col :span='10' style='text-align: right'>
 						<el-button type='success' :icon='Plus' @click='tabAdd(state.url)' plain>新增</el-button>
 						<el-button type='danger' :icon='Delete' :disabled='state.multiple' @click='listDelete(state)' plain>删除</el-button>
 					</el-col>
 				</el-row>
+				<div v-show='state.moreParams' class='more-params'>
+					<el-form :inline='true' label-width='100px'>
+						<el-form-item label='备注'>
+							<el-input v-model='state.form.notes' placeholder='输入备注' />
+						</el-form-item>
+						<el-form-item label='xxxxx'>
+							<el-input v-model='state.form.xx' />
+						</el-form-item>
+						<el-form-item />
+					</el-form>
+				</div>
 			</template>
 
 			<el-table height='400' :cell-style="{padding:'2px'}" :row-style="{height: '36px'}"
@@ -43,12 +55,12 @@
 </template>
 
 <script lang='ts' setup>
-import { Plus, Delete } from '@element-plus/icons-vue';
+import { Plus, Delete, ArrowDown, ArrowUp } from '@element-plus/icons-vue';
 import { onMounted, reactive } from 'vue';
 import { listQuery, listDelete, tabAdd, tabEdit, listSelect } from '/@/comps/page/index';
 
 const state = reactive({
-	url: '/sa/agent/main', loading: true, ids: [],cates:[] as any,
+	url: '/sa/agent/main', loading: true, ids: [], cates: [] as any,
 	form: {}, single: true, multiple: true, list: [], total: 0,
 });
 
