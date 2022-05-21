@@ -9,7 +9,7 @@
           <el-row>
             <el-col :span='14'>
               <el-input v-model='state.form.name' placeholder='输入名称回车查询' clearable class="list-search" @keyup.enter='listQuery(state)'/>
-              <el-button type='primary' @click='listQuery(state)' plain>查 询</el-button>
+              <el-button type='primary' @click='listQuery(state)' :icon="Search" plain>查询</el-button>
               <el-button class='more-button' :icon='state.moreParams?ArrowUp:ArrowDown' plain @click='state.moreParams=!state.moreParams'/>
             </el-col>
             <el-col :span='10' style='text-align: right'>
@@ -59,7 +59,7 @@
 export default {name: 'sysOrgUser'};
 </script>
 <script lang='ts' setup>
-import {Plus, Delete, ArrowDown, ArrowUp} from '@element-plus/icons-vue';
+import {Search,Plus, Delete, ArrowDown, ArrowUp} from '@element-plus/icons-vue';
 import {onMounted, reactive} from 'vue';
 import {listQuery, listDelete, listSelect, tabAdd, tabEdit} from '/@/comps/page/index';
 import Wrap from '/@/comps/page/Wrap.vue';

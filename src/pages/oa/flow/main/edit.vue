@@ -1,5 +1,5 @@
 <template>
-
+  <div :style='{ height: `calc(100vh)`}' class='zpage'>
 	<el-card class='box-card' :body-style="{padding:'2px 8px'}" shadow='never'>
 		<template #header>
 			<el-row>
@@ -18,7 +18,7 @@
 					<el-tab-pane label='基本信息' name='tab1'>
 						<el-row>
 							<el-col :span='24'>
-								<el-form-item label='申请标题：' prop='name' :rules="[{ required: true, message: '名称不能为空'}]">
+								<el-form-item label='主题：' prop='name' :rules="[{ required: true, message: '主题不能为空'}]">
 									<div class='zinput'>
 										<el-input v-model='form.name'></el-input>
 									</div>
@@ -31,18 +31,19 @@
 						<!--						<el-button type='primary' @click='submitForm'>Submit</el-button>-->
 					</el-tab-pane>
 					<el-tab-pane label='流程处理' name='tab3' class='zform'>
-						<BpmEdit :temid='form.protd' ref='bpmRef' />
+						<BpmEdit v-if="form.protd" :temid='form.protd' ref='bpmRef' />
 					</el-tab-pane>
 					<el-tab-pane label='权限信息' name='tab4' class='zform'>
-						<img :src='qx' style='width:100%' />
+<!--						<img :src='qx' style='width:100%' />-->
 					</el-tab-pane>
 				</el-tabs>
 			</el-form>
 		</div>
 	</el-card>
+  </div>
 </template>
 <script lang='ts' setup>
-import { nextTick, onMounted, reactive, ref, toRefs } from 'vue';
+import {  onMounted, reactive, ref, toRefs } from 'vue';
 import { pageSave, pageClose } from '/@/comps/page/edit';
 import { useRoute } from 'vue-router';
 import BpmEdit from '/@/comps/bpm/edit.vue';
@@ -92,6 +93,7 @@ const editInitx = async (state: any, route: any) => {
 		form.value.avtag = true;
 		formJson.value = JSON.parse(data.vform);
 		state.vformShow = true;
+
 	}
 };
 
@@ -113,5 +115,7 @@ const vFormRef = ref(null);
 </script>
 
 <style scoped>
-
+.zpage {
+  overflow: auto;
+}
 </style>

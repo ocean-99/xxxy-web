@@ -5,9 +5,9 @@
 				<el-row>
 					<el-col :span='14'>
 						<el-input v-model='state.form.name' placeholder='输入名称回车查询' clearable class="list-search" @keyup.enter='listQuery(state)' />
-						<el-button type='primary' @click='listQuery(state)' plain>查 询</el-button>
+						<el-button type='primary' :icon="Search" @click='listQuery(state)' plain>查询</el-button>
+						<el-button class='more-button' :icon='state.moreParams?ArrowUp:ArrowDown' plain @click='state.moreParams=!state.moreParams'/>
             <span style="margin-left: 10px;color: green">流程测试：张三账号z3,李四账号l4,王五账号w5,赵六账号zhao6。密码都是1</span>
-<!--						<el-button class='more-button' :icon='state.moreParams?ArrowUp:ArrowDown' plain @click='state.moreParams=!state.moreParams'>更多</el-button>-->
 					</el-col>
 					<el-col :span='10' style='text-align: right'>
 						<el-button type='success' :icon='Plus' @click='openFlowModal()' plain>新增</el-button>
@@ -33,15 +33,29 @@
 								border stripe @selection-change='listSelect($event,state)'>
 				<el-table-column type='selection' width='55' align='center' />
 				<el-table-column label='序号' type='index' width='55' align='center' />
-				<el-table-column label='流程名称' width='180'>
+				<el-table-column label='流程主题' width='200'>
 					<template #default='scope'>
 						<span style='cursor:pointer;color: #3e9ece' @click='pageView("ofmv?id="+scope.row.id)'>{{ scope.row.name }}</span>
 					</template>
 				</el-table-column>
 				<el-table-column label='所属模板' prop='temna' />
-				<el-table-column label='备注' prop='notes' />
+<!--				<el-table-column label='备注' prop='notes' />-->
 				<el-table-column label='申请人' prop='crman' width='76' />
-				<el-table-column label='申请时间' prop='crtim' width='160' />
+				<el-table-column label='申请时间' prop='crtim' width='150' />
+				<el-table-column label='送审时间' prop='uptim' width='150'>
+          <template #default="scope">
+            <span v-show="scope.row.state!=='30'">{{scope.row.uptim}}</span>
+          </template>
+        </el-table-column>
+				<el-table-column label='状态' prop='state' width='60' header-align="center" align="center">
+          <template #default="scope">
+            <el-tag v-show="scope.row.state==='30'" type="success" size="small">结束</el-tag>
+            <el-tag v-show="scope.row.state==='20'" type="warning" size="small">待审</el-tag>
+            <el-tag v-show="scope.row.state==='00'" type="primary" size="small">草稿</el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column label='当前环节' prop='facno' width='160' />
+        <el-table-column label='当前处理人' prop='exmen' width='160' />
 			</el-table>
 
 			<el-pagination
@@ -53,11 +67,11 @@
 		</el-card>
 	</div>
 </template>
-<script lang="ts">
-export default {name: 'oaFlowMain'}
-</script>
+<!--<script lang="ts">-->
+<!--export default {name: 'oaFlowMain'}-->
+<!--</script>-->
 <script lang='ts' setup>
-import { Plus, Delete,ArrowDown, ArrowUp } from '@element-plus/icons-vue';
+import { Search,Plus, Delete,ArrowDown, ArrowUp } from '@element-plus/icons-vue';
 import { onMounted, reactive, ref } from 'vue';
 import { listQuery, listDelete, listSelect,pageView} from '/@/comps/page/index';
 import TempModal from '/@/comps/gen/GenModal.vue';

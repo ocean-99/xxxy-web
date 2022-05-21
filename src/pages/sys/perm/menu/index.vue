@@ -5,7 +5,7 @@
 				<el-row>
 					<el-col :span='14'>
 						<el-input v-model='state.form.name' placeholder='输入名称回车查询' clearable class="list-search" @keyup.enter='treeQuery(state)' />
-						<el-button type='primary' @click='treeQuery(state)' plain>查 询</el-button>
+						<el-button type='primary' @click='treeQuery(state)' :icon="Search" plain>查询</el-button>
 					</el-col>
 					<el-col :span='10' style='text-align: right'>
 						<el-button type='success' :icon='Plus' @click='drawer.open()' plain>新增</el-button>
@@ -34,11 +34,11 @@
 				<el-table-column label='备注' prop='notes' />
 				<el-table-column label='创建时间' prop='crtim' width='150' />
 				<el-table-column label='更新时间' prop='uptim' width='150' />
-				<el-table-column label='操作' width='114' header-align='center' align="right">
+				<el-table-column label='操作' width='105' header-align='center' align="right">
 					<template #default="scope">
-						<el-icon @click='drawer.open({pid:scope.row.id,pname:scope.row.name})' v-show="scope.row.type==='D'||scope.row.type==='M'" style="cursor: pointer;font-size: 18px;top:2px;margin-left: 10px;color: #52C41A"><circle-plus/></el-icon>
-						<el-icon @click='drawer.open({id:scope.row.id})' style="cursor: pointer;font-size: 18px;top:2px;margin-left: 11px;color: #2874C5"><edit/></el-icon>
-						<el-icon @click='treeItemDelete(state,scope.row.id)' style="cursor: pointer;font-size: 18px;top:2px;margin-left: 10px;color: #ED6F6F"><delete/></el-icon>
+						<el-icon @click='drawer.open({pid:scope.row.id,pname:scope.row.name})' v-show="scope.row.type==='D'||scope.row.type==='M'" style="cursor: pointer;font-size: 18px;top:2px;margin-right: 8px;color: #52C41A"><circle-plus/></el-icon>
+						<el-icon @click='drawer.open({id:scope.row.id})' style="cursor: pointer;font-size: 18px;top:2px;margin-right: 8px;color: #2874C5"><edit/></el-icon>
+						<el-icon @click='treeItemDelete(state,scope.row.id)' style="cursor: pointer;font-size: 18px;top:2px;margin-right: 8px;color: #ED6F6F"><delete/></el-icon>
 					</template>
 				</el-table-column>
 			</el-table>
@@ -50,7 +50,7 @@
 export default { name: 'sysPermMenu' };
 </script>
 <script lang='ts' setup>
-import { Plus, Delete,Edit,CirclePlus } from '@element-plus/icons-vue';
+import {Search, Plus, Delete,Edit,CirclePlus } from '@element-plus/icons-vue';
 import { onMounted, reactive, ref } from 'vue';
 import { treeDelete,treeItemDelete,treeSelect,treeQuery } from '/@/comps/page/index';
 import DrawerEdit from './edit.vue';

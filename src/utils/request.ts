@@ -42,6 +42,10 @@ service.interceptors.response.use(
 					.catch(() => {});
 			}else if(res.code === 402){
 				ElMessage.error('账号密码错误');
+			}else if(res.code === 500){
+				ElMessage.error('服务器内部错误:'+res.message);
+			}else{
+				ElMessage.error('未知错误'+res.code+':'+res.message);
 			}
 			return Promise.reject(service.interceptors.response);
 		} else {

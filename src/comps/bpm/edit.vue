@@ -1,8 +1,8 @@
 <template>
-  <el-form class='zform' :model='form' label-width='180px'>
+  <el-form class='zform' :model='form' label-width='160px' label-position='left'>
     <el-row style='border-top: 1px solid #d2d2d2;'>
       <el-col :span='24'>
-        <el-form-item label='流程说明：'>
+        <el-form-item label='流程说明' style='margin-left: 10px;'>
           <div class='zinput'>
             这是一个测试的流程，目前功能还不完善
           </div>
@@ -11,12 +11,12 @@
     </el-row>
     <el-row>
       <el-col :span='24'>
-        <el-form-item label='紧急程度：'>
+        <el-form-item label='紧急程度' style='margin-left: 10px;'>
           <div class='zinput'>
             <el-radio-group v-model='form.opurg'>
-              <el-radio :label='1'><span style='color:red'>紧急</span></el-radio>
-              <el-radio :label='2'><span style='color:blue'>急</span></el-radio>
-              <el-radio :label='3'><span>一般</span></el-radio>
+              <el-radio label='1'><span style='color:red'>紧急</span></el-radio>
+              <el-radio label='2'><span style='color:blue'>急</span></el-radio>
+              <el-radio label='3'><span>一般</span></el-radio>
             </el-radio-group>
           </div>
         </el-form-item>
@@ -24,16 +24,16 @@
     </el-row>
     <el-row>
       <el-col :span='24'>
-        <el-form-item label='即将流向：'>
+        <el-form-item label='即将流向' style='margin-left: 10px;'>
           <div class='zinput'>
-            N5.部门负责人(张三)
+            {{ state.toExmen }}
           </div>
         </el-form-item>
       </el-col>
     </el-row>
     <el-row>
       <el-col :span='24'>
-        <el-form-item label='处理意见：'>
+        <el-form-item label='处理意见' style='margin-left: 10px;'>
           <div class='zinput' style='height: auto'>
             <el-input v-model='form.opnot' type='textarea' :rows='5' placeholder=' '/>
           </div>
@@ -42,7 +42,7 @@
     </el-row>
     <el-row>
       <el-col :span='24'>
-        <el-form-item label='附件：'>
+        <el-form-item label='附件' style='margin-left: 10px;'>
           <div class='zinput' style='height: auto'>
             <el-upload class='upload-demo' action='https://jsonplaceholder.typicode.com/posts/' :file-list='fileList'>
               <el-button type='primary'>上 传</el-button>
@@ -53,33 +53,39 @@
     </el-row>
     <el-row>
       <el-col :span='24'>
-        <div style='padding-left: 105px;border-right: 1px solid #ccc'>
-          <el-checkbox v-model="checked2">流程图</el-checkbox>
+        <div style='margin-left: 10px;border-right: 1px solid #ccc'>
+          <el-checkbox v-model='state.chtag' @change='toggleFlowChart'>流程图</el-checkbox>
         </div>
       </el-col>
     </el-row>
-    <el-row>
-      <el-col :span='24'>
-
+    <el-row v-show='state.chtag'>
+      <el-col :span='24' style='background-color: white;'>
+        <div style='padding: 10px;border-right: 1px solid #ccc;height:1000px'>
+          <Modeler2 />
+        </div>
       </el-col>
     </el-row>
   </el-form>
 </template>
 
 <script lang='ts' setup>
-import {onMounted, reactive, toRaw, toRefs} from 'vue';
+import {defineExpose, onMounted, reactive, toRaw, toRefs} from 'vue';
 import {useRoute} from 'vue-router';
 import request from "/@/utils/request";
+import Modeler2 from '/@/comps/Activiti/modeler2/index';
 import {BpmnStore} from "/@/bpmn/store";
 
 const route = useRoute();
 
 const state = reactive({
-  form: {},
+  form: {opurg:'3'} as any,
+  chtag: true,
   params: {
     path: '',
     query: '',
   },
+  toExmen: '',
+  tarno:'',
   xml: null as any,
 });
 
@@ -93,12 +99,15 @@ onMounted(async () => {
   if (params.value.query?.id) {
 
   }
-  await toggleFlowChart();
+  toggleFlowChart();
 });
+
 
 const getOperateInfo = () => {
   return toRaw(form.value);
 };
+
+
 defineExpose({getOperateInfo});
 
 
@@ -109,53 +118,43 @@ const props = defineProps({
 
 const toggleFlowChart = async () => {
   if (!state.xml) {
-    state.xml = await request({
+    const map= await request({
       url: '/bpm/proc/main/texml/' + props.temid,
       method: 'get',
-    });
-    console.log(state.xml)
+    }) as any;
+    form.value.tarno = map.tarno;
+    form.value.tarna = map.tarna;
+    form.value.tamen = map.tamen;
+    state.toExmen = map.tarno + '.' + map.tarna + '(' + map.tamen + ')';
+
+    state.xml=map.xml;
     await BpmnStore.importXML(state.xml);
-
-    // const bpmnViewer = new Viewer({
-    // 	container: '#modeler-container',
-    // }) as any;
-    // try {
-    // 	const { warnings } = await bpmnViewer.importXML(state.xml);
-    // 	// bpmnViewer.get("canvas").zoom("fit-viewport", "auto");
-    // 	console.log('rendered');
-    // } catch (err) {
-    // 	console.log('error rendering', err);
-    // }
-
     const elementRegistry = BpmnStore.getModeler().get('elementRegistry');
-    // const userTaskList = elementRegistry.filter(
-    // 	(item) => item.type === 'bpmn:Task'
-    // );
-    console.log(elementRegistry);
     const list1 = [] as any;
     elementRegistry.forEach((item: any) => {
-      if (item.id == 'L7' || item.id == 'N1' || item.id == 'N2') {
+      if (item.id == 'N1') {
         list1.push(item);
       }
     });
 
     const list2 = [] as any;
     elementRegistry.forEach((item: any) => {
-      if (item.id == 'N4') {
+      if (item.id == 'L1') {
         list2.push(item);
       }
     });
 
     const list3 = [] as any;
     elementRegistry.forEach((item: any) => {
-      if (item.id == 'L1' || item.id == 'L3') {
+      if (item.id == 'N2') {
         list3.push(item);
       }
     });
+
     let modeling = BpmnStore.modeler.get('modeling');
     modeling.setColor(list1, {fill: '#e4feef'});
-    modeling.setColor(list2, {fill: '#fed6d6'});
-    modeling.setColor(list3, {stroke: '#009900'});
+    modeling.setColor(list2, {stroke: '#009900'});
+    modeling.setColor(list3, {fill: '#fed6d6'});
   }
 };
 

@@ -139,7 +139,7 @@ export default { name: 'oaFlowTempEdit' };
 </script>
 <script lang='ts' setup>
 import { onMounted, reactive, ref, toRefs } from 'vue';
-import { editInit, pageSave, pageClose } from '/@/comps/page/edit';
+import { pageSave, pageClose } from '/@/comps/page/edit';
 import { useRoute } from 'vue-router';
 import Modeler from '/@/comps/Activiti/Modeler';
 import Panel from '/@/comps/Activiti/panel';

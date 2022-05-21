@@ -118,6 +118,16 @@ color: red;border: 1px dashed red;margin-top: 10px;margin-bottom: 10px;padding: 
   padding: 0 6px;
 }
 
+.el-button{
+  padding: 8px 12px;
+}
+
+.el-button i.el-icon{
+  margin-right: 0;
+}
+.el-button [class*=el-icon]+span{
+  margin-left: 6px;
+}
 
 //.el-menu-hover-bg-color, .el-menu-item.is-active, .el-sub-menu.is-active .el-sub-menu__title, .el-sub-menu:not(.is-opened):hover .el-sub-menu__title
 //{

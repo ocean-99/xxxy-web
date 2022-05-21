@@ -5,7 +5,7 @@
 				<el-tab-pane label='快捷选择' name='k1'>
 					<div>
 						<el-input v-model='state.receSearch' placeholder='请输入关键字查询' style='width: 200px;' @keyup.enter='onSearch' />
-						<el-button type='primary' style='margin-left: 10px' @click='onSearch'>查询</el-button>
+						<el-button type='primary' style='margin-left: 10px' @click='onSearch'>查 询</el-button>
 						<span style='color:green;margin-left: 10px'>快捷选择这里默认会展示最近使用过的流程模板，也可模糊搜索所有的模板</span>
 					</div>
 					<div style='margin-top: 5px;overflow: auto;height:353px;border: 1px solid #ccc'>
@@ -45,8 +45,8 @@
 		</div>
 		<template #footer>
       <span class='dialog-footer'>
-        <el-button type='primary' @click='closeModal'>确认</el-button>
-        <el-button @click='state.isShow = false'>取消</el-button>
+        <el-button type='primary' @click='closeModal'>确 认</el-button>
+        <el-button @click='state.isShow = false'>取 消</el-button>
         <el-button @click='clearAndcloseModal' style='margin-left: 20px'>清空选择</el-button>
       </span>
 		</template>

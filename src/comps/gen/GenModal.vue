@@ -10,8 +10,8 @@
 						</div>
 						<div class='tree-h-right'>
 							<el-dropdown @command='handleCommand'>
-								<el-button style='margin-left: 8px;width: 30px'>
-									<el-icon class='el-icon--right'>
+                <el-button style='margin-left: 8px;width: 34px'>
+									<el-icon class='el-icon--center'>
 										<more-filled />
 									</el-icon>
 								</el-button>
@@ -34,8 +34,8 @@
 
 		<template #footer>
       <span class='dialog-footer'>
-				<el-button type='primary' @click='handleConfirm'>确认</el-button>
-        <el-button @click='dialogVisible = false'>取消</el-button>
+				<el-button type='primary' @click='handleConfirm'>确 认</el-button>
+        <el-button @click='dialogVisible = false'>取 消</el-button>
         <el-button @click='clearAndcloseModal'>清空选择</el-button>
       </span>
 		</template>
@@ -148,7 +148,7 @@ const nodeClick = (node: any) => {
 }
 
 .tree-h-right {
-	width: 40px;
-	min-width: 40px;
+  width: 42px;
+  min-width: 42px;
 }
 </style>

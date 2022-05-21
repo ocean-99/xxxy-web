@@ -52,14 +52,14 @@
 							</el-form-item>
 						</el-col>
 						<el-col :span='12'>
-							<el-form-item label='路由地址：' prop='path' :rules="[{ required: true, message: '名称不能为空'}]">
+							<el-form-item label='路由地址：' prop='path' :rules="[{ required: form.type === 'M'||form.type === 'D', message: '路由地址不能为空'}]">
 								<el-input v-model='form.path'></el-input>
 							</el-form-item>
 						</el-col>
 					</el-row>
 					<el-row style='height: 48px'>
 						<el-col :span='12'>
-							<el-form-item label='权限标识：' prop='perm' :rules="[{ required: true, message: '名称不能为空'}]">
+							<el-form-item label='权限标识：'>
 								<el-select v-model='form.perm' placeholder='请选择权限标识' clearable filterable style='width: 100%'>
 									<el-option
 										v-for='item in state.apis'
@@ -71,7 +71,7 @@
 							</el-form-item>
 						</el-col>
 						<el-col :span='12' v-show="form.type === 'M'">
-							<el-form-item label='组件路径：' prop='comp' :rules="[{ required: true, message: '名称不能为空'}]">
+							<el-form-item label='组件路径：' prop='comp' :rules="[{ required: form.type === 'M', message: '组件路径不能为空'}]">
 								<el-input v-model='form.comp'></el-input>
 							</el-form-item>
 						</el-col>

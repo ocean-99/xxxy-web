@@ -8,8 +8,8 @@
 					</div>
 					<div class='tree-h-right'>
 						<el-dropdown @command='handleCommand'>
-							<el-button style='margin-left: 8px;width: 30px'>
-								<el-icon class='el-icon--right'>
+							<el-button style='margin-left: 8px;width: 34px'>
+								<el-icon class='el-icon--center'>
 									<MoreFilled />
 								</el-icon>
 							</el-button>
@@ -131,7 +131,7 @@ defineExpose({ init });
 }
 
 .tree-h-right {
-	width: 40px;
-	min-width: 40px;
+	width: 42px;
+	min-width: 42px;
 }
 </style>
