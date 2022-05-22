@@ -53,7 +53,7 @@
 						</el-row>
 					</el-tab-pane>
 
-					<el-tab-pane label='表单配置' name='tab2'>
+					<el-tab-pane label='审批内容' name='tab2'>
 						<el-row style='border-top: 1px solid #d2d2d2;'>
 							<el-col :span='24'>
 								<v-form-designer ref='vform' />

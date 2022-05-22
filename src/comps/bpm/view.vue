@@ -149,11 +149,11 @@
 import {onMounted, reactive, toRaw, toRefs} from 'vue';
 import request from '/@/utils/request';
 // import { useRoute } from 'vue-router';
-// import { Cookie, Session } from '/@/utils/storage';
 // import { store } from '/@/store';
 // const route = useRoute();
 import Modeler2 from '/@/comps/Activiti/modeler2/index';
 import {BpmnStore} from '/@/bpmn/store';
+import { ElMessage } from 'element-plus';
 // import Viewer from 'bpmn-js/lib/NavigatedViewer';
 // import Viewer from 'bpmn-js/lib/Modeler';
 // import Viewer from 'bpmn-js/lib/Viewer';
@@ -264,10 +264,15 @@ const bpmSubmit = async () => {
     // });
   } else if (form.value.opkey == 'refuse') {
     const refInfo = toRaw(form.value);
-    refInfo.tarno = refInfo.refno;
-    refInfo.tarna = refInfo.refna;
-    refInfo.exman = refInfo.reman;
-    emit('submit',form.value);
+		if(refInfo.refno){
+			refInfo.tarno = refInfo.refno;
+			refInfo.tarna = refInfo.refna;
+			refInfo.exman = refInfo.reman;
+			emit('submit',form.value);
+		}else{
+			ElMessage.warning("请选择驳回节点后再驳回");
+		}
+
     // await request({
     //   url: '/bpm/proc/main/hrefuse',
     //   method: 'post',

@@ -3,7 +3,7 @@ import { storeToRefs } from 'pinia';
 import pinia from '/@/stores/index';
 import { useUserInfo } from '/@/stores/userInfo';
 import { useRequestOldRoutes } from '/@/stores/requestOldRoutes';
-import { Cookie, Session } from '/@/utils/storage';
+import { Session } from '/@/utils/storage';
 import { NextLoading } from '/@/utils/loading';
 import { dynamicRoutes, notFoundAndNoPower } from '/@/router/route';
 import { formatTwoStageRoutes, formatFlatteningRoutes, router } from '/@/router/index';
@@ -39,8 +39,7 @@ export async function initBackEndControlRoutes() {
 	// 界面 loading 动画开始执行
 	if (window.nextLoading === undefined) NextLoading.start();
 	// 无 token 停止执行下一步
-	// if (!Session.get('token')) return false;
-	if (!Cookie.get('token')) return false;
+	if (!Session.get('token')) return false;
 	// 触发初始化用户信息 pinia
 	useUserInfo().setUserInfos();
 	// 获取路由菜单数据
@@ -148,17 +147,13 @@ export function dynamicImport(dynamicViewsModules: Record<string, Function>, com
 	const matchKeys = keys.filter((key) => {
 		// const k = key.replace(/..\/views|../, '');
 		const k = key.replace(/..\/pages|../, '');
-		console.log(k);
-		console.log(`${component}`);
 		return k.startsWith(`${component}`) || k.startsWith(`/${component}`);
 	});
-	console.log(matchKeys);
 	if (matchKeys?.length === 1) {
 		const matchKey = matchKeys[0];
 		return dynamicViewsModules[matchKey];
 	}
 	if (matchKeys?.length > 1) {
-		// return dynamicViewsModules[matchKeys[1]];
 		return false;
 	}
 }

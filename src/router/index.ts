@@ -6,7 +6,7 @@ import { storeToRefs } from 'pinia';
 import { useKeepALiveNames } from '/@/stores/keepAliveNames';
 import { useRoutesList } from '/@/stores/routesList';
 import { useThemeConfig } from '/@/stores/themeConfig';
-import { Cookie, Session } from '/@/utils/storage';
+import { Session } from '/@/utils/storage';
 import { staticRoutes } from '/@/router/route';
 import { initFrontEndControlRoutes } from '/@/router/frontEnd';
 import { initBackEndControlRoutes } from '/@/router/backEnd';
@@ -93,7 +93,6 @@ router.beforeEach(async (to, from, next) => {
 	NProgress.configure({ showSpinner: false });
 	if (to.meta.title) NProgress.start();
 	const token = Session.get('token');
-	// const token = Cookie.get('token');
 	if (to.path === '/login' && !token) {
 		next();
 		NProgress.done();

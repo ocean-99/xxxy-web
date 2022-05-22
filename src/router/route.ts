@@ -48,7 +48,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 			},
 			{
 				path: '/sys',
-				name: 'Sys',
+				name: 'sys',
 				component: () => import('/@/layout/routerView/parent.vue'),
 				redirect: '/sys/org/user',
 				meta: {
@@ -64,7 +64,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 				children: [
 					{
 						path: '/sys/org',
-						name: 'SysOrg',
+						name: 'sysOrg',
 						component: () => import('/@/layout/routerView/parent.vue'),
 						redirect: '/sys/org/user',
 						meta: {
@@ -264,7 +264,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 					},
 					{
 						path: '/sys/job',
-						name: 'SysJob',
+						name: 'sysJob',
 						component: () => import('/@/layout/routerView/parent.vue'),
 						redirect: '/sys/job/main',
 						meta: {
@@ -326,7 +326,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 					},
 					{
 						path: '/sys/log',
-						name: 'SysLog',
+						name: 'sysLog',
 						component: () => import('/@/layout/routerView/parent.vue'),
 						redirect: '/sys/log/login',
 						meta: {
@@ -374,8 +374,8 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 				],
 			},
 			{
-				path: '/oa/flow',
-				name: 'OaFlow',
+				path: '/oa',
+				name: 'oa',
 				component: () => import('/@/layout/routerView/parent.vue'),
 				redirect: '/oa/flow/main',
 				meta: {
@@ -498,7 +498,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 			},
 			{
 				path: '/sys/todo',
-				name: 'SysTodo',
+				name: 'sysTodo',
 				component: () => import('/@/layout/routerView/parent.vue'),
 				redirect: '/sys/todo/main',
 				meta: {
@@ -545,8 +545,8 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 				],
 			},
 			{
-				path: '/demo',
-				name: 'Demo',
+				path: '/sa',
+				name: 'sa',
 				component: () => import('/@/layout/routerView/parent.vue'),
 				redirect: '/sa/cust/main',
 				meta: {

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { ElMessage, ElMessageBox } from 'element-plus';
-import { Cookie,Session } from '/@/utils/storage';
+import { Session } from '/@/utils/storage';
 
 // 配置新建一个 axios 实例
 const service = axios.create({
@@ -13,11 +13,8 @@ const service = axios.create({
 service.interceptors.request.use(
 	(config) => {
 		// 在发送请求之前做些什么 token
-		// if (Session.get('token')) {
-		// 	(<any>config.headers).common['Authorization'] = `${Session.get('token')}`;
-		// }
-		if (Cookie.get('token')) {
-			(<any>config.headers).common['Authorization'] = `${Cookie.get('token')}`;
+		if (Session.get('token')) {
+			(<any>config.headers).common['Authorization'] = `${Session.get('token')}`;
 		}
 		return config;
 	},

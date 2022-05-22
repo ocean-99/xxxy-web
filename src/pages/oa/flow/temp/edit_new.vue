@@ -53,20 +53,10 @@
 						</el-row>
 					</el-tab-pane>
 
-					<el-tab-pane label='表单配置' name='tab2'>
-						<el-row style='border-top: 1px solid #d2d2d2;'>
-							<el-col :span='24'>
-								<v-form-designer ref='vform' />
-							</el-col>
-						</el-row>
-					</el-tab-pane>
 
 					<el-tab-pane label='流程配置' name='tab3'>
 						<div style='width: 100%;height: 720px'>
-							<!--							<Modeler2 @bpmnMounted='bpmnMounted' />-->
-							<Modeler @bpmnMounted='bpmnMounted' />
-							<Panel />
-							<BpmnActions />
+							<MyBpmn/>
 						</div>
 					</el-tab-pane>
 
@@ -141,12 +131,9 @@ export default { name: 'oaFlowTempEdit' };
 import { onMounted, reactive, ref, toRefs } from 'vue';
 import { pageSave, pageClose } from '/@/comps/page/edit';
 import { useRoute } from 'vue-router';
-import Modeler from '/@/comps/Activiti/Modeler';
-import Panel from '/@/comps/Activiti/panel';
-import BpmnActions from '/@/comps/Activiti/bpmn-actions';
-import { BpmnStore } from '/@/bpmn/store';
 import { NextLoading } from '/@/utils/loading';
 import CateModal from '/@/comps/gen/GenModal.vue';
+import MyBpmn from '/@/comps/bpmn/MyBpmn.vue';
 import { FormInstance } from 'element-plus';
 import request from '/@/utils/request';
 
@@ -179,28 +166,13 @@ onMounted(async () => {
 		}
 		state.form.avtag = true;
 	}
-
-	if (form.value.id) {
-		await BpmnStore.importXML(form.value.prxml);
-	} else {
-		await BpmnStore.importXML(defxml);
-	}
-
 });
 
 
 async function save(state: any) {
-
-	const bpmn = await BpmnStore.getXML();
-	// console.log(typeof (bpmn.xml));
-	// xFlow.value.getData();
-	form.value.vform = JSON.stringify(vform.value.getFormJson());
-	form.value.prxml = bpmn.xml;
-	console.log(bpmn.xml);
 	await pageSave(formRef.value, state);
 }
 
-const vform = ref();
 
 
 const defxml = '<?xml version="1.0" encoding="UTF-8"?>\n' +

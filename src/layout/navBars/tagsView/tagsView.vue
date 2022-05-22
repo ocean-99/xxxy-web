@@ -18,9 +18,7 @@
 				>
 					<i class="iconfont icon-webicon318 layout-navbars-tagsview-ul-li-iconfont" v-if="isActive(v)"></i>
 					<SvgIcon :name="v.meta.icon" v-if="!isActive(v) && getThemeConfig.isTagsviewIcon" class="pr5" />
-					<span>
-						{{ v.meta.isHide===false ? $t(v.meta.title) : v.query ? (v.query.tagsViewName?v.query.tagsViewName:$t(v.meta.title)) : (v.params.tagsViewName?v.params.tagsViewName:$t(v.meta.title)) }}
-					</span>
+					<span>{{ setTagsViewNameI18n(v) }}</span>
 					<template v-if="isActive(v)">
 						<SvgIcon
 							name="ele-RefreshRight"
@@ -69,6 +67,7 @@ import { storeToRefs } from 'pinia';
 import pinia from '/@/stores/index';
 import { useTagsViewRoutes } from '/@/stores/tagsViewRoutes';
 import { useThemeConfig } from '/@/stores/themeConfig';
+import { useKeepALiveNames } from '/@/stores/keepAliveNames';
 import { Session } from '/@/utils/storage';
 import { isObjectValueEqual } from '/@/utils/arrayOperation';
 import other from '/@/utils/other';
@@ -82,9 +81,9 @@ interface TagsViewState {
 		x: string | number;
 		y: string | number;
 	};
+	sortable: any;
 	tagsRefsIndex: number;
 	tagsViewList: any[];
-	sortable: any;
 	tagsViewRoutesList: any[];
 }
 interface RouteParams {
@@ -117,15 +116,16 @@ export default defineComponent({
 		const storesTagsViewRoutes = useTagsViewRoutes();
 		const { themeConfig } = storeToRefs(storesThemeConfig);
 		const { tagsViewRoutes } = storeToRefs(storesTagsViewRoutes);
+		const storesKeepALiveNames = useKeepALiveNames();
 		const route = useRoute();
 		const router = useRouter();
 		const state = reactive<TagsViewState>({
 			routeActive: '',
 			routePath: route.path,
 			dropdown: { x: '', y: '' },
+			sortable: '',
 			tagsRefsIndex: 0,
 			tagsViewList: [],
-			sortable: '',
 			tagsViewRoutesList: [],
 		});
 		// 动态设置 tagsView 风格样式
@@ -135,6 +135,12 @@ export default defineComponent({
 		// 获取布局配置信息
 		const getThemeConfig = computed(() => {
 			return themeConfig.value;
+		});
+		// 设置 自定义 tagsView 名称、 自定义 tagsView 名称国际化
+		const setTagsViewNameI18n = computed(() => {
+			return (v: any) => {
+				return other.setTagsViewNameI18n(v);
+			};
 		});
 		// 设置 tagsView 高亮
 		const isActive = (v: RouteParams) => {
@@ -172,6 +178,7 @@ export default defineComponent({
 					if (v.meta.isAffix && !v.meta.isHide) {
 						v.url = setTagsViewHighlight(v);
 						state.tagsViewList.push({ ...v });
+						storesKeepALiveNames.addCachedView(v);
 					}
 				});
 				await addTagsView(route.path, route);
@@ -198,6 +205,7 @@ export default defineComponent({
 				if (findItem.meta.isLink && !findItem.meta.isIframe) return false;
 				to.meta.isDynamic ? (findItem.params = to.params) : (findItem.query = to.query);
 				findItem.url = setTagsViewHighlight(findItem);
+				await storesKeepALiveNames.addCachedView(findItem);
 				state.tagsViewList.push({ ...findItem });
 				addBrowserSetSession(state.tagsViewList);
 			}
@@ -243,19 +251,26 @@ export default defineComponent({
 				if (to && to.meta.isDynamic) item.params = to?.params ? to?.params : route.params;
 				else item.query = to?.query ? to?.query : route.query;
 				item.url = setTagsViewHighlight(item);
+				await storesKeepALiveNames.addCachedView(item);
 				await state.tagsViewList.push({ ...item });
 				await addBrowserSetSession(state.tagsViewList);
 			});
 		};
 		// 2、刷新当前 tagsView：
-		const refreshCurrentTagsView = (fullPath: string) => {
-			proxy.mittBus.emit('onTagsViewRefreshRouterView', fullPath);
+		const refreshCurrentTagsView = async (fullPath: string) => {
+			const item = state.tagsViewList.find((v: any) => (getThemeConfig.value.isShareTagsView ? v.path === fullPath : v.url === fullPath));
+			if (item != null) {
+				await storesKeepALiveNames.delCachedView(item);
+				proxy.mittBus.emit('onTagsViewRefreshRouterView', fullPath);
+				if (item.meta.isKeepAlive) storesKeepALiveNames.addCachedView(item);
+			}
 		};
 		// 3、关闭当前 tagsView：如果是设置了固定的（isAffix），不可以关闭
 		const closeCurrentTagsView = (path: string) => {
 			state.tagsViewList.map((v: any, k: number, arr: any) => {
 				if (!v.meta.isAffix) {
 					if (getThemeConfig.value.isShareTagsView ? v.path === path : v.url === path) {
+						storesKeepALiveNames.delCachedView(v);
 						state.tagsViewList.splice(k, 1);
 						setTimeout(() => {
 							if (state.tagsViewList.length === k && getThemeConfig.value.isShareTagsView ? state.routePath === path : state.routeActive === path) {
@@ -294,6 +309,7 @@ export default defineComponent({
 				Session.get('tagsViewList').map((v: any) => {
 					if (v.meta.isAffix && !v.meta.isHide) {
 						v.url = setTagsViewHighlight(v);
+						storesKeepALiveNames.delOthersCachedViews(v);
 						state.tagsViewList.push({ ...v });
 					}
 				});
@@ -304,6 +320,7 @@ export default defineComponent({
 		// 5、关闭全部 tagsView：如果是设置了固定的（isAffix），不进行关闭
 		const closeAllTagsView = () => {
 			if (Session.get('tagsViewList')) {
+				storesKeepALiveNames.delAllCachedViews();
 				state.tagsViewList = [];
 				Session.get('tagsViewList').map((v: any) => {
 					if (v.meta.isAffix && !v.meta.isHide) {
@@ -527,11 +544,11 @@ export default defineComponent({
 		// 页面卸载时
 		onUnmounted(() => {
 			// 取消非本页面调用监听
-			proxy.mittBus.off('onCurrentContextmenuClick');
+			proxy.mittBus.off('onCurrentContextmenuClick', () => {});
 			// 取消监听布局配置界面开启/关闭拖拽
-			proxy.mittBus.off('openOrCloseSortable');
+			proxy.mittBus.off('openOrCloseSortable', () => {});
 			// 取消监听布局配置开启 TagsView 共用
-			proxy.mittBus.off('openShareTagsView');
+			proxy.mittBus.off('openShareTagsView', () => {});
 			// 取消窗口 resize 监听
 			window.removeEventListener('resize', onSortableResize);
 		});
@@ -541,11 +558,11 @@ export default defineComponent({
 		});
 		// 页面加载时
 		onMounted(() => {
-			// 初始化 vuex 中的 tagsViewRoutes 列表
+			// 初始化 pinia 中的 tagsViewRoutes 列表
 			getTagsViewRoutes();
 			initSortable();
 		});
-		// 路由更新时
+		// 路由更新时（组件内生命钩子）
 		onBeforeRouteUpdate(async (to) => {
 			state.routeActive = setTagsViewHighlight(to);
 			state.routePath = to.meta.isDynamic ? to.meta.isDynamicPath : to.path;
@@ -563,24 +580,6 @@ export default defineComponent({
 				deep: true,
 			}
 		);
-		// 监听路由的变化，用于设置不同的 tagsViewName
-		watch(
-			() => route,
-			(route: any) => {
-				setTimeout(() => {
-					// 区分 "动态路由" 与 "普通路由"
-					state.tagsViewList.forEach((tagsItem: any) => {
-						const path = route.meta.isDynamic ? route.meta.isDynamicPath : route.path;
-						const tagsName = route.meta.isDynamic ? route.params.tagsViewName : route.query.tagsViewName;
-						if (path === tagsItem.path && tagsName) tagsItem.meta.title = tagsName;
-					});
-				});
-			},
-			{
-				deep: true,
-				immediate: true,
-			}
-		);
 		return {
 			isActive,
 			onContextmenu,
@@ -592,6 +591,7 @@ export default defineComponent({
 			onHandleScroll,
 			getThemeConfig,
 			setTagsStyle,
+			setTagsViewNameI18n,
 			refreshCurrentTagsView,
 			closeCurrentTagsView,
 			onCurrentContextmenuClick,

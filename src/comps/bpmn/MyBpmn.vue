@@ -1,209 +1,172 @@
 <template>
+	<div class="containers">
+		<div class="canvas" ref="canvasRef" style='height: 1000px;'></div>
+		<OrgModal ref='orgModal' @close='closeOrgModal'/>
+	</div>
 
-	<el-card class='box-card' :body-style="{padding:'2px 8px'}" shadow='never'>
-		<template #header>
-			<el-row>
-				<el-col :span='10'>
-					<div style='line-height: 32px'>流程模板</div>
-				</el-col>
-				<el-col :span='14' style='text-align: right'>
-					<el-button type='success' @click='save(state)' plain>保 存</el-button>
-					<el-button type='info' plain>复 制</el-button>
-					<el-button type='info' @click='pageClose' plain>关 闭</el-button>
-				</el-col>
-			</el-row>
-		</template>
-		<CateModal url='oa/flow/cate/tree' ref='cateModal' @close='cateChoose' />
-		<div style='margin-top: 8px;margin-bottom: 8px'>
-			<el-form ref='formRef' :model='form' label-width='140px'>
-				<el-tabs type='card' v-model='activeName'>
-					<el-tab-pane label='基本信息' name='tab1' class='zform'>
-						<el-row style='border-top: 1px solid #d2d2d2;'>
-							<el-col :span='12'>
-								<el-form-item label='模板名称：' prop='name' :rules="[{ required: true, message: '名称不能为空'}]">
-									<div class='zinput'>
-										<el-input v-model='form.name'></el-input>
-									</div>
-								</el-form-item>
-							</el-col>
-							<el-col :span='12'>
-								<el-form-item label='所属分类：' prop='cate' :rules="[{ required: true, message: '分类不能为空'}]">
-									<div class='zinput'>
-										<el-input :value='form.cate?.name' :suffix-icon='Search' :readonly='true' @click='openCateModal'></el-input>
-									</div>
-								</el-form-item>
-							</el-col>
-						</el-row>
-						<el-row>
-							<el-col :span='12'>
-								<el-form-item label='排序号：'>
-									<div class='zinput'>
-										<el-input-number v-model='form.ornum' controls-position='right' style='width: 100%' />
-									</div>
-								</el-form-item>
-							</el-col>
-							<el-col :span='12'>
-								<el-form-item label='是否可用：'>
-									<div class='zinput'>
-										<el-switch v-model='form.avtag'>
-										</el-switch>
-									</div>
-								</el-form-item>
-							</el-col>
-						</el-row>
-					</el-tab-pane>
-
-					<el-tab-pane label='表单配置' name='tab2'>
-						<el-row style='border-top: 1px solid #d2d2d2;'>
-							<el-col :span='24'>
-								<v-form-designer ref='vform' />
-							</el-col>
-						</el-row>
-					</el-tab-pane>
-
-					<el-tab-pane label='流程配置' name='tab3'>
-						<div style='width: 100%;height: 720px'>
-							<!--							<Modeler2 @bpmnMounted='bpmnMounted' />-->
-							<Modeler @bpmnMounted='bpmnMounted' />
-							<Panel />
-							<BpmnActions />
-						</div>
-					</el-tab-pane>
-
-					<el-tab-pane label='权限配置' name='tab4' class='zform'>
-						<el-row style='border-top: 1px solid #d2d2d2;'>
-							<el-col :span='24'>
-								<el-form-item label='备注：'>
-									<div class='zinput' style='height: auto'>
-										<el-input style="font-family: 'Courier New', Helvetica, Arial, sans-serif; font-size:16px"
-															type='textarea' :rows='4'
-															v-model='form.notes'>
-										</el-input>
-									</div>
-								</el-form-item>
-							</el-col>
-						</el-row>
-					</el-tab-pane>
-
-					<el-tab-pane label='其他信息' name='tab9' class='zform'>
-						<el-row style='border-top: 1px solid #d2d2d2;'>
-							<el-col :span='24'>
-								<el-form-item label='备注：'>
-									<div class='zinput' style='height: auto'>
-										<el-input style="font-family: 'Courier New', Helvetica, Arial, sans-serif; font-size:16px"
-															type='textarea' :rows='4'
-															v-model='form.notes'>
-										</el-input>
-									</div>
-								</el-form-item>
-							</el-col>
-						</el-row>
-						<el-row v-show='form.crtim'>
-							<el-col :span='6'>
-								<el-form-item label='创建人：'>
-									<div class='zinput'>
-										{{ form.crman ? form.crman.name : '' }}
-									</div>
-								</el-form-item>
-							</el-col>
-							<el-col :span='6'>
-								<el-form-item label='创建时间：'>
-									<div class='zinput'>
-										{{ form.crtim }}
-									</div>
-								</el-form-item>
-							</el-col>
-							<el-col :span='6'>
-								<el-form-item label='更新人：'>
-									<div class='zinput'>
-										{{ form.upman ? form.upman.name : '' }}
-									</div>
-								</el-form-item>
-							</el-col>
-							<el-col :span='6'>
-								<el-form-item label='更新时间：'>
-									<div class='zinput'>
-										{{ form.uptim }}
-									</div>
-								</el-form-item>
-							</el-col>
-						</el-row>
-					</el-tab-pane>
-				</el-tabs>
-			</el-form>
-		</div>
-	</el-card>
 </template>
-<script lang='ts'>
-export default { name: 'oaFlowTempEdit' };
-</script>
-<script lang='ts' setup>
-import { onMounted, reactive, ref, toRefs } from 'vue';
-import { pageSave, pageClose } from '/@/comps/page/edit';
-import { useRoute } from 'vue-router';
-import Modeler from '/@/comps/Activiti/Modeler';
-import Panel from '/@/comps/Activiti/panel';
-import BpmnActions from '/@/comps/Activiti/bpmn-actions';
-import { BpmnStore } from '/@/bpmn/store';
-import { NextLoading } from '/@/utils/loading';
-import CateModal from '/@/comps/gen/GenModal.vue';
-import { FormInstance } from 'element-plus';
-import request from '/@/utils/request';
 
-const route = useRoute();
-const formRef = ref<FormInstance>();
-const activeName = ref('tab1');
+<script lang='ts' setup>
+import BpmnModeler from 'bpmn-js/lib/Modeler'
+import { onMounted, reactive, ref, toRefs } from 'vue';
+import 'bpmn-js/dist/assets/diagram-js.css' // 左边工具栏以及编辑节点的样式
+import 'bpmn-js/dist/assets/bpmn-font/css/bpmn.css'
+import 'bpmn-js/dist/assets/bpmn-font/css/bpmn-codes.css'
+import 'bpmn-js/dist/assets/bpmn-font/css/bpmn-embedded.css'
+import OrgModal from '/@/comps/sys/OrgModal.vue';
+
+
+
+const orgModal = ref();
+
+const openOrgModal = () => {
+	orgModal.value.openModal({
+		opener: 'opman',
+		orgType: 8,
+	});
+};
+
+const canvasRef = ref();
 
 const state = reactive({
-	url: '/oa/flow/temp',
-	params: { path: '', query: {} as any},
-	form: { avtag: true } as any,
+	data: [] as any,
+	bpmnModeler:{} as any,
 });
 
-const { form } = toRefs(state);
+const { bpmnModeler } = toRefs(state);
 
-
-onMounted(async () => {
-	NextLoading.done();
-	state.params = <any>route;
-	let id = state.params.query?.id;
-	if (id) {
-		state.form = await request({
-			url: state.url + '/one/' + id,
-			method: 'get',
-		});
-	} else {
-		let catid = state.params.query?.catid;
-		if (catid) {
-			state.form.cate = { id: catid, name: state.params.query?.catna };
+onMounted( () => {
+	bpmnModeler.value=new BpmnModeler({
+		container: canvasRef.value
+	})
+	bpmnModeler.value.importXML(xmlStr, (err:any) => {
+		if (err) {
+			console.error(err)
+		} else {
+			console.log("ok")
 		}
-		state.form.avtag = true;
-	}
-
-	if (form.value.id) {
-		await BpmnStore.importXML(form.value.prxml);
-	} else {
-		await BpmnStore.importXML(defxml);
-	}
-
+	})
+	// addModelerListener();
+	addEventBusListener();
 });
 
 
-async function save(state: any) {
-
-	const bpmn = await BpmnStore.getXML();
-	// console.log(typeof (bpmn.xml));
-	// xFlow.value.getData();
-	form.value.vform = JSON.stringify(vform.value.getFormJson());
-	form.value.prxml = bpmn.xml;
-	console.log(bpmn.xml);
-	await pageSave(formRef.value, state);
+const addModelerListener=()=> {
+	// const bpmnjs = this.bpmnModeler
+	// const that = this
+	// 这里我是用了一个forEach给modeler上添加要绑定的事件
+	const events = ['shape.added', 'shape.move.end', 'shape.removed', 'connect.end','connect.move']
+	events.forEach(function(event) {
+		bpmnModeler.value.on(event, e => {
+			console.log(event, e)
+			var elementRegistry =  bpmnModeler.value.get('elementRegistry')
+			var shape = e.element ? elementRegistry.get(e.element.id) : e.shape
+			console.log(shape)
+		})
+	})
 }
 
-const vform = ref();
+let lastClickTime=0;
+let currNode={};
+
+const addEventBusListener=()=> {
+	const eventBus = bpmnModeler.value.get('eventBus') // 需要使用eventBus
+	const eventTypes = ['element.click'] // 需要监听的事件集合
+	eventTypes.forEach(function(eventType) {
+		eventBus.on(eventType, function(e) {
+			if (!e || e.element.type == 'bpmn:Process') return
+
+			var elementRegistry = bpmnModeler.value.get('elementRegistry')
+			var shape = elementRegistry.get(e.element.id) // 传递id进去
+
+			if(new Date().getTime()-lastClickTime<=500){
+				openOrgModal();
+				currNode=shape;
+			}
+			lastClickTime=new Date().getTime();
+			// console.log(e)
+
+			console.log(shape.businessObject.id);
+			shape.businessObject.name='李四';
+			bpmnModeler.value.get('modeling').updateProperties(shape,{
+				name: '我是修改后的Task名称'
+			})
+
+			// this.getModeling().updateProperties(this.getShape(), {
+			// 	[modelName]: multiple ? [newElement] : newElement,
+			// });
+			console.log(shape) // {Shape}
+			// console.log(e.element) // {Shape}
+			// console.log(JSON.stringify(shape)===JSON.stringify(e.element)) // true
+
+		})
+	})
+}
 
 
-const defxml = '<?xml version="1.0" encoding="UTF-8"?>\n' +
+
+
+const closeOrgModal=()=>{
+
+	bpmnModeler.value.get('modeling').updateProperties(currNode,{
+		name: '我是双击修改后的Task名称'
+	})
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const xmlStr = '<?xml version="1.0" encoding="UTF-8"?>\n' +
 	'<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:activiti="http://activiti.org/bpmn" id="sample-diagram" targetNamespace="http://activiti.org/bpmn" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd">\n' +
 	'  <bpmn2:process id="Process_1" name="1" isExecutable="true">\n' +
 	'    <bpmn2:startEvent id="N1" name="开始节点">\n' +
@@ -374,22 +337,25 @@ const defxml = '<?xml version="1.0" encoding="UTF-8"?>\n' +
 	'</bpmn2:definitions>\n';
 
 
-//region -----分类弹框逻辑-----
-const cateModal = ref();
-const openCateModal = () => {
-	cateModal.value.openModal();
-};
-const cateChoose = (node: any) => {
-	if (node == null) {
-		form.value.cate = null;
-	} else {
-		form.value.cate = { id: node.id, name: node.name };
-	}
-};
-//endregion
 
 </script>
 
 <style scoped>
+.containers{
+	position: absolute;
+	background-color: #ffffff;
+	width: 100%;
+	height: 100%;
+}
+.canvas{
+	width: 100%;
+	height: 100%;
+}
+.panel{
+	position: absolute;
+	right: 0;
+	top: 0;
+	width: 300px;
+}
 
 </style>
