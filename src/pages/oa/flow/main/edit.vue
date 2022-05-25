@@ -1,55 +1,65 @@
 <template>
-  <div :style='{ height: `calc(100vh)`}' class='zpage'>
-	<el-card class='box-card' :body-style="{padding:'2px 8px'}" shadow='never'>
-		<template #header>
-			<el-row>
-				<el-col :span='10'>
-					<div style='line-height: 32px'>流程实例</div>
-				</el-col>
-				<el-col :span='14' style='text-align: right'>
-					<el-button type='success' @click='save' plain>保 存</el-button>
-					<el-button type='info' @click='pageClose()' plain>关 闭</el-button>
-				</el-col>
-			</el-row>
-		</template>
-		<div style='margin-top: 8px;margin-bottom: 8px'>
-			<el-form ref="formRef" :model='form' label-width='140px'>
-				<el-tabs type='card' v-model='activeName'>
-					<el-tab-pane label='基本信息' name='tab1'>
-						<el-row>
-							<el-col :span='24'>
-								<el-form-item label='主题：' prop='name' :rules="[{ required: true, message: '主题不能为空'}]">
-									<div class='zinput'>
-										<el-input v-model='form.name'></el-input>
-									</div>
-								</el-form-item>
-							</el-col>
-						</el-row>
-					</el-tab-pane>
-					<el-tab-pane label='审批内容' name='tab2'>
-						<v-form-render v-if='state.vformShow' :form-json='formJson' :form-data='formData' :option-data='optionData' ref='vFormRef' />
-						<!--						<el-button type='primary' @click='submitForm'>Submit</el-button>-->
-					</el-tab-pane>
-					<el-tab-pane label='流程处理' name='tab3' class='zform'>
-						<BpmEdit v-if="form.protd" :temid='form.protd' ref='bpmRef' />
-					</el-tab-pane>
-					<el-tab-pane label='权限信息' name='tab4' class='zform'>
-<!--						<img :src='qx' style='width:100%' />-->
-					</el-tab-pane>
-				</el-tabs>
-			</el-form>
-		</div>
-	</el-card>
-  </div>
+	<div :style='{ height: `calc(100vh)`}' class='zpage'>
+		<el-card class='box-card' :body-style="{padding:'2px 8px'}" shadow='never'>
+			<template #header>
+				<el-row>
+					<el-col :span='10'>
+						<div style='line-height: 32px'>流程实例</div>
+					</el-col>
+					<el-col :span='14' style='text-align: right'>
+						<el-button type='success' @click='save' plain>提 交</el-button>
+						<el-button type='info' @click='pageClose()' plain>关 闭</el-button>
+					</el-col>
+				</el-row>
+			</template>
+			<div style='margin-top: 8px;margin-bottom: 8px'>
+				<el-form ref='formRef' :model='form' label-width='140px'>
+					<el-tabs type='card' v-model='activeName'>
+						<el-tab-pane label='基本信息' class='zform' name='tab1'>
+							<el-row style='border-top: 1px solid #d2d2d2;'>
+								<el-col :span='24'>
+									<el-form-item label='主题：' prop='name' :rules="[{ required: true, message: '主题不能为空'}]">
+										<div class='zinput'>
+											<el-input v-model='form.name'></el-input>
+										</div>
+									</el-form-item>
+								</el-col>
+							</el-row>
+							<el-row>
+								<el-col :span='24'>
+									<el-form-item label='备注：'>
+										<div class='zinput' style='height: auto'>
+											<el-input v-model='form.notes'  type='textarea' :rows='4' ></el-input>
+										</div>
+									</el-form-item>
+								</el-col>
+							</el-row>
+						</el-tab-pane>
+						<el-tab-pane label='审批内容' name='tab2'>
+							<v-form-render v-if='state.vformShow' :form-json='formJson' :form-data='formData' :option-data='optionData' ref='vFormRef'>
+							</v-form-render>
+							<div style='color: green'>注：此页面内容通过在线表单设计器渲染</div>
+						</el-tab-pane>
+						<el-tab-pane label='流程处理' name='tab3' class='zform'>
+							<BpmEdit v-if='form.protd' :temid='form.protd' ref='bpmRef' />
+						</el-tab-pane>
+						<el-tab-pane label='权限信息' name='tab4' class='zform'>
+							<!--						<img :src='qx' style='width:100%' />-->
+						</el-tab-pane>
+					</el-tabs>
+				</el-form>
+			</div>
+		</el-card>
+	</div>
 </template>
 <script lang='ts' setup>
-import {  onMounted, reactive, ref, toRefs } from 'vue';
+import { onMounted, reactive, ref, toRefs } from 'vue';
 import { pageSave, pageClose } from '/@/comps/page/edit';
 import { useRoute } from 'vue-router';
 import BpmEdit from '/@/comps/bpm/edit.vue';
 import request from '/@/utils/request';
-import {NextLoading} from "/@/utils/loading";
-import {FormInstance} from "element-plus";
+import { NextLoading } from '/@/utils/loading';
+import { ElMessage, FormInstance } from 'element-plus';
 
 const route = useRoute();
 const formRef = ref<FormInstance>();
@@ -63,14 +73,14 @@ const state = reactive({
 	params: { path: '', query: '' },
 	form: { avtag: true } as any,
 	formJson: {} as any,
+	formData: {} as any,
 	vformShow: false,
 });
 
-const { form, formJson } = toRefs(state);
-
+const { form, formJson, formData } = toRefs(state);
 
 onMounted(() => {
-  NextLoading.done();
+	NextLoading.done();
 	editInitx(state, route);
 });
 
@@ -92,30 +102,37 @@ const editInitx = async (state: any, route: any) => {
 		form.value.temid = temid;
 		form.value.avtag = true;
 		formJson.value = JSON.parse(data.vform);
+		formData.value = {};
+		// formData.value={};
+		// formJson.value ={"widgetList":[{"key":47519,"type":"input","icon":"text-field","formItemFlag":true,"options":{"name":"input65266","label":"input","labelAlign":"","type":"text","defaultValue":"","placeholder":"","columnWidth":"200px","size":"","labelWidth":null,"labelHidden":false,"readonly":false,"disabled":false,"hidden":false,"clearable":true,"showPassword":false,"required":false,"requiredHint":"","validation":"","validationHint":"","customClass":[],"labelIconClass":null,"labelIconPosition":"rear","labelTooltip":null,"minLength":null,"maxLength":null,"showWordLimit":false,"prefixIcon":"","suffixIcon":"","appendButton":false,"appendButtonDisabled":false,"buttonIcon":"custom-search","onCreated":"","onMounted":"","onInput":"","onChange":"","onFocus":"","onBlur":"","onValidate":""},"id":"input65266"}],"formConfig":{"modelName":"formData","refName":"vForm","rulesName":"rules","labelWidth":80,"labelPosition":"left","size":"","labelAlign":"label-left-align","cssCode":"","customClass":"","functions":"","layoutType":"PC","jsonVersion":3,"onFormCreated":"","onFormMounted":"","onFormDataChange":""}};
 		state.vformShow = true;
 
 	}
 };
 
-const save = async () => {
-	form.value.zbpm = bpmRef.value.getOperateInfo();
-	await pageSave(formRef.value,state);
-};
-
-/* 注意：formJson是指表单设计器导出的json，此处演示的formJson只是一个空白表单json！！ */
-// const formJson = reactive({"widgetList":[],"formConfig":{"modelName":"formData","refName":"vForm","rulesName":"rules",
-// 		"labelWidth":80,"labelPosition":"left","size":"","labelAlign":"label-left-align","cssCode":"","customClass":"",
-// 		"functions":"","layoutType":"PC","jsonVersion":3,"onFormCreated":"","onFormMounted":"","onFormDataChange":"",
-// 		"onFormValidate":""}}) as any;
-const formData = reactive({});
+// const formData = reactive({})
 const optionData = reactive({});
-const vFormRef = ref(null);
+const vFormRef = ref(null) as any;
+
+const save = async () => {
+	vFormRef.value.getFormData().then(async formData => {
+		// Form Validation OK
+		form.value.zform = JSON.stringify(formData);
+		form.value.zbpm = bpmRef.value.getOperateInfo();
+		// alert(JSON.stringify(formData));
+		await pageSave(formRef.value, state);
+	}).catch(error => {
+		ElMessage.error(error);
+	});
+};
 
 
 </script>
 
 <style scoped>
 .zpage {
-  overflow: auto;
+	overflow: auto;
 }
+
+
 </style>

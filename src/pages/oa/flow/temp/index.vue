@@ -19,11 +19,11 @@
 					</el-row>
 					<div v-show='state.moreParams' class='more-params'>
 						<el-form :inline='true' label-width='100px'>
-							<el-form-item label='备注'>
-								<el-input v-model='state.form.notes' placeholder='输入备注' />
+							<el-form-item label='更多参数1'>
+								<el-input v-model='state.form.notes' placeholder='更多参数1' />
 							</el-form-item>
-							<el-form-item label='xxxxx'>
-								<el-input v-model='state.form.xx' />
+							<el-form-item label='更多参数2'>
+								<el-input v-model='state.form.xx' placeholder='更多参数2' />
 							</el-form-item>
 							<el-form-item />
 						</el-form>

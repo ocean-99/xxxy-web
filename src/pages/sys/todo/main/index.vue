@@ -18,7 +18,7 @@
 								border stripe @selection-change='listSelect($event,state)'>
 				<el-table-column type='selection' width='55' align='center' />
 				<el-table-column label='序号' type='index' width='55' align='center' />
-				<el-table-column label='待办' width='180'>
+				<el-table-column label='待办主题' width='250'>
 					<template #default='scope'>
 						<span style='cursor:pointer;color: #3e9ece' @click='pageView(scope.row.link)'>{{ scope.row.name }}</span>
 					</template>

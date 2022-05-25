@@ -4,11 +4,12 @@
 			<template #header>
 				<el-row>
 					<el-col :span='14'>
-						<el-input v-model='state.form.name' placeholder='输入名称回车查询' clearable class="list-search" @keyup.enter='listQuery(state)' />
-						<el-button type='primary' @click='listQuery(state)' :icon="Search" plain>查询</el-button>
+						<el-input v-model='state.form.name' placeholder='输入名称回车查询' clearable class='list-search' @keyup.enter='listQuery(state)' />
+						<el-button type='primary' @click='listQuery(state)' :icon='Search' plain>查询</el-button>
 					</el-col>
 					<el-col :span='10' style='text-align: right'>
-						<el-button type='danger' :icon='Delete' :disabled='state.multiple' @click='listDelete(state)' plain>删除</el-button>
+						<el-button type='warning' :icon='Delete' @click='listDelete(state)' plain>删除</el-button>
+						<el-button type='danger' :icon='Delete' @click='listDeleteAll()' plain>清空</el-button>
 					</el-col>
 				</el-row>
 			</template>
@@ -35,14 +36,17 @@
 				layout='total, sizes, prev, pager, next, jumper'
 			/>
 		</el-card>
-		<DrawerView ref='drawer' @listQuery='listQuery(state)'/>
+		<DrawerView ref='drawer' @listQuery='listQuery(state)' />
 	</div>
 </template>
 <script lang='ts' setup>
-import { Search,Delete } from '@element-plus/icons-vue';
+import { Search, Delete } from '@element-plus/icons-vue';
 import { onMounted, reactive, ref } from 'vue';
 import { listQuery, listDelete, listSelect } from '/@/comps/page/index';
 import DrawerView from './view.vue';
+import request from '/@/utils/request';
+import { ElMessage, ElMessageBox } from 'element-plus';
+
 const drawer = ref();
 
 const state = reactive({
@@ -54,6 +58,19 @@ onMounted(() => {
 	listQuery(state);
 });
 
+const listDeleteAll = async () => {
+	ElMessageBox.confirm('确认要清空日志吗?', '警告', {
+		confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning',
+	}).then(async () => {
+		await request({
+			url: state.url + '/all',
+			method: 'delete',
+		});
+		await listQuery(state);
+	}).catch(() =>
+		ElMessage.info('已取消清空',
+		));
+};
 
 </script>
 

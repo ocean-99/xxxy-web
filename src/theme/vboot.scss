@@ -102,12 +102,21 @@
   border: 1px dashed #409EFF;padding-top:10px;margin-top: 10px;
 }
 
+.more-params .el-form-item--default{
+  margin-bottom: 10px;
+}
+
 .layout-container .layout-scrollbar{
   padding: 6px;
 }
 
 .znotes{
 color: red;border: 1px dashed red;margin-top: 10px;margin-bottom: 10px;padding: 5px
+}
+
+.render-form .field-wrapper{
+  margin-top: 4px !important;
+  margin-bottom: 16px !important;
 }
 
 .main-header{

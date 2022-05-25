@@ -51,12 +51,17 @@
 								</el-form-item>
 							</el-col>
 						</el-row>
+<!--						<el-row>-->
+<!--							<el-col :span='24'>-->
+<!--								<v-form-designer v-if='state.vformShow'  ref='vFormRef'/>-->
+<!--							</el-col>-->
+<!--						</el-row>-->
 					</el-tab-pane>
 
 					<el-tab-pane label='表单配置' name='tab2'>
 						<el-row style='border-top: 1px solid #d2d2d2;'>
 							<el-col :span='24'>
-								<v-form-designer ref='vform' />
+								<v-form-designer v-if='state.vformShow'  ref='vFormRef' />
 							</el-col>
 						</el-row>
 					</el-tab-pane>
@@ -158,10 +163,12 @@ const state = reactive({
 	url: '/oa/flow/temp',
 	params: { path: '', query: {} as any},
 	form: { avtag: true } as any,
+	vformShow:true
 });
 
 const { form } = toRefs(state);
 
+const vFormRef = ref(null);
 
 onMounted(async () => {
 	NextLoading.done();
@@ -172,12 +179,17 @@ onMounted(async () => {
 			url: state.url + '/one/' + id,
 			method: 'get',
 		});
+		vFormRef.value.setFormJson(JSON.parse(state.form.vform));
+		// state.vformShow=true;
+		// console.log(vFormRef.value);
+		// console.log(state.form.vform);
 	} else {
 		let catid = state.params.query?.catid;
 		if (catid) {
 			state.form.cate = { id: catid, name: state.params.query?.catna };
 		}
 		state.form.avtag = true;
+		vFormRef.value.setFormJson({"widgetList":[],"formConfig":{"modelName":"formData","refName":"vForm","rulesName":"rules","labelWidth":80,"labelPosition":"left","size":"","labelAlign":"label-left-align","cssCode":"","customClass":"","functions":"","layoutType":"PC","jsonVersion":3,"onFormCreated":"","onFormMounted":"","onFormDataChange":"","onFormValidate":""}});
 	}
 
 	if (form.value.id) {
@@ -194,13 +206,13 @@ async function save(state: any) {
 	const bpmn = await BpmnStore.getXML();
 	// console.log(typeof (bpmn.xml));
 	// xFlow.value.getData();
-	form.value.vform = JSON.stringify(vform.value.getFormJson());
+	form.value.vform = JSON.stringify(vFormRef.value.getFormJson());
 	form.value.prxml = bpmn.xml;
 	console.log(bpmn.xml);
 	await pageSave(formRef.value, state);
 }
 
-const vform = ref();
+
 
 
 const defxml = '<?xml version="1.0" encoding="UTF-8"?>\n' +
