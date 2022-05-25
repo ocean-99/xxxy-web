@@ -673,7 +673,7 @@ export const staticRoutes: Array<RouteRecordRaw> = [
 		name: 'pageOfte',
 		component: () => import('/@/pages/oa/flow/temp/edit.vue'),
 		meta: {
-			title: 'OA模板设置',
+			title: '流程模板配置',
 		},
 	},
 	{
@@ -681,7 +681,7 @@ export const staticRoutes: Array<RouteRecordRaw> = [
 		name: 'pageOfme',
 		component: () => import('/@/pages/oa/flow/main/edit.vue'),
 		meta: {
-			title: '流程编辑',
+			title: '流程实例编辑',
 		},
 	},
 	{
@@ -689,7 +689,7 @@ export const staticRoutes: Array<RouteRecordRaw> = [
 		name: 'pageOfmv',
 		component: () => import('/@/pages/oa/flow/main/view.vue'),
 		meta: {
-			title: '流程查看',
+			title: '流程实例查看',
 		},
 	},
 ];
