@@ -63,6 +63,8 @@ service.interceptors.response.use(
 				.catch(() => {});
 		} else if (error.response.status == 403) {
 			ElMessage.error('权限不足');
+		} else if (error.response.status == 500) {
+			ElMessage.error('服务器内部错误');
 		} else {
 			if (error.response.data) ElMessage.error(error.response.statusText);
 			else ElMessage.error('接口路径找不到');
