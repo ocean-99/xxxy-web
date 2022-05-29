@@ -3,7 +3,7 @@
     <template #header>
       <el-row>
         <el-col :span='10'>
-          <div style='line-height: 32px'>客户维护</div>
+          <div style='line-height: 32px'>接口信息</div>
         </el-col>
         <el-col :span='14' style='text-align: right'>
           <el-button type='success' @click='tabSave(formRef,state,proxy,route)' plain>保 存</el-button>
@@ -17,21 +17,14 @@
           <el-tab-pane label='基本信息' name='tab1'>
             <el-row style='border-top: 1px solid #d2d2d2;'>
               <el-col :span='24'>
-                <el-form-item label='客户名称：' prop='name' :rules="[{ required: true, message: '名称不能为空'}]">
+                <el-form-item label='接口名称：'>
                   <div class='zinput'>
-                    <el-input v-model='form.name'></el-input>
+                    {{ form.id }}
                   </div>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
-              <el-col :span='12'>
-                <el-form-item label='客户地址：'>
-                  <div class='zinput'>
-                    <el-input v-model='form.addre'></el-input>
-                  </div>
-                </el-form-item>
-              </el-col>
               <el-col :span='12'>
                 <el-form-item label='是否可用：'>
                   <div class='zinput'>
@@ -41,41 +34,26 @@
                 </el-form-item>
               </el-col>
             </el-row>
-          </el-tab-pane>
-          <el-tab-pane label='其他信息' name='tab3'>
-            <el-row style='border-top: 1px solid #d2d2d2;'>
+            <el-row>
               <el-col :span='24'>
                 <el-form-item label='备注：'>
                   <div class='zinput' style='height: auto'>
-                    <el-input type='textarea' :rows='4' v-model='form.notes'>
+                    <el-input style="font-family: 'Courier New', Helvetica, Arial, sans-serif; font-size:16px"
+                              type='textarea' :rows='4' v-model='form.notes'>
                     </el-input>
                   </div>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row v-show='form.crtim'>
-              <el-col :span='6'>
-                <el-form-item label='创建人：'>
-                  <div class='zinput'>
-                    {{ form.crman ? form.crman.name : '' }}
-                  </div>
-                </el-form-item>
-              </el-col>
-              <el-col :span='6'>
+              <el-col :span='12'>
                 <el-form-item label='创建时间：'>
                   <div class='zinput'>
                     {{ form.crtim }}
                   </div>
                 </el-form-item>
               </el-col>
-              <el-col :span='6'>
-                <el-form-item label='更新人：'>
-                  <div class='zinput'>
-                    {{ form.upman ? form.upman.name : '' }}
-                  </div>
-                </el-form-item>
-              </el-col>
-              <el-col :span='6'>
+              <el-col :span='12'>
                 <el-form-item label='更新时间：'>
                   <div class='zinput'>
                     {{ form.uptim }}
@@ -90,10 +68,10 @@
   </el-card>
 </template>
 <script lang='ts'>
-export default {name: 'SaCustMainEdit'};
+export default {name: 'SysApiMainEdit'};
 </script>
 <script lang='ts' setup>
-import {getCurrentInstance, onMounted, reactive, ref,  toRefs} from 'vue';
+import {getCurrentInstance, onMounted, reactive, ref, toRefs} from 'vue';
 import {editInit, tabSave, tabClose} from '/@/comps/page/edit';
 import {useRoute} from 'vue-router';
 import {FormInstance} from "element-plus";
@@ -104,13 +82,12 @@ const {proxy} = getCurrentInstance() as any;
 const activeName = ref('tab1');
 
 const state = reactive({
-  url: '/sa/cust/main',
-  params: {path: '', query: ''}, checks: [] as any,
-  form: {avtag: true, items: [] as any} as any,
+  url: '/sys/api/main',
+  params: {path: '', query: ''},
+  form: {avtag: true, menus: []} as any,
 });
 
 const {form} = toRefs(state);
-
 
 onMounted(async () => {
   await editInit(state, route);

@@ -101,7 +101,7 @@
   </el-card>
 </template>
 <script lang="ts">
-export default {name: 'oaFlowCateEdit'}
+export default {name: 'OaFlowCateEdit'}
 </script>
 <script lang='ts' setup>
 import {Search} from '@element-plus/icons-vue';

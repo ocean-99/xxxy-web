@@ -11,7 +11,7 @@ export function useMenuApi() {
 		getMenuAdmin: (params?: object) => {
 			return request({
 				// url: 'https://gitee.com/lyt-top/vue-next-admin-images/raw/master/menu/adminMenu.json',
-				url: 'getUserInfo',
+				url: 'getMenuList',
 				method: 'get',
 				params,
 			});
@@ -19,7 +19,7 @@ export function useMenuApi() {
 		getMenuTest: (params?: object) => {
 			return request({
 				// url: 'https://gitee.com/lyt-top/vue-next-admin-images/raw/master/menu/testMenu.json',
-				url: 'getUserInfo',
+				url: 'getMenuList',
 				method: 'get',
 				params,
 			});

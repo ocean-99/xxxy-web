@@ -71,6 +71,7 @@ export const useThemeConfig = defineStore('themeConfig', {
 			 */
 			// 是否开启侧边栏 Logo
 			isShowLogo: false,
+			// isShowLogo: true,
 			// 初始化变量，用于 el-scrollbar 的高度更新，请勿删除
 			isShowLogoChange: false,
 			// 是否开启 Breadcrumb，强制经典、横向布局不显示
@@ -123,8 +124,8 @@ export const useThemeConfig = defineStore('themeConfig', {
 			 * 后端控制路由
 			 */
 			// 是否开启后端控制路由
-			isRequestRoutes: false,
-			// isRequestRoutes: true,
+			// isRequestRoutes: false,
+			isRequestRoutes: true,
 
 			/**
 			 * 全局网站标题 / 副标题

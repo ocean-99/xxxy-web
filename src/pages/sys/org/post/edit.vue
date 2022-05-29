@@ -95,7 +95,7 @@
   </el-card>
 </template>
 <script lang='ts'>
-export default {name: 'sysOrgPost'};
+export default {name: 'SysOrgPostEdit'};
 </script>
 <script lang='ts' setup>
 import {Search} from '@element-plus/icons-vue';

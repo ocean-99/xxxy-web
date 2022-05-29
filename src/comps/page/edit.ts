@@ -20,7 +20,7 @@ export const tabSave = async (formRef: any, state: any, proxy: any, route: any) 
         return false;
     }
 
-    if (!state.form.crtim) {
+    if (!state.form.id) {
         await request({
             url: state.url,
             method: 'post',

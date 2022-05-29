@@ -209,8 +209,9 @@ onMounted(async () => {
 const bpmInit = async () => {
   // form.value.proid = props.proid;
   const result: any = await request({
-    url: '/bpm/proc/main/zbpm/' + props.proid,
+    url: '/bpm/proc/main/zbpm',
     method: 'get',
+    params:{proid:props.proid}
   });
   audits.value = result.audits;
   state.hiHamen = result.hiHamen;
@@ -242,6 +243,7 @@ const bpmInit = async () => {
   // audits.value = await request({
   // 	url: '/bpm/audit/main/list/' + props.proid,
   // 	method: 'get',
+  //
   // });
 
   // form.value = await request({
@@ -287,8 +289,9 @@ const bpmSubmit = async () => {
 const toggleFlowChart = async () => {
   if (!state.xml) {
     const map = await request({
-      url: '/bpm/proc/main/xml/' + props.proid,
+      url: '/bpm/proc/main/xml',
       method: 'get',
+      params:{proid: props.proid}
     }) as any;
     state.xml = map.xml;
     state.nodeList = map.nodeList;

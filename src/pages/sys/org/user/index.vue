@@ -59,7 +59,7 @@
 	</Wrap>
 </template>
 <script lang='ts'>
-export default { name: 'sysOrgUser' };
+export default { name: 'SysOrgUser' };
 </script>
 <script lang='ts' setup>
 import { Search, Plus, Delete, ArrowDown, ArrowUp } from '@element-plus/icons-vue';

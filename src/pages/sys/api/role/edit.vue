@@ -109,7 +109,7 @@
   </el-card>
 </template>
 <script lang='ts'>
-export default {name: 'sysPermRole'};
+export default {name: 'SysApiRoleEdit'};
 </script>
 <script lang='ts' setup>
 import {computed, getCurrentInstance, onMounted, reactive, ref, toRaw, toRefs} from 'vue';
@@ -125,9 +125,9 @@ const {proxy} = getCurrentInstance() as any;
 const activeName = ref('tab1');
 
 const state = reactive({
-  url: '/sys/perm/role',
+  url: '/sys/api/role',
   params: {path: '', query: ''},
-  form: {avtag: true,menus:[]} as any,
+  form: {avtag: true,apis:[]} as any,
   treeData: [] as any,
 });
 
@@ -158,11 +158,11 @@ const collapseAll = () => {
 const treeRef = ref();
 const save = async () => {
   const nodes = treeRef.value.getCheckedNodes();
-  const menus = [];
+  const apis = [];
   for (const node of nodes) {
-    menus.push({id: node.id, name: node.name});
+    apis.push({id: node.id, name: node.name});
   }
-  form.value.menus = menus;
+  form.value.apis = apis;
   await tabSave(formRef.value, state, proxy, route);
 };
 //endregion
@@ -196,12 +196,12 @@ const orgsName = computed(() => {
 
 //region -----b 菜单分配逻辑-----
 async function treeDataInit() {
-  treeData.value = await request({url: '/sys/perm/menu/tree', method: 'get'});
-  const menus = [];
-  for (const menu of form.value.menus) {
-    menus.push(menu.id);
+  treeData.value = await request({url: '/sys/api/main/tree', method: 'get'});
+  const apis = [];
+  for (const api of form.value.apis) {
+    apis.push(api.id);
   }
-  treeRef.value.setCheckedKeys(menus);
+  treeRef.value.setCheckedKeys(apis);
 }
 
 //endregion

@@ -7,16 +7,16 @@ import request from '/@/utils/request';
  */
 export function useLoginApi() {
 	return {
-		signIn: (params: object) => {
+		login: (params: object) => {
 			return request({
-				url: '/user/signIn',
+				url: '/login',
 				method: 'post',
 				data: params,
 			});
 		},
-		signOut: (params: object) => {
+		logout: (params: object) => {
 			return request({
-				url: '/user/signOut',
+				url: '/logout',
 				method: 'post',
 				data: params,
 			});

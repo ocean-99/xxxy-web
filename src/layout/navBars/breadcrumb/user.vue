@@ -1,5 +1,15 @@
 <template>
 	<div class="layout-navbars-breadcrumb-user pr15" :style="{ flex: layoutUserFlexNum }">
+    <div>
+      <el-select v-show="userInfos.portals.length>1" v-model='userInfos.dePortal' placeholder='门户名称' @change="portalChange" style='margin-right: 10px;width: 140px'>
+        <el-option
+            v-for='item in userInfos.portals'
+            :key='item.id'
+            :label='item.name'
+            :value='item.id'
+        />
+      </el-select>
+    </div>
 		<el-dropdown :show-timeout="70" :hide-timeout="50" trigger="click" @command="onComponentSizeChange">
 			<div class="layout-navbars-breadcrumb-user-icon">
 				<i class="iconfont icon-ziti" :title="$t('message.user.title0')"></i>
@@ -78,7 +88,7 @@
 
 <script lang="ts">
 import { ref, getCurrentInstance, computed, reactive, toRefs, onMounted, defineComponent } from 'vue';
-import { useRouter } from 'vue-router';
+import {useRoute, useRouter} from 'vue-router';
 import { ElMessageBox, ElMessage } from 'element-plus';
 import screenfull from 'screenfull';
 import { useI18n } from 'vue-i18n';
@@ -89,6 +99,8 @@ import other from '/@/utils/other';
 import { Session, Local } from '/@/utils/storage';
 import UserNews from '/@/layout/navBars/breadcrumb/userNews.vue';
 import Search from '/@/layout/navBars/breadcrumb/search.vue';
+import {initBackEndControlRoutesByPortal} from "/@/router/backEnd";
+import request from "/@/utils/request";
 
 export default defineComponent({
 	name: 'layoutBreadcrumbUser',
@@ -97,6 +109,7 @@ export default defineComponent({
 		const { t } = useI18n();
 		const { proxy } = <any>getCurrentInstance();
 		const router = useRouter();
+    const route = useRoute();
 		const stores = useUserInfo();
 		const storesThemeConfig = useThemeConfig();
 		const { userInfos } = storeToRefs(stores);
@@ -234,6 +247,16 @@ export default defineComponent({
 				initComponentSize();
 			}
 		});
+    const portalChange=async (porid:any)=>{
+     const res= await request({
+        url: 'getMenuList',
+        method: 'get',
+        params:{porid:porid}
+      }) as any;
+      await initBackEndControlRoutesByPortal(res);
+      proxy.mittBus.emit('onCurrentContextmenuClick', Object.assign({}, { contextMenuClickId: 3, ...route }));
+      location.href='#/home';
+    }
 		return {
 			userInfos,
 			onLayoutSetingClick,
@@ -242,6 +265,7 @@ export default defineComponent({
 			onSearchClick,
 			onComponentSizeChange,
 			onLanguageChange,
+      portalChange,
 			searchRef,
 			layoutUserFlexNum,
 			...toRefs(state),

@@ -42,7 +42,7 @@
 	</div>
 </template>
 <script lang='ts'>
-export default { name: 'sysJobMain' };
+export default { name: 'SysLogLogin' };
 </script>
 <script lang='ts' setup>
 import { Search,Delete } from '@element-plus/icons-vue';

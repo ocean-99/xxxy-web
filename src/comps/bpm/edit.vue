@@ -119,8 +119,9 @@ const props = defineProps({
 const toggleFlowChart = async () => {
   if (!state.xml) {
     const map= await request({
-      url: '/bpm/proc/main/texml/' + props.temid,
+      url: '/bpm/proc/main/texml',
       method: 'get',
+      params:{temid:props.temid}
     }) as any;
     form.value.tarno = map.tarno;
     form.value.tarna = map.tarna;

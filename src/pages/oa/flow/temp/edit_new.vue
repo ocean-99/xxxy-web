@@ -125,7 +125,7 @@
 	</el-card>
 </template>
 <script lang='ts'>
-export default { name: 'oaFlowTempEdit' };
+export default { name: 'OaFlowTempEditNew' };
 </script>
 <script lang='ts' setup>
 import { onMounted, reactive, ref, toRefs } from 'vue';

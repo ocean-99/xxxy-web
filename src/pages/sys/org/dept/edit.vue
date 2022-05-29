@@ -96,7 +96,7 @@
 	</el-card>
 </template>
 <script lang='ts'>
-export default { name: 'sysOrgDept' };
+export default { name: 'SysOrgDeptEdit' };
 </script>
 <script lang='ts' setup>
 import { Search } from '@element-plus/icons-vue';

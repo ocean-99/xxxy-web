@@ -9,7 +9,7 @@
 					</el-col>
 					<el-col :span='10' style='text-align: right'>
 						<el-button type='success' :icon='Plus' @click='tabAdd(state.url)' plain>新增</el-button>
-						<el-button type='warning' :icon='Refresh' @click='refreshPerm()' plain>刷新权限</el-button>
+						<el-button type='warning' :icon='Refresh' @click='flushPerm()' plain>刷新权限</el-button>
 						<el-button type='danger' :icon='Delete' :disabled='state.multiple' @click='listDelete(state)' plain>删除</el-button>
 					</el-col>
 				</el-row>
@@ -39,7 +39,7 @@
 	</div>
 </template>
 <script lang='ts'>
-export default { name: 'sysPermRole' };
+export default { name: 'SysApiRole' };
 </script>
 <script lang='ts' setup>
 import { Search,Plus, Delete,Refresh } from '@element-plus/icons-vue';
@@ -49,7 +49,7 @@ import request from '/@/utils/request';
 import { ElMessage } from 'element-plus';
 
 const state = reactive({
-	url: '/sys/perm/role', loading: true, ids: [],
+	url: '/sys/api/role', loading: true, ids: [],
 	form: {}, single: true, multiple: true, list: [], total: 0,
 });
 
@@ -57,9 +57,9 @@ onMounted(() => {
 	listQuery(state);
 });
 
-const refreshPerm=async ()=>{
+const flushPerm=async ()=>{
 	await request({
-		url: state.url+'/reperm',
+		url: state.url+'/flush',
 		method: 'post'
 	});
 	ElMessage.success("刷新成功");

@@ -33,8 +33,8 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 		children: [
 			{
 				path: '/home',
-				name: 'home',
-				component: () => import('/@/views/home/index.vue'),
+				name: 'Home',
+				component: () => import('/@/pages/home/index.vue'),
 				meta: {
 					title: 'message.router.home',
 					isLink: '',
@@ -48,7 +48,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 			},
 			{
 				path: '/sys',
-				name: 'sys',
+				name: 'Sys',
 				component: () => import('/@/layout/routerView/parent.vue'),
 				redirect: '/sys/org/user',
 				meta: {
@@ -64,7 +64,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 				children: [
 					{
 						path: '/sys/org',
-						name: 'sysOrg',
+						name: 'SysOrg',
 						component: () => import('/@/layout/routerView/parent.vue'),
 						redirect: '/sys/org/user',
 						meta: {
@@ -80,7 +80,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 						children: [
 							{
 								path: '/sys/org/dept',
-								name: 'sysOrgDept',
+								name: 'SysOrgDept',
 								component: () => import('/@/pages/sys/org/dept/index.vue'),
 								meta: {
 									title: '部门管理',
@@ -95,7 +95,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 							},
 							{
 								path: '/sys/org/dept/edit',
-								name: 'sysOrgDeptEdit',
+								name: 'SysOrgDeptEdit',
 								component: () => import('/@/pages/sys/org/dept/edit.vue'),
 								meta: {
 									title: '部门编辑',
@@ -110,7 +110,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 							},
 							{
 								path: '/sys/org/user',
-								name: 'sysOrgUser',
+								name: 'SysOrgUser',
 								component: () => import('/@/pages/sys/org/user/index.vue'),
 								meta: {
 									title: '用户管理',
@@ -125,7 +125,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 							},
 							{
 								path: '/sys/org/user/edit',
-								name: 'sysOrgUserEdit',
+								name: 'SysOrgUserEdit',
 								component: () => import('/@/pages/sys/org/user/edit.vue'),
 								meta: {
 									title: '用户编辑',
@@ -140,7 +140,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 							},
 							{
 								path: '/sys/org/post',
-								name: 'sysOrgPost',
+								name: 'SysOrgPost',
 								component: () => import('/@/pages/sys/org/post/index.vue'),
 								meta: {
 									title: '岗位管理',
@@ -155,7 +155,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 							},
 							{
 								path: '/sys/org/post/edit',
-								name: 'sysOrgPostEdit',
+								name: 'SysOrgPostEdit',
 								component: () => import('/@/pages/sys/org/post/edit.vue'),
 								meta: {
 									title: '岗位编辑',
@@ -170,7 +170,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 							},
 							{
 								path: '/sys/org/group',
-								name: 'sysOrgGroup',
+								name: 'SysOrgGroup',
 								component: () => import('/@/pages/sys/org/group/index.vue'),
 								meta: {
 									title: '群组管理',
@@ -185,7 +185,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 							},
 							{
 								path: '/sys/org/group/edit',
-								name: 'sysOrgGroupEdit',
+								name: 'SysOrgGroupEdit',
 								component: () => import('/@/pages/sys/org/group/edit.vue'),
 								meta: {
 									title: '群组编辑',
@@ -201,12 +201,12 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 						],
 					},
 					{
-						path: '/sys/perm',
-						name: 'sysPerm',
+						path: '/sys/api',
+						name: 'SysApi',
 						component: () => import('/@/layout/routerView/parent.vue'),
-						redirect: '/sys/perm/menu',
+						redirect: '/sys/api/main',
 						meta: {
-							title: '权限管理',
+							title: '接口管理',
 							isLink: '',
 							isHide: false,
 							isKeepAlive: true,
@@ -217,11 +217,11 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 						},
 						children: [
 							{
-								path: '/sys/perm/menu',
-								name: 'sysPermMenu',
-								component: () => import('/@/pages/sys/perm/menu/index.vue'),
+								path: '/sys/api/main',
+								name: 'SysApiMain',
+								component: () => import('/@/pages/sys/api/main/index.vue'),
 								meta: {
-									title: '菜单管理',
+									title: '接口清单',
 									isLink: '',
 									isHide: false,
 									isKeepAlive: true,
@@ -232,11 +232,26 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 								},
 							},
 							{
-								path: '/sys/perm/role',
-								name: 'sysPermRole',
-								component: () => import('/@/pages/sys/perm/role/index.vue'),
+								path: '/sys/api/main/edit',
+								name: 'SysApiMainEdit',
+								component: () => import('/@/pages/sys/api/main/edit.vue'),
 								meta: {
-									title: '角色管理',
+									title: '接口编辑',
+									isLink: '',
+									isHide: true,
+									isKeepAlive: true,
+									isAffix: false,
+									isIframe: false,
+									roles: ['admin'],
+									icon: 'ele-Tickets',
+								},
+							},
+							{
+								path: '/sys/api/role',
+								name: 'SysApiRole',
+								component: () => import('/@/pages/sys/api/role/index.vue'),
+								meta: {
+									title: '接口角色',
 									isLink: '',
 									isHide: false,
 									isKeepAlive: true,
@@ -247,9 +262,9 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 								},
 							},
 							{
-								path: '/sys/perm/role/edit',
-								name: 'sysPermRoleEdit',
-								component: () => import('/@/pages/sys/perm/role/edit.vue'),
+								path: '/sys/api/role/edit',
+								name: 'SysApiRoleEdit',
+								component: () => import('/@/pages/sys/api/role/edit.vue'),
 								meta: {
 									title: '角色编辑',
 									isLink: '',
@@ -263,8 +278,116 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 						],
 					},
 					{
+						path: '/sys/portal',
+						name: 'SysPortal',
+						component: () => import('/@/layout/routerView/parent.vue'),
+						redirect: '/sys/portal/main',
+						meta: {
+							title: '门户管理',
+							isLink: '',
+							isHide: false,
+							isKeepAlive: true,
+							isAffix: false,
+							isIframe: false,
+							roles: ['admin'],
+							icon: 'ele-Notebook',
+						},
+						children: [
+							{
+								path: '/sys/portal/main',
+								name: 'SysPortalMain',
+								component: () => import('/@/pages/sys/portal/main/index.vue'),
+								meta: {
+									title: '门户列表',
+									isLink: '',
+									isHide: false,
+									isKeepAlive: true,
+									isAffix: false,
+									isIframe: false,
+									roles: ['admin'],
+									icon: 'ele-Tickets',
+								},
+							},
+							{
+								path: '/sys/portal/main/edit',
+								name: 'SysPortalMainEdit',
+								component: () => import('/@/pages/sys/portal/main/edit.vue'),
+								meta: {
+									title: '门户编辑',
+									isLink: '',
+									isHide: true,
+									isKeepAlive: true,
+									isAffix: false,
+									isIframe: false,
+									roles: ['admin'],
+									icon: 'ele-Tickets',
+								},
+							},
+							{
+								path: '/sys/portal/menu',
+								name: 'SysPortalMenu',
+								component: () => import('/@/pages/sys/portal/menu/index.vue'),
+								meta: {
+									title: '门户菜单',
+									isLink: '',
+									isHide: false,
+									isKeepAlive: true,
+									isAffix: false,
+									isIframe: false,
+									roles: ['admin'],
+									icon: 'ele-Tickets',
+								},
+							},
+							{
+								path: '/sys/portal/menu/edit',
+								name: 'SysPortalMenuEdit',
+								component: () => import('/@/pages/sys/portal/menu/edit.vue'),
+								meta: {
+									title: '菜单编辑',
+									isLink: '',
+									isHide: true,
+									isKeepAlive: true,
+									isAffix: false,
+									isIframe: false,
+									roles: ['admin'],
+									icon: 'ele-Tickets',
+								},
+							},
+							{
+								path: '/sys/portal/role',
+								name: 'SysPortalRole',
+								component: () => import('/@/pages/sys/portal/role/index.vue'),
+								meta: {
+									title: '门户角色',
+									isLink: '',
+									isHide: false,
+									isKeepAlive: true,
+									isAffix: false,
+									isIframe: false,
+									roles: ['admin'],
+									icon: 'ele-Tickets',
+								},
+							},
+							{
+								path: '/sys/portal/role/edit',
+								name: 'SysPortalRoleEdit',
+								component: () => import('/@/pages/sys/portal/role/edit.vue'),
+								meta: {
+									title: '角色编辑',
+									isLink: '',
+									isHide: true,
+									isKeepAlive: true,
+									isAffix: false,
+									isIframe: false,
+									roles: ['admin'],
+									icon: 'ele-Tickets',
+								},
+							},
+						],
+					},
+					{
 						path: '/sys/job',
-						name: 'sysJob',
+						name: 'SysJob',
 						component: () => import('/@/layout/routerView/parent.vue'),
 						redirect: '/sys/job/main',
 						meta: {
@@ -280,7 +403,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 						children: [
 							{
 								path: '/sys/job/main',
-								name: 'sysJobMain',
+								name: 'SysJobMain',
 								component: () => import('/@/pages/sys/job/main/index.vue'),
 								meta: {
 									title: '任务清单',
@@ -295,7 +418,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 							},
 							{
 								path: '/sys/job/main/edit',
-								name: 'sysJobMainEdit',
+								name: 'SysJobMainEdit',
 								component: () => import('/@/pages/sys/job/main/edit.vue'),
 								meta: {
 									title: '任务编辑',
@@ -309,7 +432,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 							},
 							{
 								path: '/sys/job/log',
-								name: 'sysJobLog',
+								name: 'SysJobLog',
 								component: () => import('/@/pages/sys/job/log/index.vue'),
 								meta: {
 									title: '任务日志',
@@ -326,7 +449,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 					},
 					{
 						path: '/sys/log',
-						name: 'sysLog',
+						name: 'SysLog',
 						component: () => import('/@/layout/routerView/parent.vue'),
 						redirect: '/sys/log/login',
 						meta: {
@@ -342,7 +465,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 						children: [
 							{
 								path: '/sys/log/login',
-								name: 'sysLogLogin',
+								name: 'SysLogLogin',
 								component: () => import('/@/pages/sys/log/login/index.vue'),
 								meta: {
 									title: '登录日志',
@@ -357,7 +480,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 							},
 							// {
 							// 	path: '/sys/log/login/view',
-							// 	name: 'sysLogLoginView',
+							// 	name: 'SysLogLoginView',
 							// 	component: () => import('/@/pages/sys/log/login/view.vue'),
 							// 	meta: {
 							// 		title: '登录日志查看',
@@ -375,7 +498,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 			},
 			{
 				path: '/oa',
-				name: 'oa',
+				name: 'Oa',
 				component: () => import('/@/layout/routerView/parent.vue'),
 				redirect: '/oa/flow/main',
 				meta: {
@@ -391,7 +514,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 				children: [
 					{
 						path: '/oa/flow/cate',
-						name: 'oaFlowCate',
+						name: 'OaFlowCate',
 						component: () => import('/@/pages/oa/flow/cate/index.vue'),
 						meta: {
 							title: '流程分类',
@@ -406,7 +529,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 					},
 					{
 						path: '/oa/flow/cate/edit',
-						name: 'oaFlowCateEdit',
+						name: 'OaFlowCateEdit',
 						component: () => import('/@/pages/oa/flow/cate/edit.vue'),
 						meta: {
 							title: '流程分类编辑',
@@ -421,7 +544,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 					},
 					{
 						path: '/oa/flow/temp',
-						name: 'oaFlowTemp',
+						name: 'OaFlowTemp',
 						component: () => import('/@/pages/oa/flow/temp/index.vue'),
 						meta: {
 							title: '流程模板',
@@ -436,7 +559,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 					},
 					{
 						path: '/oa/flow/temp/edit',
-						name: 'oaFlowTempEdit',
+						name: 'OaFlowTempEdit',
 						component: () => import('/@/pages/oa/flow/temp/edit.vue'),
 						meta: {
 							title: '流程模板编辑',
@@ -451,7 +574,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 					},
 					{
 						path: '/oa/flow/main',
-						name: 'oaFlowMain',
+						name: 'OaFlowMain',
 						component: () => import('/@/pages/oa/flow/main/index.vue'),
 						meta: {
 							title: '流程实例',
@@ -466,7 +589,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 					},
 					{
 						path: '/oa/flow/main/view',
-						name: 'oaFlowMainView',
+						name: 'OaFlowMainView',
 						component: () => import('/@/pages/oa/flow/main/view.vue'),
 						meta: {
 							title: '流程查看',
@@ -481,7 +604,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 					},
 					{
 						path: '/oa/flow/main/edit',
-						name: 'oaFlowMainEdit',
+						name: 'OaFlowMainEdit',
 						component: () => import('/@/pages/oa/flow/main/edit.vue'),
 						meta: {
 							title: '流程编辑',
@@ -498,7 +621,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 			},
 			// {
 			// 	path: '/sys/todo',
-			// 	name: 'sysTodo',
+			// 	name: 'SysTodo',
 			// 	component: () => import('/@/layout/routerView/parent.vue'),
 			// 	redirect: '/sys/todo/main',
 			// 	meta: {
@@ -514,7 +637,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 			// 	children: [
 			// 		{
 			// 			path: '/sys/todo/main',
-			// 			name: 'sysTodoMain',
+			// 			name: 'SysTodoMain',
 			// 			component: () => import('/@/pages/sys/todo/main/index.vue'),
 			// 			meta: {
 			// 				title: '待办清单',
@@ -529,7 +652,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 			// 		},
 			// 		{
 			// 			path: '/sys/todo/main/edit',
-			// 			name: 'sysTodoMainEdit',
+			// 			name: 'SysTodoMainEdit',
 			// 			component: () => import('/@/pages/sys/todo/main/edit.vue'),
 			// 			meta: {
 			// 				title: '待办编辑',
@@ -546,7 +669,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 			// },
 			{
 				path: '/sa',
-				name: 'sa',
+				name: 'Sa',
 				component: () => import('/@/layout/routerView/parent.vue'),
 				redirect: '/sa/cust/main',
 				meta: {
@@ -562,7 +685,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 				children: [
 					{
 						path: '/sa/agent/main',
-						name: 'saAgentMain',
+						name: 'SaAgentMain',
 						component: () => import('/@/pages/sa/agent/main/index.vue'),
 						meta: {
 							title: '代理商清单',
@@ -577,7 +700,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 					},
 					{
 						path: '/sa/agent/main/edit',
-						name: 'saAgentMainEdit',
+						name: 'SaAgentMainEdit',
 						component: () => import('/@/pages/sa/agent/main/edit.vue'),
 						meta: {
 							title: '代理商维护',
@@ -592,7 +715,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 					},
 					{
 						path: '/sa/cust/main',
-						name: 'saCustMain',
+						name: 'SaCustMain',
 						component: () => import('/@/pages/sa/cust/main/index.vue'),
 						meta: {
 							title: '客户清单',
@@ -607,7 +730,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 					},
 					{
 						path: '/sa/cust/main/edit',
-						name: 'saCustMainEdit',
+						name: 'SaCustMainEdit',
 						component: () => import('/@/pages/sa/cust/main/edit.vue'),
 						meta: {
 							title: '客户维护',

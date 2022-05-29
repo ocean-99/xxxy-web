@@ -130,7 +130,7 @@
 	</el-card>
 </template>
 <script lang='ts'>
-export default { name: 'sysOrgUser' };
+export default { name: 'SysOrgUserEdit' };
 </script>
 <script lang='ts' setup>
 import { Search } from '@element-plus/icons-vue';

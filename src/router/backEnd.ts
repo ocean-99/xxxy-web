@@ -43,9 +43,50 @@ export async function initBackEndControlRoutes() {
 	// 触发初始化用户信息 pinia
 	useUserInfo().setUserInfos();
 	// 获取路由菜单数据
-	const res = await getBackEndControlRoutes();
+	const res = await getBackEndControlRoutes() as any;
+	if(res===409){
+		Session.clear();
+		location.href="/#/login";
+		// location.href="/#/login"+"?redirect=/sa/agent/main&params={}";
+	}
 	// 存储接口原始路由（未处理component），根据需求选择使用
-	useRequestOldRoutes().setRequestOldRoutes(JSON.parse(JSON.stringify(res.menus)));
+	// console.log(res);
+	// useRequestOldRoutes().setRequestOldRoutes(JSON.parse(JSON.stringify(res.menus)));//vboot
+	if(res.portals&&res.portals.length>0){
+		useUserInfo().setUserInfos2(res.portals);
+	}
+	useRequestOldRoutes().setRequestOldRoutes(res.menus);//vboot
+	// 处理路由（component），替换 dynamicRoutes（/@/router/route）第一个顶级 children 的路由
+	dynamicRoutes[0].children = await backEndComponent(res.menus);
+	// 添加动态路由
+	await setAddRoute();
+	// 设置路由到 vuex routesList 中（已处理成多级嵌套路由）及缓存多级嵌套数组处理后的一维数组
+	await setFilterMenuAndCacheTagsViewRoutes();
+}
+
+export async function initBackEndControlRoutesByLogin(res:any){
+	// 界面 loading 动画开始执行
+	if (window.nextLoading === undefined) NextLoading.start();
+	if(res.portals&&res.portals.length>0){
+		useUserInfo().setUserInfos2(res.portals);
+	}else{
+		useUserInfo().setUserInfos();
+	}
+	// 获取路由菜单数据
+	// 存储接口原始路由（未处理component），根据需求选择使用
+	useRequestOldRoutes().setRequestOldRoutes(res.menus);//vboot
+	// 处理路由（component），替换 dynamicRoutes（/@/router/route）第一个顶级 children 的路由
+	dynamicRoutes[0].children = await backEndComponent(res.menus);
+	// 添加动态路由
+	await setAddRoute();
+	// 设置路由到 vuex routesList 中（已处理成多级嵌套路由）及缓存多级嵌套数组处理后的一维数组
+	await setFilterMenuAndCacheTagsViewRoutes();
+}
+
+export async function initBackEndControlRoutesByPortal(res:any){
+	// 获取路由菜单数据
+	// 存储接口原始路由（未处理component），根据需求选择使用
+	useRequestOldRoutes().setRequestOldRoutes(res.menus);//vboot
 	// 处理路由（component），替换 dynamicRoutes（/@/router/route）第一个顶级 children 的路由
 	dynamicRoutes[0].children = await backEndComponent(res.menus);
 	// 添加动态路由
@@ -132,6 +173,9 @@ export function backEndComponent(routes: any) {
 	return routes.map((item: any) => {
 		if (item.component) item.component = dynamicImport(dynamicViewsModules, item.component as string);
 		item.children && backEndComponent(item.children);
+		if(item.name=="Home"){
+			item.meta.isAffix=true;
+		}
 		return item;
 	});
 }
@@ -147,7 +191,8 @@ export function dynamicImport(dynamicViewsModules: Record<string, Function>, com
 	const matchKeys = keys.filter((key) => {
 		// const k = key.replace(/..\/views|../, '');
 		const k = key.replace(/..\/pages|../, '');
-		return k.startsWith(`${component}`) || k.startsWith(`/${component}`);
+		// return k.startsWith(`${component}`) || k.startsWith(`/${component}`);
+		return (k==`${component}`+'.vue') || (k==`/${component}`+'.vue');
 	});
 	if (matchKeys?.length === 1) {
 		const matchKey = matchKeys[0];

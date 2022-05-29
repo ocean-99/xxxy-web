@@ -55,7 +55,7 @@
 	</div>
 </template>
 <script lang='ts'>
-export default { name: 'sysJobMain' };
+export default { name: 'SysJobMain' };
 </script>
 <script lang='ts' setup>
 import { Search,Plus, Delete, VideoPlay } from '@element-plus/icons-vue';
@@ -87,7 +87,7 @@ async function startEvent(state: any) {
 	})
 		.then(async () => {
 			await request({
-				url: state.url + '/start/' + selIds,
+				url: state.url + '/start?ids=' + selIds,
 				method: 'post',
 			});
 			await listQuery(state);
@@ -109,7 +109,7 @@ async function stopEvent(state: any) {
 	})
 		.then(async () => {
 			await request({
-				url: state.url + '/stop/' + selIds,
+				url: state.url + '/stop?ids=' + selIds,
 				method: 'post',
 			});
 			await listQuery(state);
@@ -125,8 +125,9 @@ const doOnce = async (id: string) => {
 		type: 'info',
 	}).then(async () => {
 		await request({
-			url: state.url + '/once/' + id,
+			url: state.url + '/once',
 			method: 'post',
+      params:{id:id}
 		});
 	});
 };

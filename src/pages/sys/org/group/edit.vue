@@ -88,7 +88,7 @@
   </el-card>
 </template>
 <script lang='ts'>
-export default {name: 'sysOrgGroup'};
+export default {name: 'SysOrgGroupEdit'};
 </script>
 <script lang='ts' setup>
 import {computed, getCurrentInstance, onMounted, reactive, ref, toRaw, toRefs} from 'vue';

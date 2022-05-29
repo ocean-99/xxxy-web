@@ -58,7 +58,7 @@
 	</div>
 </template>
 <script lang='ts'>
-export default { name: 'oaFlowMainView' };
+export default { name: 'OaFlowMainView' };
 </script>
 <script lang='ts' setup>
 import { getCurrentInstance, nextTick, onMounted, reactive, ref, toRefs } from 'vue';

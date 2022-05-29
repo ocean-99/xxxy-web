@@ -3,7 +3,7 @@
     <template #header>
       <el-row>
         <el-col :span='10'>
-          <div style='line-height: 32px'>代理商维护</div>
+          <div style='line-height: 32px'>门户维护</div>
         </el-col>
         <el-col :span='14' style='text-align: right'>
           <el-button type='success' @click='tabSave(formRef,state,proxy,route)' plain>保 存</el-button>
@@ -17,7 +17,7 @@
           <el-tab-pane label='基本信息' name='tab1'>
             <el-row style='border-top: 1px solid #d2d2d2;'>
               <el-col :span='24'>
-                <el-form-item label='代理商名称：' prop='name' :rules="[{ required: true, message: '名称不能为空'}]">
+                <el-form-item label='门户名称：' prop='name' :rules="[{ required: true, message: '名称不能为空'}]">
                   <div class='zinput'>
                     <el-input v-model='form.name'></el-input>
                   </div>
@@ -26,13 +26,6 @@
             </el-row>
             <el-row>
               <el-col :span='12'>
-                <el-form-item label='代理商地址：'>
-                  <div class='zinput'>
-                    <el-input v-model='form.addre'></el-input>
-                  </div>
-                </el-form-item>
-              </el-col>
-              <el-col :span='12'>
                 <el-form-item label='是否可用：'>
                   <div class='zinput'>
                     <el-switch v-model='form.avtag'>
@@ -40,19 +33,17 @@
                   </div>
                 </el-form-item>
               </el-col>
-            </el-row>
-            <el-row>
-              <el-col :span='24'>
-                <el-form-item label='代理商经办人：'>
+              <el-col :span='12'>
+                <el-form-item label='排序号：'>
                   <div class='zinput'>
-                    <el-input v-model='opmna' @click='openOrgModal' readonly></el-input>
+                    <el-input-number v-model='form.ornum' controls-position='right' style='width: 100%'/>
                   </div>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span='24'>
-                <el-form-item label='可查看者：'>
+                <el-form-item label='可使用者：'>
                   <div class='zinput' style='height: auto'>
                     <el-input type='textarea' :rows='4' v-model='viewersName' readonly @click='openOrgsModal'>
                     </el-input>
@@ -110,7 +101,7 @@
   </el-card>
 </template>
 <script lang='ts'>
-export default {name: 'SaAgentMainEdit'};
+export default {name: 'SysPortalMainEditEdit'};
 </script>
 <script lang='ts' setup>
 import {computed, getCurrentInstance, onMounted, reactive, ref, toRaw, toRefs} from 'vue';
@@ -125,7 +116,7 @@ const {proxy} = getCurrentInstance() as any;
 const activeName = ref('tab1');
 
 const state = reactive({
-  url: '/sa/agent/main',
+  url: '/sys/portal/main',
   params: {path: '', query: ''}, checks: [] as any,
   form: {avtag: true, items: [] as any} as any,
 });
