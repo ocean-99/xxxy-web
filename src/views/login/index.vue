@@ -9,7 +9,9 @@
 		</div>
 		<div class="login-content">
 			<div class="login-content-main">
-				<h4 class="login-content-title ml15">{{ getThemeConfig.globalTitle }}后台模板</h4>
+<!--				<h4 class="login-content-title ml15">{{ getThemeConfig.globalTitle }}后台模板</h4>-->
+				<div style='color: green;'>普通用户账号：（密码都是1）</div>
+				<div style='color: green;'>张三：z3，李四：l4，王五：w5，赵六：z6。</div>
 				<div v-if="!isScan">
 					<el-tabs v-model="tabsActiveName">
 						<el-tab-pane :label="$t('message.label.one1')" name="account">

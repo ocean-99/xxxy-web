@@ -7,7 +7,7 @@
 						<el-input v-model='state.form.name' placeholder='输入名称回车查询' clearable class='list-search' @keyup.enter='listQuery(state)' />
 						<el-button type='primary' :icon='Search' @click='listQuery(state)' plain>查询</el-button>
 						<el-button class='more-button' :icon='state.moreParams?ArrowUp:ArrowDown' plain @click='state.moreParams=!state.moreParams' />
-						<span style='margin-left: 10px;color: green'>流程测试：张三账号z3,李四账号l4,王五账号w5,赵六账号zhao6。密码都是1</span>
+						<span style='margin-left: 10px;color: red'>可切换登录用户，模拟流程流转</span>
 					</el-col>
 					<el-col :span='10' style='text-align: right'>
 						<el-button type='success' :icon='Plus' @click='openFlowModal()' plain>新增</el-button>
