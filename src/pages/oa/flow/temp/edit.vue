@@ -209,7 +209,7 @@ async function save(state: any) {
 	form.value.vform = JSON.stringify(vFormRef.value.getFormJson());
 	form.value.prxml = bpmn.xml;
 	console.log(bpmn.xml);
-	await pageSave(formRef.value, state);
+  await pageSave({formRef:formRef.value, state});
 }
 
 

@@ -120,7 +120,7 @@ const save = async () => {
 		form.value.zform = JSON.stringify(formData);
 		form.value.zbpm = bpmRef.value.getOperateInfo();
 		// alert(JSON.stringify(formData));
-		await pageSave(formRef.value, state);
+		await pageSave({formRef:formRef.value, state});
 	}).catch(error => {
 		ElMessage.error(error);
 	});

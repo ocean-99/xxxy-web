@@ -20,7 +20,7 @@
 				<el-table-column label='序号' type='index' width='55' align='center' />
 				<el-table-column label='任务名称' width='300'>
 					<template #default='scope'>
-						<span style='cursor:pointer;color: #3e9ece' @click='drawer.open(scope.row.id)'>{{ scope.row.name }}</span>
+						<span style='cursor:pointer;color: #3e9ece' @click='drawerRef.open(scope.row.id)'>{{ scope.row.name }}</span>
 					</template>
 				</el-table-column>
 				<el-table-column label='开始时间' prop='sttim' width='160' />
@@ -36,18 +36,18 @@
 				layout='total, sizes, prev, pager, next, jumper'
 			/>
 		</el-card>
-		<DrawerView ref='drawer' @listQuery='listQuery(state)' />
+		<View ref='drawerRef'/>
 	</div>
 </template>
 <script lang='ts' setup>
 import { Search, Delete } from '@element-plus/icons-vue';
 import { onMounted, reactive, ref } from 'vue';
 import { listQuery, listDelete, listSelect } from '/@/comps/page/index';
-import DrawerView from './view.vue';
+import View from './view.vue';
 import request from '/@/utils/request';
 import { ElMessage, ElMessageBox } from 'element-plus';
 
-const drawer = ref();
+const drawerRef = ref(null);
 
 const state = reactive({
 	url: '/sys/job/log', loading: true, ids: [],

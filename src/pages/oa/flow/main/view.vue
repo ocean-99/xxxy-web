@@ -9,7 +9,6 @@
 						<div style='line-height: 32px'>流程实例</div>
 					</el-col>
 					<el-col :span='14' style='text-align: right'>
-						<!--            <el-button type='success' @click='tabEdit(state,proxy,route)' plain>编 辑</el-button>-->
 						<el-button type='info' @click='pageClose()' plain>关 闭</el-button>
 					</el-col>
 				</el-row>
@@ -62,7 +61,7 @@ export default { name: 'OaFlowMainView' };
 </script>
 <script lang='ts' setup>
 import { getCurrentInstance, nextTick, onMounted, reactive, ref, toRefs } from 'vue';
-import { tabEdit, pageSave, pageClose } from '/@/comps/page/view';
+import { pageSave, pageClose } from '/@/comps/page/view';
 import { useRoute } from 'vue-router';
 import BpmView from '/@/comps/bpm/view.vue';
 import request from '/@/utils/request';
@@ -73,7 +72,6 @@ import Cookies from 'js-cookie';
 
 const route = useRoute();
 const formRef = ref<FormInstance>();
-const { proxy } = getCurrentInstance() as any;
 
 const state = reactive({
 	url: '/oa/flow/main',
@@ -129,7 +127,7 @@ const submit = async (zbpm: any) => {
 	vFormRef.value.getFormData().then(async formData => {
 		form.value.zform = JSON.stringify(formData);
 		console.log('submit');
-		await pageSave(formRef.value, state);
+    await pageSave({formRef:formRef.value, state});
 	}).catch(error => {
 		ElMessage.error(error);
 	});

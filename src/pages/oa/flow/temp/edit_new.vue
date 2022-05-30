@@ -170,7 +170,7 @@ onMounted(async () => {
 
 
 async function save(state: any) {
-	await pageSave(formRef.value, state);
+  await pageSave({formRef:formRef.value, state});
 }
 
 

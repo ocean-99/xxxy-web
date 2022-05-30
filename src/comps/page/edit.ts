@@ -1,72 +1,100 @@
 import request from '/@/utils/request';
 import {ElLoading, ElMessage} from "element-plus";
 
-export const editInit = async (state: any, route: any) => {
-    state.params = <any>route;
-    let id = state.params.query?.id;
+interface IeditInit {
+    state: any;
+    route:any;
+}
+export const editInit = async (data:IeditInit) => {
+    data.state.params = <any>data.route;
+    let id = data.state.params.query?.id;
     if (id) {
-        state.form = await request({
-            url: state.url + '/one/' + id,
+        data.state.form = await request({
+            url: data.state.url + '/one/' + id,
             method: 'get',
         });
     } else {
-        state.form.avtag = true;
+        data.state.form.avtag = true;
     }
 };
 
-export const tabSave = async (formRef: any, state: any, proxy: any, route: any) => {
-    const canSubmit = await checkSubmit(formRef);
+
+interface ItabSave {
+    state: any;
+    formRef:any;
+    proxy:any;
+    route:any;
+    iouField?: string;
+}
+export const tabSave = async (data:ItabSave) => {
+    const canSubmit = await checkSubmit(data.formRef);
     if (!canSubmit) {
         return false;
     }
-
-    if (!state.form.id) {
+    if(!data.iouField){
+        data.iouField = "id";
+    }
+    if (!data.state.form[data.iouField]) {
         await request({
-            url: state.url,
+            url: data.state.url,
             method: 'post',
-            data: state.form,
+            data: data.state.form,
         });
     } else {
         await request({
-            url: state.url,
+            url: data.state.url,
             method: 'put',
-            data: state.form,
+            data: data.state.form,
         });
     }
-    tabClose(proxy, route);
+    tabClose({proxy:data.proxy, route:data.route});
 };
 
-export const tabClose = (proxy: any, route: any) => {
-    proxy.mittBus.emit('onCurrentContextmenuClick', Object.assign({}, {contextMenuClickId: 1, ...route}));
+interface ItabClose {
+    proxy:any;
+    route:any;
+}
+export const tabClose = (data:ItabClose) => {
+    data.proxy.mittBus.emit('onCurrentContextmenuClick', Object.assign({}, {contextMenuClickId: 1, ...data.route}));
 };
 
-export const pageSave = async (formRef: any, state: any) => {
+
+interface IpageSave {
+    state: any;
+    formRef:any;
+    iouField?: string;
+}
+
+export const pageSave = async (data:IpageSave) => {
     const loading = ElLoading.service({
         lock: true,
         fullscreen: true,
         text:'',
         background: 'rgba(0, 0, 0, 0.1)',
     });
-    const canSubmit = await checkSubmit(formRef);
+    const canSubmit = await checkSubmit(data.formRef);
     if (!canSubmit) {
         loading.close();
         return false;
     }
 
     let isSuccess=true;
-    if (!state.form.crtim) {
+    if(!data.iouField){
+        data.iouField = "id";
+    }
+    if (!data.state.form[data.iouField]) {
         await request({
-            url: state.url,
+            url: data.state.url,
             method: 'post',
-            data: state.form,
+            data: data.state.form,
         }).catch(() => {
             isSuccess=false;
         });
     } else {
         await request({
-            url: state.url,
+            url: data.state.url,
             method: 'put',
-            data: state.form,
+            data: data.state.form,
         }).catch(() => {
             isSuccess=false;
         });
@@ -91,38 +119,53 @@ export const pageClose = () => {
     window.close();
 };
 
-export const drawerSave = async (formRef: any, state: any) => {
-    const canSubmit = await checkSubmit(formRef);
+interface IdrawerSave {
+    state: any;
+    formRef:any;
+    iouField?: string;
+}
+
+export const drawerSave = async (data:IdrawerSave) => {
+    const canSubmit = await checkSubmit(data.formRef);
     if (!canSubmit) {
         return false;
     }
 
-    if (!state.form.crtim) {
+    if(!data.iouField){
+        data.iouField = "id";
+    }
+    if (!data.state.form[data.iouField]) {
         await request({
-            url: state.url,
+            url: data.state.url,
             method: 'post',
-            data: state.form,
+            data: data.state.form,
         });
     } else {
         await request({
-            url: state.url,
+            url: data.state.url,
             method: 'put',
-            data: state.form,
+            data: data.state.form,
         });
     }
-    state.show = false;
+    data.state.show = false;
 };
 
-export const drawerOpen = async (state: any, id: string) => {
-    if (id) {
-        state.form = await request({
-            url: state.url + '/one/' + id,
+
+interface IdrawerOpen {
+    state: any;
+    id:string;
+}
+
+export const drawerOpen = async (data:IdrawerOpen) => {
+    if (data.id) {
+        data.state.form = await request({
+            url: data.state.url + '/one/' + data.id,
             method: 'get',
         });
     } else {
-        state.form = {avtag: true};
+        data.state.form = {avtag: true};
     }
-    state.show = true;
+    data.state.show = true;
 };
 
 

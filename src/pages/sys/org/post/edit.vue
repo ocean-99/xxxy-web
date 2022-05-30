@@ -6,8 +6,8 @@
           <div style='line-height: 32px'>岗位信息</div>
         </el-col>
         <el-col :span='14' style='text-align: right'>
-          <el-button type='success' @click='tabSave(formRef,state,proxy,route)' plain>保 存</el-button>
-          <el-button type='info' @click='tabClose(proxy,route)' plain>关 闭</el-button>
+          <el-button type='success' @click='tabSave({formRef,state,proxy,route})' plain>保 存</el-button>
+          <el-button type='info' @click='tabClose({proxy,route})' plain>关 闭</el-button>
         </el-col>
       </el-row>
     </template>
@@ -127,7 +127,7 @@ onMounted(async () => {
 		form.value.deptid = deptid;
 		form.value.deptna = deptna;
 	}
-  await editInit(state, route);
+  await editInit({state, route});
   if (form.value.dept) {
     form.value.deptna = form.value.dept.name;
   }

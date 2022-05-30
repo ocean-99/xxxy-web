@@ -111,26 +111,26 @@ export const treeItemDelete = async (state: any, id: string) => {
 };
 
 
-export const tabAdd = (url: string,data:any) => {
+export const tabAdd = async (url: string,data?:any) => {
 	if(!data){
 		data = {};
 	}
 	data.uuid=uuid();
-	router.push({
+	await router.push({
 		path: url + '/edit',
 		query: data,
 	});
 };
 
-export const tabEdit = (url: string, id: string) => {
-	router.push({
+export const tabEdit =async (url: string, id: string) => {
+	await router.push({
 		path: url + '/edit',
 		query: { id: id },
 	});
 };
 
-export const tabView = (url: string, id: string) => {
-	router.push({
+export const tabView =async (url: string, id: string) => {
+	await router.push({
 		path: url + '/view',
 		query: { id: id },
 	});

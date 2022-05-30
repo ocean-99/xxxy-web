@@ -63,7 +63,7 @@ const { form } = toRefs(state);
 
 //暴露open方法给父组件调用
 const open = async (id: string) => {
-	await drawerOpen(state, id);
+	await drawerOpen({state, id});
 };
 defineExpose({ open });
 

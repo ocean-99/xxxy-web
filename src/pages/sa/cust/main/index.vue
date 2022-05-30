@@ -5,7 +5,7 @@
 				<el-row>
 					<el-col :span='14'>
 						<el-input v-model='state.form.name' placeholder='输入名称回车查询' class='list-search' clearable @keyup.enter='listQuery(state)' />
-						<el-button type='primary' @click='listQuery(state)' plain v-waves='purple'>查 询</el-button>
+						<el-button type='primary' @click='listQuery(state)' plain>查 询</el-button>
 						<el-button class='more-button' :icon='state.moreParams?ArrowUp:ArrowDown' plain @click='state.moreParams=!state.moreParams' />
 					</el-col>
 					<el-col :span='10' style='text-align: right'>

@@ -175,7 +175,7 @@ const open = async (data: any) => {
       state.show = true;
     }
   } else if (data.id) {
-    await drawerOpen(state, data.id);
+    await drawerOpen({state, id:data.id});
   }
 };
 defineExpose({open});
@@ -183,7 +183,7 @@ defineExpose({open});
 //取得父组件listQuery方法的调用权
 const emits = defineEmits(['treeQuery']);
 const confirm = async () => {
-  await drawerSave(formRef.value, state);
+  await drawerSave({formRef:formRef.value, state});
   emits('treeQuery');
 };
 

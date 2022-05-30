@@ -7,7 +7,7 @@
         </el-col>
         <el-col :span='14' style='text-align: right'>
           <el-button type='success' @click='save' plain>保 存</el-button>
-          <el-button type='info' @click='tabClose(proxy,route)' plain>关 闭</el-button>
+          <el-button type='info' @click='tabClose({proxy,route})' plain>关 闭</el-button>
         </el-col>
       </el-row>
     </template>
@@ -197,7 +197,7 @@ const save = async () => {
     menus.push({id: node.id, name: node.name});
   }
   form.value.menus = menus;
-  await tabSave(formRef.value, state, proxy, route);
+  await tabSave({formRef:formRef.value, state, proxy, route});
 };
 //endregion
 

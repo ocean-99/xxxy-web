@@ -6,9 +6,9 @@
 					<div style='line-height: 32px'>部门信息</div>
 				</el-col>
 				<el-col :span='14' style='text-align: right'>
-					<el-button type='success' @click='tabSave(formRef,state,proxy,route)' plain>保 存</el-button>
+					<el-button type='success' @click='tabSave({formRef,state,proxy,route})' plain>保 存</el-button>
 					<el-button type='info' plain>复 制</el-button>
-					<el-button type='info' @click='tabClose(proxy,route)' plain>关 闭</el-button>
+					<el-button type='info' @click='tabClose({proxy,route})' plain>关 闭</el-button>
 				</el-col>
 			</el-row>
 		</template>
@@ -129,7 +129,7 @@ onMounted(async () => {
 		form.value.pname = pname;
 		form.value.pid = pid;
 	}
-	await editInit(state, route);
+	await editInit({state, route});
 	if (form.value.parent) {
 		form.value.pname = form.value.parent.name;
 	}

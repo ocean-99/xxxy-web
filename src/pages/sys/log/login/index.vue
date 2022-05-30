@@ -38,7 +38,7 @@
 				layout='total, sizes, prev, pager, next, jumper'
 			/>
 		</el-card>
-		<DrawerView ref='drawer' @listQuery='listQuery(state)'/>
+		<DrawerView ref='drawer'/>
 	</div>
 </template>
 <script lang='ts'>
