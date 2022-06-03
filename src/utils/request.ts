@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { ElMessage, ElMessageBox } from 'element-plus';
 import { Session } from '/@/utils/storage';
+import { saveAs } from 'file-saver';
 
 // 配置新建一个 axios 实例
 const service = axios.create({
@@ -46,7 +47,21 @@ service.interceptors.response.use(
 			}
 			return Promise.reject(service.interceptors.response);
 		} else {
-			return response.data.result;
+			// console.log(response);
+			if(response.data.size){
+				let blob = new Blob([res], { type: "application/xlsx" });
+				let filename=decodeURI(response.headers['download-filename']);
+				// let filename=decodeURI(response.headers['FileDownloadName']);
+				saveAs(blob, filename)
+				// let url = window.URL.createObjectURL(blob);
+				// const link = document.createElement("a"); // 创建a标签
+				// link.href = url;
+				// link.download = decodeURI(response.headers['download-filename']); // 重命名文件
+				// link.click();
+				// URL.revokeObjectURL(url);
+			}else{
+				return response.data.result;
+			}
 		}
 	},
 	(error) => {

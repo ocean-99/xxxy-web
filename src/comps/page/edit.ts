@@ -187,5 +187,51 @@ const checkSubmit = async (formRef: any) => {
     return canSubmit;
 }
 
+interface ImodalSave {
+    state: any;
+    formRef:any;
+    iouField?: string;
+}
+
+export const modalSave = async (data:ImodalSave) => {
+    const loading = ElLoading.service({
+        lock: true,
+        fullscreen: true,
+        text:'',
+        background: 'rgba(0, 0, 0, 0.1)',
+    });
+    let isSuccess=true;
+    const canSubmit = await checkSubmit(data.formRef);
+    if (!canSubmit) {
+        loading.close();
+        return false;
+    }
+
+    if(!data.iouField){
+        data.iouField = "id";
+    }
+    if (!data.state.form[data.iouField]) {
+        await request({
+            url: data.state.url,
+            method: 'post',
+            data: data.state.form,
+        }).catch(() => {
+            isSuccess=false;
+        });
+    } else {
+        await request({
+            url: data.state.url,
+            method: 'put',
+            data: data.state.form,
+        }).catch(() => {
+            isSuccess=false;
+        });
+    }
+    loading.close();
+    if(isSuccess){
+        data.state.show = false;
+    }
+};
+
 
 

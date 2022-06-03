@@ -6,7 +6,7 @@
 		</template>
 		<template #default>
 			<div style='padding: 20px;border-top: 1px solid #ccc'>
-				<el-form ref='ruleFormRef' :model='form' label-width='160px'>
+				<el-form ref='formRef' :model='form' label-width='160px'>
 					<el-row style='height: 48px'>
 						<el-col :span='12'>
 							<el-form-item label='任务名称：'>

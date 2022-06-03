@@ -4,7 +4,7 @@
       <template #header>
         <el-row>
           <el-col :span='14'>
-            <el-select v-model='state.form.porid' clearable placeholder='门户名称' @change="treeQuery(state)" style='margin-right:10px;width: 180px'>
+            <el-select v-model='state.form.porid' placeholder='门户名称' @change="treeQuery(state)" style='margin-right:10px;width: 180px'>
               <el-option
                   v-for='item in state.portals'
                   :key='item.id'

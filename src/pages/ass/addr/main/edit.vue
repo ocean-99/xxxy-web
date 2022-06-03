@@ -36,16 +36,15 @@
               <el-col :span='12'>
                 <el-form-item label='代理商地址：'>
                   <div class='zinput'>
-                    <el-input v-model='form.addre' readonly @click="chooseAddr"></el-input>
+                    <el-input v-model='form.addre'></el-input>
                   </div>
                 </el-form-item>
               </el-col>
               <el-col :span='12'>
-                <el-form-item label='代理商资质：'>
+                <el-form-item label='是否可用：'>
                   <div class='zinput'>
-                    <el-select v-model='form.level' placeholder='请选择' style="width: 100%">
-                      <el-option v-for='item in state.levels' :key='item.id' :value='item.id' :label="item.name"/>
-                    </el-select>
+                    <el-switch v-model='form.avtag'>
+                    </el-switch>
                   </div>
                 </el-form-item>
               </el-col>
@@ -116,7 +115,6 @@
       </el-form>
     </div>
     <OrgModal ref='orgModal' @close='closeOrgModal'/>
-    <Amap ref='amapRef' @close='closeAmap'/>
   </el-card>
 </template>
 <script lang='ts'>
@@ -127,9 +125,7 @@ import {computed, getCurrentInstance, onMounted, reactive, ref, toRaw, toRefs} f
 import {editInit, tabSave, tabClose} from '/@/comps/page/edit';
 import {useRoute} from 'vue-router';
 import OrgModal from '/@/comps/sys/OrgModal.vue';
-import Amap from '/@/comps/ass/amap.vue';
 import {FormInstance} from "element-plus";
-import request from "/@/utils/request";
 
 const route = useRoute();
 const formRef = ref<FormInstance>();
@@ -138,7 +134,7 @@ const activeName = ref('tab1');
 
 const state = reactive({
   url: '/sa/agent/main',
-  params: {path: '', query: ''}, levels:[] as any,
+  params: {path: '', query: ''}, checks: [] as any,
   form: {avtag: true, items: [] as any} as any,
 });
 
@@ -147,7 +143,6 @@ const {form} = toRefs(state);
 
 onMounted(async () => {
   await editInit({state, route});
-  await levelsInit();
 });
 
 
@@ -205,34 +200,6 @@ const viewersName = computed(() => {
   }
   return names;
 });
-//endregion
-
-//region 地址选择逻辑
-const amapRef=ref();
-const chooseAddr=()=>{
-  amapRef.value.openModal({adcoo:form.value.adcoo,adreg:form.value.adreg,addet:form.value.addet,adzoo:''});
-}
-
-const closeAmap=(data:any)=>{
-  if(data){
-    form.value.addre=data.adreg+data.addet;
-    form.value.adcoo=data.adcoo;
-    form.value.adreg=data.adreg;
-    form.value.addet=data.addet;
-    form.value.adpro=data.adpro;
-    form.value.adcit=data.adcit;
-    form.value.addis=data.addis;
-  }
-}
-//endregion
-
-//region 业务字典逻辑
-const levelsInit = async () => {
-  state.levels = await request({
-    url: '/ass/dict/data/list?maiid=AG_LEVEL',
-    method: 'get',
-  });
-};
 //endregion
 
 </script>

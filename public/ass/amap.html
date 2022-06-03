@@ -1,0 +1,199 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <title>地址选择</title>
+    <link rel="stylesheet" href="amap.css?v=3"/>
+    <style type="text/css">
+        html, body, #container {
+            height: 100%;
+        }
+
+        html {
+            overflow-y: hidden;
+        }
+
+        .amap-logo {
+            display: none;
+            opacity: 0;
+        }
+
+        .amap-copyright {
+            opacity: 0;
+        }
+
+        .btn {
+            width: 10rem;
+            /*margin-left:6.8rem;*/
+        }
+    </style>
+</head>
+<body>
+<div id="container"></div>
+<div class="info">
+    <div class="input-item">
+        <div class="input-item-prepend">
+            <span class="input-item-text" style="width:8rem;">请输入关键字</span>
+        </div>
+        <input id='tipinput' type="text">
+    </div>
+</div>
+<div class="input-card">
+    <label style='color:grey'>点击地图选择地址,详细地址可手动修改</label>
+    <div class="input-item">
+        <div class="input-item-prepend"><span class="input-item-text">经纬度</span></div>
+        <input id='adcoo' type="text" value='116.39,39.9' disabled style="color: green" placeholder="点击地址自动带出">
+    </div>
+    <div class="input-item">
+        <div class="input-item-prepend"><span class="input-item-text">所在地区</span></div>
+        <input id='adreg' type="text" disabled style="color: green" placeholder="省市区，通过定位解析">
+    </div>
+    <div class="input-item">
+        <div class="input-item-prepend"><span class="input-item-text">详细地址</span></div>
+        <input id='addet' type="text" style="color: blue" placeholder="如道路、门牌号、小区、楼栋等">
+    </div>
+    <input id='adpro' type="hidden">
+    <input id='adcit' type="hidden">
+    <input id='addis' type="hidden">
+    <input id='adcco' type="hidden">
+    <input id='addco' type="hidden">
+    <div class="input-item">
+        <input id="yesBtn" type="button" class="btn" value="确定" style="border-radius: 0.1rem;margin-left:2rem;">
+        <input id="noBtn" type="button" class="btn" value="关闭" style="border-radius: 0.1rem;margin-left:2rem;">
+    </div>
+</div>
+<script type="text/javascript"
+        src="https://webapi.amap.com/maps?v=1.4.15&key=c2c9205ab3668d57d66084daf6f80eb2&plugin=AMap.Autocomplete,AMap.Geocoder,AMap.PlaceSearch"></script>
+<script type="text/javascript">
+    // console.log(window.location.href);
+    // console.log(window.location.href.split("adzoo=")[1]);
+    // console.log(window.location.href.split("adzoo=")[1].split("&"));
+
+    document.getElementById('adcoo').value = window.location.href.split("adcoo=")[1].split("&")[0];
+    document.getElementById('adreg').value = decodeURIComponent(window.location.href.split("adreg=")[1].split("&")[0]);
+    document.getElementById('addet').value = decodeURIComponent(window.location.href.split("addet=")[1].split("&")[0]);
+
+    var map;
+    var marker = new AMap.Marker();
+    if (document.getElementById('adcoo').value) {
+        var cooArr = document.getElementById('adcoo').value.split(',');
+        var zoom = window.location.href.split("adzoo=")[1].split("&")[0];
+        map = new AMap.Map('container', {
+            resizeEnable: true,
+            center: cooArr,
+            zoom: zoom ? zoom : 11
+        });
+        marker.setPosition(cooArr);
+        marker.setMap(map);
+    } else {
+        map = new AMap.Map('container', {
+            resizeEnable: true,
+            zoom: 11
+        });
+    }
+
+    //输入提示
+    var autoOptions = {
+        input: "tipinput"
+    };
+    var auto = new AMap.Autocomplete(autoOptions);
+    var placeSearch = new AMap.PlaceSearch({
+        map: map
+    });  //构造地点查询类
+    AMap.event.addListener(auto, "select", select);//注册监听，当选中某条记录时会触发
+    function select(e) {
+        if (e.poi.location) {
+            document.getElementById('adcoo').value = e.poi.location.lng + ',' + e.poi.location.lat;
+        } else {
+            document.getElementById('adcoo').value = '';
+        }
+        placeSearch.setCity(e.poi.adcode);
+        placeSearch.search(e.poi.name);
+        regeoCode();
+    }
+
+    var geocoder = new AMap.Geocoder({
+        city: "010", //城市设为北京，默认：“全国”
+        radius: 500 //范围，默认：500
+    });
+
+    function regeoCode() {
+        var adcoo = document.getElementById('adcoo').value.split(',');
+        map.add(marker);
+        marker.setPosition(adcoo);
+        geocoder.getAddress(adcoo, function (status, result) {
+            if (status === 'complete' && result.regeocode) {
+                // var address = result.regeocode.formattedAddress;
+                var addrComp = result.regeocode.addressComponent;
+                var adreg = addrComp.province + addrComp.city + addrComp.district;
+                var addet = addrComp.township + addrComp.street + addrComp.streetNumber;
+                if (addet === '') {
+                    var adarr = result.regeocode.formattedAddress.split(adreg);
+                    if (adarr.length > 1) {
+                        addet = adarr[1];
+                    }
+                }
+                document.getElementById('adreg').value = adreg;
+                document.getElementById('addet').value = addet;
+                document.getElementById('adpro').value = addrComp.province;
+                document.getElementById('adcit').value = addrComp.city;
+                document.getElementById('addis').value = addrComp.district;
+                document.getElementById('adcco').value = addrComp.citycode;
+                document.getElementById('addco').value = addrComp.adcode;
+                // console.log(result);
+            } else {
+                log.error('根据经纬度查询地址失败')
+            }
+
+        });
+    }
+
+    map.on('click', function (e) {
+        document.getElementById('adcoo').value = e.lnglat;
+        regeoCode();
+    });
+
+    document.getElementById('adcoo').onkeydown = function (e) {
+        if (e.keyCode === 13) {
+            regeoCode();
+            return false;
+        }
+        return true;
+    };
+
+    function yesBtnClick() {
+        var back = {};
+        back.adcoo = document.getElementById('adcoo').value;
+        back.adreg = document.getElementById('adreg').value;
+        back.addet = document.getElementById('addet').value;
+        back.adpro = document.getElementById('adpro').value;
+        back.adcit = document.getElementById('adcit').value;
+        back.addis = document.getElementById('addis').value;
+        back.adcco = document.getElementById('adcco').value;
+        back.addco = document.getElementById('addco').value;
+        back.adzoo = map.getZoom();
+        if (back.adcoo === '') {
+            alert("请在地图上定位地址");
+        } else if (back.addet === '') {
+            alert("请填写详细地址");
+        } else {
+            window.parent.addressChooseBack(back);
+        }
+
+    }
+
+    document.getElementById("yesBtn").onclick = yesBtnClick;
+
+    function noBtnClick() {
+        window.parent.addressChooseBack();
+    }
+
+    document.getElementById("noBtn").onclick = noBtnClick;
+
+
+</script>
+
+</body>
+</html>
