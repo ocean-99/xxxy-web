@@ -111,11 +111,12 @@ const chooseAddr2=(cecoo:string)=>{
 
 
 const dataAsync=async ()=>{
-  ElMessage.warning("演示模式不支持同步操作")
-  // await request({
-  //   url: state.url+"/addrupdate",
-  //   method: 'put'
-  // });
+  // ElMessage.warning("演示模式不支持同步操作")
+  ElMessage.warning("需要在后台维护高德API的key")
+  await request({
+    url: state.url+"/addrupdate",
+    method: 'put'
+  });
 }
 </script>
 

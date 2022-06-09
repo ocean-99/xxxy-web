@@ -45,7 +45,7 @@
 				<el-table-column label='创建时间' prop='crtim' width='150' />
 				<el-table-column label='创建人' prop='crman' width='60' />
 				<el-table-column label='更新时间' prop='uptim' width='150' />
-        <el-table-column label='更新人' prop='crman' width='60' />
+        <el-table-column label='更新人' prop='upman' width='60' />
 			</el-table>
 
 			<el-pagination

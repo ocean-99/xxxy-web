@@ -7,7 +7,7 @@
       <el-form-item label='策略名称：' prop='name' :rules="[{ required: true, message: '策略名称不能为空'}]">
         <el-input v-model='form.name'></el-input>
       </el-form-item>
-      <el-form-item label='编号生成模式：' prop='numod'>
+      <el-form-item label='编号生成模式：' prop='numod' :rules="[{ required: true, message: '生成模式不能为空'}]">
         <el-select v-model='form.numod' placeholder='请选择' style='width: 100%'>
           <el-option :value="'nodate'" :label="'无日期，纯流水号'"></el-option>
           <el-option :value="'yyyymmdd'" :label="'年月日YYYYMMDD+流水号'"></el-option>
@@ -20,7 +20,7 @@
       <el-form-item label='编号前缀：' prop='nupre'>
         <el-input v-model='form.nupre'></el-input>
       </el-form-item>
-      <el-form-item label='编号长度：' prop='nulen'>
+      <el-form-item label='编号长度：' prop='nulen' :rules="[{ required: true, message: '编号长度不能为空'}]">
         <el-input-number v-model='form.nulen' controls-position='right' style='width: 100%'/>
       </el-form-item>
       <el-form-item label='下一个编号：' prop='nunex'>
