@@ -12,55 +12,26 @@
       </el-row>
     </template>
     <div style='margin-top: 8px;margin-bottom: 8px'>
-      <el-form ref="formRef" class='zform' :model='form' label-width='140px'>
+      <el-form ref="formRef" :inline="true" class='yform' :model='form' label-width='140px'>
         <el-tabs type='card' v-model='activeName'>
           <el-tab-pane label='基本信息' name='tab1'>
-            <el-row style='border-top: 1px solid #d2d2d2;'>
-              <el-col :span='24'>
-                <el-form-item label='接口名称：'>
-                  <div class='zinput'>
-                    {{ form.id }}
-                  </div>
-                </el-form-item>
-              </el-col>
-            </el-row>
-            <el-row>
-              <el-col :span='12'>
-                <el-form-item label='是否可用：'>
-                  <div class='zinput'>
-                    <el-switch v-model='form.avtag'>
-                    </el-switch>
-                  </div>
-                </el-form-item>
-              </el-col>
-            </el-row>
-            <el-row>
-              <el-col :span='24'>
-                <el-form-item label='备注：'>
-                  <div class='zinput' style='height: auto'>
-                    <el-input style="font-family: 'Courier New', Helvetica, Arial, sans-serif; font-size:16px"
-                              type='textarea' :rows='4' v-model='form.notes'>
-                    </el-input>
-                  </div>
-                </el-form-item>
-              </el-col>
-            </el-row>
-            <el-row v-show='form.crtim'>
-              <el-col :span='12'>
-                <el-form-item label='创建时间：'>
-                  <div class='zinput'>
-                    {{ form.crtim }}
-                  </div>
-                </el-form-item>
-              </el-col>
-              <el-col :span='12'>
-                <el-form-item label='更新时间：'>
-                  <div class='zinput'>
-                    {{ form.uptim }}
-                  </div>
-                </el-form-item>
-              </el-col>
-            </el-row>
+            <div class="yform-div">
+              <el-form-item label='接口名称：'>
+                {{ form.id }}
+              </el-form-item>
+              <el-form-item label='是否可用：'>
+                <el-switch v-model='form.avtag'/>
+              </el-form-item>
+              <el-form-item label='备注：' style="width: 100%;">
+                <el-input type='textarea' :rows='4' v-model='form.notes'/>
+              </el-form-item>
+              <el-form-item label='创建时间：' v-show='form.crtim'>
+                {{ form.crtim }}
+              </el-form-item>
+              <el-form-item label='更新时间：' v-show='form.crtim'>
+                {{ form.uptim }}
+              </el-form-item>
+            </div>
           </el-tab-pane>
         </el-tabs>
       </el-form>

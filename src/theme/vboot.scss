@@ -1,9 +1,9 @@
 
-.el-table--small .el-table__cell{
+.el-table--small .el-table__cell {
   padding: 2px 0;
 }
 
-.el-table--small .cell{
+.el-table--small .cell {
   padding: 0 4px;
 }
 
@@ -11,11 +11,11 @@
   line-height: 38px;
 }
 
-.zform .el-form-item__label{
+.zform .el-form-item__label {
   padding: 0 2px 0 0;
 }
 
-.zform .el-form-item__content{
+.zform .el-form-item__content {
   background-color: white;
   border-left: 1px solid #d2d2d2;
 }
@@ -42,7 +42,7 @@
   //min-width: 200px;
   background-color: white;
   white-space: nowrap;
-  text-overflow:ellipsis;
+  text-overflow: ellipsis;
   //overflow-x: auto;
   //overflow-y: hidden;
   overflow: hidden;
@@ -52,7 +52,7 @@
 
 .p-flex {
   display: flex;
-  background-color: white;
+  //background-color: white;
 }
 
 .p-left {
@@ -67,18 +67,23 @@
 }
 
 
-.list-search{
-  width: 200px;margin-right: 10px;height: 32px;
+.list-search {
+  width: 200px;
+  margin-right: 10px;
+  height: 32px;
 }
 
-.p-right .box-card{
-  height: 100%;position:relative;overflow-y: auto;
+.p-right .box-card {
+  height: 100%;
+  position: relative;
+  overflow-y: auto;
 }
 
-.el-card__header{
+.el-card__header {
   padding: 8px;
 }
-.el-card__body{
+
+.el-card__body {
   padding: 8px;
 }
 
@@ -86,55 +91,67 @@
 //  padding: 8px;
 //}
 
-.p-right .el-card__body{
-  position: absolute;width: 100%;
+.p-right .el-card__body {
+  position: absolute;
+  width: 100%;
 }
 
 //.lr-card-body{
 //  padding:3px 13px 3px 2px;position: absolute;width: 100%;
 //}
 
-.more-button{
-  border:1px dashed #409EFF;background-color: #ecf5ff !important;color:#409eff;width:38px;padding-left: 20px;
+.more-button {
+  border: 1px dashed #409EFF;
+  background-color: #ecf5ff !important;
+  color: #409eff;
+  width: 38px;
+  padding-left: 20px;
 }
 
-.more-params{
-  border: 1px dashed #409EFF;padding-top:10px;margin-top: 10px;
+.more-params {
+  border: 1px dashed #409EFF;
+  padding-top: 10px;
+  margin-top: 10px;
 }
 
-.more-params .el-form-item--default{
+.more-params .el-form-item--default {
   margin-bottom: 10px;
 }
 
-.layout-container .layout-scrollbar{
+.layout-container .layout-scrollbar {
   padding: 6px;
 }
 
-.znotes{
-color: red;border: 1px dashed red;margin-top: 10px;margin-bottom: 10px;padding: 5px
+.znotes {
+  color: red;
+  border: 1px dashed red;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding: 5px
 }
 
-.render-form .field-wrapper{
+.render-form .field-wrapper {
   margin-top: 4px !important;
   margin-bottom: 16px !important;
 }
 
-.main-header{
+.main-header {
   display: none !important;
 }
 
-.el-table .cell{
+.el-table .cell {
   padding: 0 6px;
 }
 
-.el-button{
+.el-button {
   padding: 8px 12px;
 }
 
-.el-button i.el-icon{
+.el-button i.el-icon {
   margin-right: 0;
 }
-.el-button [class*=el-icon]+span{
+
+.el-button [class*=el-icon] + span {
   margin-left: 6px;
 }
 
@@ -142,14 +159,69 @@ color: red;border: 1px dashed red;margin-top: 10px;margin-bottom: 10px;padding: 
 //{
 //  background-color: #0960bd !important;
 //}
-.amap-dialog .el-overlay .el-overlay-dialog .el-dialog .el-dialog__body{
+.amap-dialog .el-overlay .el-overlay-dialog .el-dialog .el-dialog__body {
   padding: 0 !important;
 }
+
 .amap-dialog .el-dialog__header {
   margin: 10px;
   padding: 0;
 }
 
-.amap-dialog .el-dialog__headerbtn{
-  top:0;
+.amap-dialog .el-dialog__headerbtn {
+  top: 0;
+}
+
+
+//表单样式
+.yform .yform-div {
+  border-top: 1px solid #d2d2d2;
+  border-right: 1px solid #d2d2d2
+}
+
+.yform .el-form-item--default {
+  margin: 0;
+  padding: 0;
+  border-left: 1px solid #d2d2d2;
+  border-bottom: 1px solid #d2d2d2;
+}
+
+.yform .yform-item{
+  border-left: 1px solid #d2d2d2;
+  border-bottom: 1px solid #d2d2d2;
+}
+
+.yform .el-form-item--default .el-form-item__label {
+  background-color: #f6f6f6;
+  line-height: 38px;
+  padding: 0 2px 0 6px;
+}
+
+.yform .el-form-item--default .el-form-item__content {
+  padding: 4px;
+  background-color: white;
+  border-left: 1px solid #d2d2d2;
+}
+
+.yform .el-form-item__content .zinput{
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.yform .el-form-item{
+  width: 50%;
+}
+
+.yform25 .yform-div .el-form-item{
+  width: 25%;
+}
+
+.yform100 .yform-div .el-form-item{
+  width: 100%;
+}
+
+//去除阴影
+.el-card.is-always-shadow, .el-card.is-hover-shadow:focus, .el-card.is-hover-shadow:hover{
+  box-shadow: none;
 }

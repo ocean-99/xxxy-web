@@ -1,14 +1,16 @@
 <template>
-  <el-dialog v-model='state.show' title='代码预览' draggable width='90%'>
-    <el-tabs v-model='activeName' type='card'>
+  <el-dialog v-if="state.show" v-model='state.show' title='代码预览' draggable width='90%'>
+    <el-tabs v-model='activeName' >
       <el-tab-pane v-for='code in codes' :key='code.id' :label='code.title' :name='code.title'>
-        <CodeMirror
-            v-model:value="code.content"
-            :options="state.cmOptions"
-            border
-            placeholder="test placeholder"
-            height="500px"
-        />
+        <div v-if="activeName==code.title">
+          <CodeMirror
+              v-model:value="code.content"
+              :options="state.cmOptions"
+              border
+              placeholder="test placeholder"
+              height="500px"
+          />
+        </div>
       </el-tab-pane>
     </el-tabs>
   </el-dialog>
@@ -29,14 +31,16 @@ import 'codemirror/mode/clike/clike.js'; // 引入语言模式 可以从 codemir
 
 const activeName = ref('Entity.cs');
 const state = reactive({
+  cmShow:true,
   show: false,
   codes: [] as any,
   cmOptions: {
     readOnly: true,
     // mode: 'text/x-nginx-conf', // Language mode
     // mode: 'javascript', // Language mode
-    mode: 'text/x-csharp', // Language mode
-    theme: 'darcula', // Theme
+    // mode: 'text/x-csharp', // Language mode
+    mode: 'text/x-java', // Language mode
+    // theme: 'darcula', // Theme
     lineNumbers: true, // Show line number
     smartIndent: true, // Smart indent
     indentUnit: 4, // The smart indent unit is 2 spaces in length
@@ -51,13 +55,17 @@ const {codes} = toRefs(state);
 
 const openModal = async (data: any) => {
   codes.value = data;
+  activeName.value = data[0].title;
   state.show = true;
 
 };
+
+
 
 defineExpose({openModal});
 
 </script>
 <style scoped>
+
 
 </style>

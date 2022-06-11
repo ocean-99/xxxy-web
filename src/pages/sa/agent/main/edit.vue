@@ -12,105 +12,52 @@
       </el-row>
     </template>
     <div style='margin-top: 8px;margin-bottom: 8px'>
-      <el-form ref="formRef" class='zform' :model='form' label-width='140px'>
+      <el-form ref="formRef" :inline="true" class='yform' :model='form' label-width='140px'>
         <el-tabs type='card' v-model='activeName'>
           <el-tab-pane label='基本信息' name='tab1'>
-            <el-row style='border-top: 1px solid #d2d2d2;'>
-              <el-col :span='12'>
-                <el-form-item label='代理商名称：' prop='name' :rules="[{ required: true, message: '名称不能为空'}]">
-                  <div class='zinput'>
-                    <el-input v-model='form.name'></el-input>
-                  </div>
-                </el-form-item>
-              </el-col>
-              <el-col :span='12'>
-                <el-form-item label='代理商编号：'>
-                  <div class='zinput'>
-                    <span v-show="form.id" style="margin-left: 5px;color: green">{{form.senum}}</span>
-                    <span v-show="!form.id" style="margin-left: 5px;color: #b9abab">提交后自动生成</span>
-                  </div>
-                </el-form-item>
-              </el-col>
-            </el-row>
-            <el-row>
-              <el-col :span='12'>
-                <el-form-item label='代理商地址：'>
-                  <div class='zinput'>
-                    <el-input v-model='form.addre' readonly @click="chooseAddr"></el-input>
-                  </div>
-                </el-form-item>
-              </el-col>
-              <el-col :span='12'>
-                <el-form-item label='代理商资质：'>
-                  <div class='zinput'>
-                    <el-select v-model='form.level' placeholder='请选择' style="width: 100%">
-                      <el-option v-for='item in state.levels' :key='item.id' :value='item.id' :label="item.name"/>
-                    </el-select>
-                  </div>
-                </el-form-item>
-              </el-col>
-            </el-row>
-            <el-row>
-              <el-col :span='24'>
-                <el-form-item label='代理商经办人：'>
-                  <div class='zinput'>
-                    <el-input v-model='opmna' @click='openOrgModal' readonly></el-input>
-                  </div>
-                </el-form-item>
-              </el-col>
-            </el-row>
-            <el-row>
-              <el-col :span='24'>
-                <el-form-item label='可查看者：'>
-                  <div class='zinput' style='height: auto'>
-                    <el-input type='textarea' :rows='4' v-model='viewersName' readonly @click='openOrgsModal'>
-                    </el-input>
-                  </div>
-                </el-form-item>
-              </el-col>
-            </el-row>
+            <div class="yform-div">
+              <el-form-item label='代理商名称：' prop='name' :rules="[{ required: true, message: '名称不能为空'}]">
+                <el-input v-model='form.name'></el-input>
+              </el-form-item>
+              <el-form-item label='代理商编号：'>
+                <span v-show="form.id" style="margin-left: 5px;color: green">{{ form.senum }}</span>
+                <span v-show="!form.id" style="margin-left: 5px;color: #b9abab">提交后自动生成</span>
+              </el-form-item>
+              <el-form-item label='代理商地址：' style="width: 100%">
+                <el-input v-model='form.addre' readonly @click="chooseAddr"></el-input>
+              </el-form-item>
+              <el-form-item label='代理商资质：'>
+                <el-select v-model='form.level' placeholder='请选择' style="width: 100%">
+                  <el-option v-for='item in state.levels' :key='item.id' :value='item.id' :label="item.name"/>
+                </el-select>
+              </el-form-item>
+              <el-form-item label='代理商经办人：'>
+                <el-input v-model='opmna' @click='openOrgModal' readonly></el-input>
+              </el-form-item>
+              <el-form-item label='可查看者：' style="width: 100%">
+                <el-input type='textarea' :rows='4' v-model='viewersName' readonly @click='openOrgsModal'>
+                </el-input>
+              </el-form-item>
+            </div>
           </el-tab-pane>
-          <el-tab-pane label='其他信息' name='tab3'>
-            <el-row style='border-top: 1px solid #d2d2d2;'>
-              <el-col :span='24'>
-                <el-form-item label='备注：'>
-                  <div class='zinput' style='height: auto'>
-                    <el-input type='textarea' :rows='4' v-model='form.notes'>
-                    </el-input>
-                  </div>
-                </el-form-item>
-              </el-col>
-            </el-row>
-            <el-row v-show='form.crtim'>
-              <el-col :span='6'>
-                <el-form-item label='创建人：'>
-                  <div class='zinput'>
-                    {{ form.crman ? form.crman.name : '' }}
-                  </div>
-                </el-form-item>
-              </el-col>
-              <el-col :span='6'>
-                <el-form-item label='创建时间：'>
-                  <div class='zinput'>
-                    {{ form.crtim }}
-                  </div>
-                </el-form-item>
-              </el-col>
-              <el-col :span='6'>
-                <el-form-item label='更新人：'>
-                  <div class='zinput'>
-                    {{ form.upman ? form.upman.name : '' }}
-                  </div>
-                </el-form-item>
-              </el-col>
-              <el-col :span='6'>
-                <el-form-item label='更新时间：'>
-                  <div class='zinput'>
-                    {{ form.uptim }}
-                  </div>
-                </el-form-item>
-              </el-col>
-            </el-row>
+          <el-tab-pane label='其他信息' name='tab9'>
+            <div class="yform-div">
+              <el-form-item label='备注：' style="width: 100%">
+                <el-input type='textarea' :rows='4' v-model='form.notes'/>
+              </el-form-item>
+              <el-form-item label='创建人：' style="width: 25%">
+                <div class='zinput'> {{ form.crman ? form.crman.name : '' }}</div>
+              </el-form-item>
+              <el-form-item label='创建时间：' style="width: 25%">
+                <div class='zinput'> {{ form.crtim }}</div>
+              </el-form-item>
+              <el-form-item label='更新人：' style="width: 25%">
+                <div class='zinput'> {{ form.upman ? form.upman.name : '' }}</div>
+              </el-form-item>
+              <el-form-item label='更新时间：' style="width: 25%">
+                <div class='zinput'> {{ form.uptim }}</div>
+              </el-form-item>
+            </div>
           </el-tab-pane>
         </el-tabs>
       </el-form>
@@ -138,7 +85,7 @@ const activeName = ref('tab1');
 
 const state = reactive({
   url: '/sa/agent/main',
-  params: {path: '', query: ''}, levels:[] as any,
+  params: {path: '', query: ''}, levels: [] as any,
   form: {avtag: true, items: [] as any} as any,
 });
 
@@ -208,20 +155,20 @@ const viewersName = computed(() => {
 //endregion
 
 //region 地址选择逻辑
-const amapRef=ref();
-const chooseAddr=()=>{
-  amapRef.value.openModal({adcoo:form.value.adcoo,adreg:form.value.adreg,addet:form.value.addet,adzoo:''});
+const amapRef = ref();
+const chooseAddr = () => {
+  amapRef.value.openModal({adcoo: form.value.adcoo, adreg: form.value.adreg, addet: form.value.addet, adzoo: ''});
 }
 
-const closeAmap=(data:any)=>{
-  if(data){
-    form.value.addre=data.adreg+data.addet;
-    form.value.adcoo=data.adcoo;
-    form.value.adreg=data.adreg;
-    form.value.addet=data.addet;
-    form.value.adpro=data.adpro;
-    form.value.adcit=data.adcit;
-    form.value.addis=data.addis;
+const closeAmap = (data: any) => {
+  if (data) {
+    form.value.addre = data.adreg + data.addet;
+    form.value.adcoo = data.adcoo;
+    form.value.adreg = data.adreg;
+    form.value.addet = data.addet;
+    form.value.adpro = data.adpro;
+    form.value.adcit = data.adcit;
+    form.value.addis = data.addis;
   }
 }
 //endregion

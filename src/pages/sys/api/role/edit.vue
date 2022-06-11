@@ -12,86 +12,40 @@
       </el-row>
     </template>
     <div style='margin-top: 8px;margin-bottom: 8px'>
-      <el-form ref="formRef" class='zform' :model='form' label-width='140px'>
+      <el-form ref="formRef" :inline="true" class='yform' :model='form' label-width='140px'>
         <el-tabs type='card' v-model='activeName'>
           <el-tab-pane label='基本信息' name='tab1'>
-            <el-row style='border-top: 1px solid #d2d2d2;'>
-              <el-col :span='24'>
-                <el-form-item label='角色名称：' prop='name' :rules="[{ required: true, message: '名称不能为空'}]">
-                  <div class='zinput'>
-                    <el-input v-model='form.name'></el-input>
-                  </div>
+            <div class="yform-div">
+              <el-form-item label='角色名称：' prop='name' :rules="[{ required: true, message: '名称不能为空'}]" style="width: 100%;">
+                <el-input v-model='form.name'/>
+              </el-form-item>
+              <el-form-item label='指派用户：' style="width: 100%;">
+                <el-input type='textarea' :rows='4' v-model='orgsName' readonly @click='openOrgsModal'/>
+              </el-form-item>
+              <el-form-item label='排序号：'>
+                <el-input-number v-model='form.ornum' controls-position='right' style='width: 100%'/>
+              </el-form-item>
+              <el-form-item label='是否可用：'>
+                <el-switch v-model='form.avtag'/>
+              </el-form-item>
+              <el-form-item label='备注：' style="width: 100%;">
+                <el-input type='textarea' :rows='4' v-model='form.notes'/>
+              </el-form-item>
+              <div v-show='form.crtim'>
+                <el-form-item label='创建人：' style="width: 25%">
+                  {{ form.crman ? form.crman.name : '' }}
                 </el-form-item>
-              </el-col>
-            </el-row>
-            <el-row>
-              <el-col :span='24'>
-                <el-form-item label='指派用户：'>
-                  <div class='zinput' style='height: auto'>
-                    <el-input type='textarea' :rows='4' v-model='orgsName' readonly @click='openOrgsModal'>
-                    </el-input>
-                  </div>
+                <el-form-item label='创建时间：' style="width: 25%">
+                  <div class='zinput'> {{ form.crtim }}</div>
                 </el-form-item>
-              </el-col>
-            </el-row>
-            <el-row>
-              <el-col :span='12'>
-                <el-form-item label='排序号：'>
-                  <div class='zinput'>
-                    <el-input-number v-model='form.ornum' controls-position='right' style='width: 100%'/>
-                  </div>
+                <el-form-item label='更新人：' style="width: 25%">
+                  {{ form.upman ? form.upman.name : '' }}
                 </el-form-item>
-              </el-col>
-              <el-col :span='12'>
-                <el-form-item label='是否可用：'>
-                  <div class='zinput'>
-                    <el-switch v-model='form.avtag'>
-                    </el-switch>
-                  </div>
+                <el-form-item label='更新时间：' style="width: 25%">
+                  <div class='zinput'> {{ form.uptim }}</div>
                 </el-form-item>
-              </el-col>
-            </el-row>
-            <el-row>
-              <el-col :span='24'>
-                <el-form-item label='备注：'>
-                  <div class='zinput' style='height: auto'>
-                    <el-input style="font-family: 'Courier New', Helvetica, Arial, sans-serif; font-size:16px"
-                              type='textarea' :rows='4' v-model='form.notes'>
-                    </el-input>
-                  </div>
-                </el-form-item>
-              </el-col>
-            </el-row>
-            <el-row v-show='form.crtim'>
-              <el-col :span='6'>
-                <el-form-item label='创建人：'>
-                  <div class='zinput'>
-                    {{ form.crman ? form.crman.name : '' }}
-                  </div>
-                </el-form-item>
-              </el-col>
-              <el-col :span='6'>
-                <el-form-item label='创建时间：'>
-                  <div class='zinput'>
-                    {{ form.crtim }}
-                  </div>
-                </el-form-item>
-              </el-col>
-              <el-col :span='6'>
-                <el-form-item label='更新人：'>
-                  <div class='zinput'>
-                    {{ form.upman ? form.upman.name : '' }}
-                  </div>
-                </el-form-item>
-              </el-col>
-              <el-col :span='6'>
-                <el-form-item label='更新时间：'>
-                  <div class='zinput'>
-                    {{ form.uptim }}
-                  </div>
-                </el-form-item>
-              </el-col>
-            </el-row>
+              </div>
+            </div>
           </el-tab-pane>
           <el-tab-pane label='菜单分配' name='tab3'>
             <div style='margin-bottom: 10px'>
@@ -127,7 +81,7 @@ const activeName = ref('tab1');
 const state = reactive({
   url: '/sys/api/role',
   params: {path: '', query: ''},
-  form: {avtag: true,apis:[]} as any,
+  form: {avtag: true, apis: []} as any,
   treeData: [] as any,
 });
 
@@ -163,7 +117,7 @@ const save = async () => {
     apis.push({id: node.id, name: node.name});
   }
   form.value.apis = apis;
-  await tabSave({formRef:formRef.value, state, proxy, route});
+  await tabSave({formRef: formRef.value, state, proxy, route});
 };
 //endregion
 

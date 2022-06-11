@@ -3,7 +3,7 @@
     <template #header>
       <el-row>
         <el-col :span='10'>
-          <div style='line-height: 32px'>群组信息</div>
+          <div style='line-height: 32px'>定时任务信息</div>
         </el-col>
         <el-col :span='14' style='text-align: right'>
           <el-button type='success' @click='tabSave({formRef,state,proxy,route})' plain>保 存</el-button>
@@ -16,17 +16,44 @@
         <el-tabs type='card' v-model='activeName'>
           <el-tab-pane label='基本信息' name='tab1'>
             <div class="yform-div">
-              <el-form-item label='群组名称：' prop='name' :rules="[{ required: true, message: '名称不能为空'}]" style="width: 100%">
+              <el-form-item label='任务名称：' prop='name' :rules="[{ required: true, message: '名称不能为空'}]">
                 <el-input v-model='form.name'></el-input>
+              </el-form-item>
+              <el-form-item label='任务代码：' prop='code' :rules="[{ required: true, message: '代码不能为空'}]">
+                <el-input v-model='form.code'></el-input>
+              </el-form-item>
+              <el-form-item label='请求类型：'>
+                <el-radio-group v-model="form.retyp">
+                  <el-radio :label="0">Run</el-radio>
+                  <el-radio :label="1">Get</el-radio>
+                  <el-radio :label="2">Post</el-radio>
+                  <el-radio :label="3">Put</el-radio>
+                  <el-radio :label="4">Delete</el-radio>
+                </el-radio-group>
+              </el-form-item>
+              <el-form-item label='任务表达式：' prop='cron' style="width: 25%;">
+                <el-input v-model='form.cron'/>
+              </el-form-item>
+              <el-form-item label='执行类型：' style="width: 25%;">
+                <el-select v-model='form.type' style='width: 100%'>
+                  <el-option :value='0' label='并行执行'></el-option>
+                  <el-option :value='1' label='串行执行'></el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item label='请求地址：' prop='reurl'>
+                <el-input v-model='form.reurl'></el-input>
+              </el-form-item>
+              <el-form-item label='请求头：' prop='rehea'>
+                <el-input v-model='form.rehea'></el-input>
+              </el-form-item>
+              <el-form-item label='请求参数：' prop='repar' style="width: 100%">
+                <el-input v-model='form.repar' type='textarea' :rows='4'></el-input>
               </el-form-item>
               <el-form-item label='排序号：'>
                 <el-input-number v-model='form.ornum' controls-position='right' style='width: 100%'/>
               </el-form-item>
               <el-form-item label='是否可用：'>
                 <el-switch v-model='form.avtag'/>
-              </el-form-item>
-              <el-form-item label='成员列表：' style="width: 100%;">
-                <el-input type='textarea' :rows='4' v-model='membersName' readonly @click='openOrgsModal'/>
               </el-form-item>
             </div>
           </el-tab-pane>
@@ -50,10 +77,10 @@
   </el-card>
 </template>
 <script lang='ts'>
-export default {name: 'SysOrgGroupEdit'};
+export default {name: 'SysJobMain'};
 </script>
 <script lang='ts' setup>
-import {computed, getCurrentInstance, onMounted, reactive, ref, toRaw, toRefs} from 'vue';
+import {getCurrentInstance, onMounted, reactive, ref, toRefs} from 'vue';
 import {editInit, tabSave, tabClose} from '/@/comps/page/edit';
 import {useRoute} from 'vue-router';
 import OrgModal from '/@/comps/sys/OrgModal.vue';
@@ -65,7 +92,7 @@ const {proxy} = getCurrentInstance() as any;
 const activeName = ref('tab1');
 
 const state = reactive({
-  url: '/sys/org/group',
+  url: '/mon/job/main',
   params: {path: '', query: ''},
   form: {avtag: true} as any,
 });
@@ -78,29 +105,8 @@ onMounted(async () => {
 
 
 //region a 所属部门与员工成员逻辑
-const orgModal = ref();
 
-const openOrgsModal = () => {
-  orgModal.value.openModal({
-    orgType: 14,
-    selectMode: 2,
-    orgs: toRaw(form.value.members),
-  });
-};
 
-const closeOrgModal = (data: any) => {
-  form.value.members = data.orgs;
-};
-
-const membersName = computed(() => {
-  let names = '';
-  if (form.value.members && form.value.members.length > 0) {
-    for (const user of form.value.members) {
-      names += user.name + '；';
-    }
-  }
-  return names;
-});
 //endregion
 
 

@@ -15,35 +15,25 @@
 			<div style='margin-top: 8px;margin-bottom: 8px'>
 				<el-form ref='formRef' :model='form' label-width='140px'>
 					<el-tabs type='card' v-model='activeName'>
-						<el-tab-pane label='基本信息' class='zform' name='tab1'>
-							<el-row style='border-top: 1px solid #d2d2d2;'>
-								<el-col :span='24'>
-									<el-form-item label='主题：' prop='name' :rules="[{ required: true, message: '主题不能为空'}]">
-										<div class='zinput'>
-											<el-input v-model='form.name'></el-input>
-										</div>
-									</el-form-item>
-								</el-col>
-							</el-row>
-							<el-row>
-								<el-col :span='24'>
-									<el-form-item label='备注：'>
-										<div class='zinput' style='height: auto'>
-											<el-input v-model='form.notes'  type='textarea' :rows='4' ></el-input>
-										</div>
-									</el-form-item>
-								</el-col>
-							</el-row>
+						<el-tab-pane label='基本信息' class='yform yform100' name='tab1'>
+              <div class="yform-div">
+                <el-form-item label='主题：' prop='name' :rules="[{ required: true, message: '主题不能为空'}]">
+                    <el-input v-model='form.name'></el-input>
+                </el-form-item>
+                <el-form-item label='备注：'>
+                    <el-input v-model='form.notes'  type='textarea' :rows='4' ></el-input>
+                </el-form-item>
+              </div>
 						</el-tab-pane>
 						<el-tab-pane label='审批内容' name='tab2'>
 							<v-form-render v-if='state.vformShow' :form-json='formJson' :form-data='formData' :option-data='optionData' ref='vFormRef'>
 							</v-form-render>
 							<div style='color: green'>注：此页面内容通过在线表单设计器渲染</div>
 						</el-tab-pane>
-						<el-tab-pane label='流程处理' name='tab3' class='zform'>
+						<el-tab-pane label='流程处理' name='tab3'>
 							<BpmEdit v-if='form.protd' :temid='form.protd' ref='bpmRef' />
 						</el-tab-pane>
-						<el-tab-pane label='权限信息' name='tab4' class='zform'>
+						<el-tab-pane label='权限信息' name='tab4'>
 							<!--						<img :src='qx' style='width:100%' />-->
 						</el-tab-pane>
 					</el-tabs>

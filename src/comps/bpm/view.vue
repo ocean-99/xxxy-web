@@ -1,147 +1,81 @@
 <template>
-  <el-form class='zform' :model='form' label-width='160px' label-position='left'>
-    <el-row style='border-top: 1px solid #d2d2d2;'>
-      <el-col :span='24'>
-        <el-form-item label='流程说明' style='margin-left: 10px;'>
-          <div class='zinput'>
-            这是一个测试的流程，目前功能还不完善
-          </div>
+  <el-form class='yform yform100' :inline="true" :model='form' label-width='160px' label-position='left'>
+    <div class="yform-div">
+      <el-form-item label='流程说明'>
+        这是一个测试的流程，目前功能还不完善
+      </el-form-item>
+      <div class="yform-item" style="padding-left: 6px">
+        <el-checkbox v-model='state.autag'>显示审批记录</el-checkbox>
+      </div>
+      <div class="yform-item" v-show='state.autag'>
+        <el-table :data='audits' style='width: 100%'>
+          <el-table-column prop='crtim' label='时间' width='160'/>
+          <el-table-column prop='facno' label='节点编号' width='80'/>
+          <el-table-column prop='facna' label='节点名称' width='200'/>
+          <el-table-column prop='haman' label='操作者' width='90'/>
+          <el-table-column prop='opinf' label='操作' width='300'/>
+          <el-table-column prop='opnot' label='处理意见'/>
+        </el-table>
+      </div>
+      <div v-if='state.cutag'>
+        <el-form-item label='通知紧急程度'>
+          <el-radio-group v-model='form.opurg'>
+            <el-radio label='a'><span>一般</span></el-radio>
+            <el-radio label='b'><span style='color:blue'>急</span></el-radio>
+            <el-radio label='c'><span style='color:red'>紧急</span></el-radio>
+          </el-radio-group>
         </el-form-item>
-      </el-col>
-    </el-row>
-    <el-row>
-      <el-col :span='24'>
-        <div style='padding-left: 10px;border-right: 1px solid #ccc'>
-          <el-checkbox v-model='state.autag'>显示审批记录</el-checkbox>
-        </div>
-      </el-col>
-    </el-row>
-    <el-row v-show='state.autag'>
-      <el-col :span='24' style='background-color: white;'>
-        <div style='border-right: 1px solid #ccc'>
-          <el-table :data='audits' style='width: 100%'>
-            <el-table-column prop='crtim' label='时间' width='160'/>
-            <el-table-column prop='facno' label='节点编号' width='80'/>
-            <el-table-column prop='facna' label='节点名称' width='200'/>
-            <el-table-column prop='haman' label='操作者' width='90'/>
-            <el-table-column prop='opinf' label='操作' width='300'/>
-            <el-table-column prop='opnot' label='处理意见'/>
-          </el-table>
-        </div>
-      </el-col>
-    </el-row>
-
-    <div v-if='state.cutag'>
-      <el-row>
-        <el-col :span='24'>
-          <el-form-item label='通知紧急程度' style='margin-left: 10px'>
-            <div class='zinput'>
-              <el-radio-group v-model='form.opurg'>
-                <el-radio label='a'><span>一般</span></el-radio>
-                <el-radio label='b'><span style='color:blue'>急</span></el-radio>
-                <el-radio label='c'><span style='color:red'>紧急</span></el-radio>
-              </el-radio-group>
-            </div>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span='24'>
-          <el-form-item label='操作' style='margin-left: 10px'>
-            <div class='zinput'>
-              <el-radio-group v-model='form.opkey' @change="opChange">
-                <el-radio label='pass'>通过</el-radio>
-                <el-radio label='refuse'>驳回</el-radio>
-                <el-radio label='commission'>转办</el-radio>
-                <el-radio label='communicate'>沟通</el-radio>
-                <el-radio label='abandon'>废弃</el-radio>
-              </el-radio-group>
-            </div>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row v-if="form.opkey=='refuse'">
-        <el-col :span='24'>
-          <el-form-item label='驳回到' style='margin-left: 10px'>
-            <div class='zinput'>
-              <el-select v-model='form.refno' placeholder='请选择' style='width:300px;margin-right: 8px' @change='refChange'>
-                <el-option v-for='item in state.refNodes' :key='item.id' :value='item.id' :label="item.id+'.'+item.name"></el-option>
-              </el-select>
-              <el-checkbox v-model='form.retag'>驳回的节点通过后直接返回本节点</el-checkbox>
-            </div>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row v-if="form.opkey=='pass'">
-        <el-col :span='24'>
-          <el-form-item label='即将流向' style='margin-left: 10px'>
-            <div class='zinput'>
-              {{ state.toExmen }}
-            </div>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span='24'>
-          <el-form-item label='处理意见' style='margin-left: 10px'>
-            <div class='zinput' style='height: auto'>
-              <div class='au-flex'>
-                <div class='au-msg' style='padding:3px'>
-                  <el-input v-model='form.opnot' type='textarea' :rows='4' placeholder=' '/>
-                </div>
-
-                <div class='au-button'>
-                  <el-button type='primary' @click='bpmSubmit()' style='width: 94px;height: 94px;margin-top: 3px;margin-left: 6px'>提 交</el-button>
-                </div>
+        <el-form-item label='操作'>
+          <el-radio-group v-model='form.opkey' @change="opChange">
+            <el-radio label='pass'>通过</el-radio>
+            <el-radio label='refuse'>驳回</el-radio>
+            <el-radio label='commission'>转办</el-radio>
+            <el-radio label='communicate'>沟通</el-radio>
+            <el-radio label='abandon'>废弃</el-radio>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item label='驳回到' v-if="form.opkey=='refuse'">
+          <el-select v-model='form.refno' placeholder='请选择' style='width:300px;margin-right: 8px' @change='refChange'>
+            <el-option v-for='item in state.refNodes' :key='item.id' :value='item.id' :label="item.id+'.'+item.name"></el-option>
+          </el-select>
+          <el-checkbox v-model='form.retag'>驳回的节点通过后直接返回本节点</el-checkbox>
+        </el-form-item>
+        <el-form-item label='即将流向' v-if="form.opkey=='pass'">
+          {{ state.toExmen }}
+        </el-form-item>
+        <el-form-item label='处理意见'>
+          <div style="width: 100%;">
+            <div class='au-flex'>
+              <div class='au-msg' style='padding:3px'>
+                <el-input v-model='form.opnot' type='textarea' :rows='4' placeholder=' '/>
+              </div>
+              <div class='au-button'>
+                <el-button type='primary' @click='bpmSubmit()' style='width: 94px;height: 94px;margin-top: 3px;margin-left: 6px'>提 交</el-button>
               </div>
             </div>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span='24'>
-          <el-form-item label='附件' style='margin-left: 10px'>
-            <div class='zinput' style='height: auto'>
-              <el-upload class='upload-demo' action='https://jsonplaceholder.typicode.com/posts/' :file-list='fileList'>
-                <el-button type='primary'>上 传</el-button>
-              </el-upload>
-            </div>
-          </el-form-item>
-        </el-col>
-      </el-row>
-    </div>
-    <el-row>
-      <el-col :span='24'>
-        <el-form-item label='当前处理人' style='margin-left: 10px'>
-          <div class='zinput'>
-            {{ form.facno + '.' + form.facna + '(' + state.cuExmen + ')' }}
           </div>
         </el-form-item>
-      </el-col>
-    </el-row>
-    <el-row>
-      <el-col :span='24'>
-        <el-form-item label='已经处理人' style='margin-left: 10px'>
-          <div class='zinput'>
-            {{ state.hiHamen }}
-          </div>
+        <el-form-item label='附件'>
+          <el-upload class='upload-demo' action='https://jsonplaceholder.typicode.com/posts/' :file-list='fileList'>
+            <el-button type='primary'>上 传</el-button>
+          </el-upload>
         </el-form-item>
-      </el-col>
-    </el-row>
-    <el-row>
-      <el-col :span='24'>
-        <div style='padding-left: 10px;border-right: 1px solid #ccc'>
-          <el-checkbox v-model='state.chtag' @change='toggleFlowChart'>流程图</el-checkbox>
-        </div>
-      </el-col>
-    </el-row>
-    <el-row v-show='state.chtag'>
-      <el-col :span='24' style='background-color: white;'>
-        <div style='padding: 10px;border-right: 1px solid #ccc;height:1000px'>
+      </div>
+      <el-form-item label='当前处理人'>
+        {{ form.facno + '.' + form.facna + '(' + state.cuExmen + ')' }}
+      </el-form-item>
+      <el-form-item label='已经处理人'>
+        {{ state.hiHamen }}
+      </el-form-item>
+      <div class="yform-item" style="padding-left: 6px">
+        <el-checkbox v-model='state.chtag' @change='toggleFlowChart'>流程图</el-checkbox>
+      </div>
+      <div class="yform-item" v-show='state.chtag'>
+        <div style='height:1000px'>
           <Modeler2/>
         </div>
-      </el-col>
-    </el-row>
+      </div>
+    </div>
   </el-form>
 </template>
 
@@ -153,7 +87,7 @@ import request from '/@/utils/request';
 // const route = useRoute();
 import Modeler2 from '/@/comps/Activiti/modeler2/index';
 import {BpmnStore} from '/@/bpmn/store';
-import { ElMessage } from 'element-plus';
+import {ElMessage} from 'element-plus';
 // import Viewer from 'bpmn-js/lib/NavigatedViewer';
 // import Viewer from 'bpmn-js/lib/Modeler';
 // import Viewer from 'bpmn-js/lib/Viewer';
@@ -211,7 +145,7 @@ const bpmInit = async () => {
   const result: any = await request({
     url: '/bpm/proc/main/zbpm',
     method: 'get',
-    params:{proid:props.proid}
+    params: {proid: props.proid}
   });
   audits.value = result.audits;
   state.hiHamen = result.hiHamen;
@@ -258,7 +192,7 @@ const emit = defineEmits(['submit']);
 const bpmSubmit = async () => {
 
   if (form.value.opkey == 'pass') {
-    emit('submit',form.value);
+    emit('submit', form.value);
     // await request({
     //   url: '/bpm/proc/main/hpass',
     //   method: 'post',
@@ -266,14 +200,14 @@ const bpmSubmit = async () => {
     // });
   } else if (form.value.opkey == 'refuse') {
     const refInfo = toRaw(form.value);
-		if(refInfo.refno){
-			refInfo.tarno = refInfo.refno;
-			refInfo.tarna = refInfo.refna;
-			refInfo.exman = refInfo.reman;
-			emit('submit',form.value);
-		}else{
-			ElMessage.warning("请选择驳回节点后再驳回");
-		}
+    if (refInfo.refno) {
+      refInfo.tarno = refInfo.refno;
+      refInfo.tarna = refInfo.refna;
+      refInfo.exman = refInfo.reman;
+      emit('submit', form.value);
+    } else {
+      ElMessage.warning("请选择驳回节点后再驳回");
+    }
 
     // await request({
     //   url: '/bpm/proc/main/hrefuse',
@@ -291,7 +225,7 @@ const toggleFlowChart = async () => {
     const map = await request({
       url: '/bpm/proc/main/xml',
       method: 'get',
-      params:{proid: props.proid}
+      params: {proid: props.proid}
     }) as any;
     state.xml = map.xml;
     state.nodeList = map.nodeList;

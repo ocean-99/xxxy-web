@@ -12,90 +12,23 @@
       </el-row>
     </template>
     <div style='margin-top: 8px;margin-bottom: 8px'>
-      <el-form ref="formRef" class='zform' :model='form' label-width='140px'>
+      <el-form ref="formRef" :inline="true" class='yform' :model='form' label-width='140px'>
         <el-tabs type='card' v-model='activeName'>
           <el-tab-pane label='基本信息' name='tab1'>
-            <!--            <el-row style='border-top: 1px solid #d2d2d2;'>-->
-            <!--              <el-col :span='24'>-->
-            <!--                <el-form-item label='代码生成名称：' prop='name' :rules="[{ required: true, message: '代码不能为空'}]">-->
-            <!--                  <div class='zinput'>-->
-            <!--                    <el-input v-model='form.name'></el-input>-->
-            <!--                  </div>-->
-            <!--                </el-form-item>-->
-            <!--              </el-col>-->
-            <!--            </el-row>-->
-            <el-row style='border-top: 1px solid #d2d2d2;'>
-              <el-col :span='6'>
-                <el-form-item label='表名称：'>
-                  <div class='zinput'>
-                    <el-input v-model='form.name'></el-input>
-                  </div>
-                </el-form-item>
-              </el-col>
-              <el-col :span='6'>
-                <el-form-item label='表描述：'>
-                  <div class='zinput'>
-                    <el-input v-model='form.remark'></el-input>
-                  </div>
-                </el-form-item>
-              </el-col>
-              <el-col :span='6'>
-                <el-form-item label='业务名：'>
-                  <div class='zinput'>
-                    <el-input v-model='form.bunam'></el-input>
-                  </div>
-                </el-form-item>
-              </el-col>
-              <el-col :span='6'>
-                <el-form-item label='生成模式：'>
-                  <div class='zinput'>
-                    <el-select v-model='form.mode' placeholder='请选择' style='width: 100%'>
-                      <el-option :value="'m1'" :label="'单表增删改查'"></el-option>
-                      <el-option :value="'m2'" :label="'树表增删改查'"></el-option>
-                    </el-select>
-                  </div>
-                </el-form-item>
-              </el-col>
-            </el-row>
-            <el-row>
-              <el-col :span='12'>
-                <el-form-item label='排序号：'>
-                  <div class='zinput'>
-                    <el-input-number v-model='form.ornum' controls-position='right' style='width: 100%'/>
-                  </div>
-                </el-form-item>
-              </el-col>
-              <el-col :span='12'>
-                <el-form-item label='是否可用：'>
-                  <div class='zinput'>
-                    <el-switch v-model='form.avtag'>
-                    </el-switch>
-                  </div>
-                </el-form-item>
-              </el-col>
-            </el-row>
+            <div class="yform-div">
+              <el-form-item label='表名称：' style="width: 25%" prop='name' :rules="[{ required: true, message: '名称不能为空'}]">
+                <el-input v-model='form.name'></el-input>
+              </el-form-item>
+              <el-form-item label='表描述：' style="width: 25%">
+                <el-input v-model='form.remark'></el-input>
+              </el-form-item>
+              <el-form-item label='业务名：' style="width: 50%">
+                <el-input v-model='form.bunam'></el-input>
+              </el-form-item>
+            </div>
           </el-tab-pane>
           <el-tab-pane label='字段信息' name='tab2'>
             <el-table border :data='form.fields' :row-style="{height: '36px'}" style='width: 100%'>
-              <el-table-column type='expand'>
-                <template #default='props'>
-                  <el-row :gutter='10' style='background-color: white;border: 0;margin-left: 4px;margin-right: 4px'>
-                    <el-col :span='12'>
-                      <el-input style="font-family: 'Courier New', sans-serif; font-size:16px"
-                                type='textarea' :rows='10' placeholder='显示隐藏控制函数'
-                                v-model='props.row.func1'>
-                      </el-input>
-                    </el-col>
-                    <el-col :span='12'>
-                      <el-input style="font-family: 'Courier New', sans-serif; font-size:16px"
-                                type='textarea' :rows='10' placeholder='选项选择后的触发函数'
-                                v-model='props.row.func2'>
-                      </el-input>
-                    </el-col>
-                  </el-row>
-                </template>
-              </el-table-column>
-
               <el-table-column label='排序号' width='90'>
                 <template #default='scope'>
                   <el-input-number v-model='scope.row.ornum' controls-position='right' style='width: 100%'/>
@@ -123,6 +56,11 @@
                   </el-select>
                 </template>
               </el-table-column>
+              <el-table-column label='字段长度' width='90'>
+                <template #default='scope'>
+                  <el-input v-model='scope.row.length' controls-position='right'/>
+                </template>
+              </el-table-column>
               <el-table-column label='备注'>
                 <template #default='scope'>
                   <el-input v-model='scope.row.notes' required></el-input>
@@ -140,67 +78,26 @@
                   </el-icon>
                 </template>
               </el-table-column>
-
-
-              <!--							<el-table-column label="Name" width="180">-->
-              <!--								<template #default="scope">-->
-              <!--									<el-popover effect="light" trigger="hover" placement="top" width="auto">-->
-              <!--										<template #default>-->
-              <!--											<div>name: {{ scope.row.name }}</div>-->
-              <!--											<div>address: {{ scope.row.id }}</div>-->
-              <!--										</template>-->
-              <!--										<template #reference>-->
-              <!--											<el-tag>{{ scope.row.name }}</el-tag>-->
-              <!--										</template>-->
-              <!--									</el-popover>-->
-              <!--								</template>-->
-              <!--							</el-table-column>-->
             </el-table>
-
-
           </el-tab-pane>
           <el-tab-pane label='其他信息' name='tab9'>
-            <el-row style='border-top: 1px solid #d2d2d2;'>
-              <el-col :span='24'>
-                <el-form-item label='备注：'>
-                  <div class='zinput' style='height: auto'>
-                    <el-input style="font-family: 'Courier New', Helvetica, Arial, sans-serif; font-size:16px"
-                              type='textarea' :rows='4' v-model='form.notes'>
-                    </el-input>
-                  </div>
-                </el-form-item>
-              </el-col>
-            </el-row>
-            <el-row v-show='form.crtim'>
-              <el-col :span='6'>
-                <el-form-item label='创建人：'>
-                  <div class='zinput'>
-                    {{ form.crman ? form.crman.name : '' }}
-                  </div>
-                </el-form-item>
-              </el-col>
-              <el-col :span='6'>
-                <el-form-item label='创建时间：'>
-                  <div class='zinput'>
-                    {{ form.crtim }}
-                  </div>
-                </el-form-item>
-              </el-col>
-              <el-col :span='6'>
-                <el-form-item label='更新人：'>
-                  <div class='zinput'>
-                    {{ form.upman ? form.upman.name : '' }}
-                  </div>
-                </el-form-item>
-              </el-col>
-              <el-col :span='6'>
-                <el-form-item label='更新时间：'>
-                  <div class='zinput'>
-                    {{ form.uptim }}
-                  </div>
-                </el-form-item>
-              </el-col>
-            </el-row>
+            <div class="yform-div">
+              <el-form-item label='备注：' style="width: 100%">
+                <el-input type='textarea' :rows='4' v-model='form.notes'/>
+              </el-form-item>
+              <el-form-item label='创建人：' style="width: 25%">
+                {{ form.crman ? form.crman.name : '' }}
+              </el-form-item>
+              <el-form-item label='创建时间：' style="width: 25%">
+                <div class='zinput'> {{ form.crtim }}</div>
+              </el-form-item>
+              <el-form-item label='更新人：' style="width: 25%">
+                {{ form.upman ? form.upman.name : '' }}
+              </el-form-item>
+              <el-form-item label='更新时间：' style="width: 25%">
+                <div class='zinput'> {{ form.uptim }}</div>
+              </el-form-item>
+            </div>
           </el-tab-pane>
         </el-tabs>
       </el-form>
@@ -235,7 +132,6 @@ onMounted(async () => {
 
 
 // 屏幕弹框逻辑
-
 const addItem = () => {
   if (form.value.id) {
     form.value.fields.push({
@@ -247,13 +143,7 @@ const addItem = () => {
     })
   }
 };
-
-
 //endregiton
-
 
 </script>
 
-<style scoped>
-
-</style>

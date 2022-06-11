@@ -33,7 +33,7 @@
 								border stripe @selection-change='listSelect($event,state)'>
 				<el-table-column type='selection' width='55' align='center' />
 				<el-table-column label='序号' type='index' width='55' align='center' />
-				<el-table-column label='代理商编号' width='126'>
+				<el-table-column label='代理商编号' width='140'>
 					<template #default='scope'>
 						<span style='cursor:pointer;color: #3e9ece' @click='tabEdit(state.url,scope.row.id)'>
 							{{ scope.row.senum }}

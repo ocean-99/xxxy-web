@@ -11,7 +11,6 @@
 					<el-col :span='10' style='text-align: right'>
 						<el-button type='success' :icon='Plus' @click='tabAdd(state.url)' plain>新增</el-button>
 <!--						<el-button type='info' :icon='Upload' plain>导入</el-button>-->
-<!--            <el-button type='info' :icon='Download' plain @click='listExp' >导出</el-button>-->
 						<el-button type='danger' :icon='Delete' :disabled='state.multiple' @click='listDelete(state)' plain>删除</el-button>
 					</el-col>
 				</el-row>
@@ -32,7 +31,7 @@
 								border stripe @selection-change='listSelect($event,state)'>
 				<el-table-column type='selection' width='55' align='center' />
 				<el-table-column label='序号' type='index' width='55' align='center' />
-				<el-table-column label='代码生成名称' width='180'>
+				<el-table-column label='物理表名称' width='180'>
 					<template #default='scope'>
 						<span style='cursor:pointer;color: #3e9ece' @click='tabEdit(state.url,scope.row.id)'>{{ scope.row.name }}</span>
 					</template>
@@ -42,10 +41,12 @@
         <el-table-column label='备注' prop='notes' />
         <el-table-column label='操作' width='80' header-align='center' align="right">
           <template #default="scope">
-            <el-icon title="预览代码" @click='showCode(scope.row.id)' style="cursor: pointer;font-size: 18px;top:2px;margin-right: 8px;color: #52C41A">
+            <el-icon title="预览代码" @click='showCode(scope.row.id)'
+                     style="cursor: pointer;font-size: 18px;top:2px;margin-right: 8px;color: #52C41A">
               <View/>
             </el-icon>
-            <el-icon title="生成代码" @click='genCode(scope.row.id)' style="cursor: pointer;font-size: 18px;top:2px;margin-right: 8px;color: #2874C5">
+            <el-icon title="生成代码" @click='genCode(scope.row.id)'
+                     style="cursor: pointer;font-size: 18px;top:2px;margin-right: 8px;color: #2874C5">
               <Download/>
             </el-icon>
           </template>
@@ -81,16 +82,6 @@ onMounted(() => {
 	listQuery(state);
 });
 
-
-const listExp=async ()=>{
-  await request({
-    url: state.url+"/download",
-    method: 'get',
-    params: {tanam:'aa'},
-    responseType: "blob",
-  });
-}
-
 const genCode=async (id:string)=>{
   await request({
     url: state.url+"/zip",
@@ -109,8 +100,6 @@ const showCode=async (id:string)=>{
   });
   showRef.value.openModal(data)
 }
-
-
 </script>
 
 <style scoped>

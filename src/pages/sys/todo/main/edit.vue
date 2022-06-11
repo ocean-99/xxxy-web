@@ -1,5 +1,4 @@
 <template>
-
   <el-card class='box-card' :body-style="{padding:'2px 8px'}" shadow='never'>
     <template #header>
       <el-row>
@@ -13,31 +12,21 @@
       </el-row>
     </template>
     <div style='margin-top: 8px;margin-bottom: 8px'>
-      <el-form ref="formRef" class='zform' :model='form' label-width='140px'>
+      <el-form ref="formRef" :inline="true" class='yform yform100' :model='form' label-width='140px'>
         <el-tabs type='card' v-model='activeName'>
           <el-tab-pane label='基本信息' name='tab1'>
-            <el-row style='border-top: 1px solid #d2d2d2;'>
-              <el-col :span='24'>
-                <el-form-item label='待办名称：' prop='name' :rules="[{ required: true, message: '名称不能为空'}]">
-                  <div class='zinput'>
-                    <el-input v-model='form.name'></el-input>
-                  </div>
-                </el-form-item>
-              </el-col>
-            </el-row>
+            <div class="yform-div">
+              <el-form-item label='待办名称：' prop='name' :rules="[{ required: true, message: '名称不能为空'}]">
+                <el-input v-model='form.name'/>
+              </el-form-item>
+            </div>
           </el-tab-pane>
           <el-tab-pane label='其他信息' name='tab3'>
-            <el-row style='border-top: 1px solid #d2d2d2;'>
-              <el-col :span='24'>
-                <el-form-item label='备注：'>
-                  <div class='zinput' style='height: auto'>
-                    <el-input style="font-family: 'Courier New', Helvetica, Arial, sans-serif; font-size:16px"
-                              type='textarea' :rows='4' v-model='form.notes'>
-                    </el-input>
-                  </div>
-                </el-form-item>
-              </el-col>
-            </el-row>
+            <div class="yform-div">
+              <el-form-item label='备注：'>
+                <el-input type='textarea' :rows='4' v-model='form.notes'/>
+              </el-form-item>
+            </div>
           </el-tab-pane>
         </el-tabs>
       </el-form>
@@ -67,10 +56,4 @@ const {form} = toRefs(state);
 onMounted(async () => {
   await editInit({state, route});
 });
-
-
 </script>
-
-<style scoped>
-
-</style>
