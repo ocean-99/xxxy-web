@@ -203,6 +203,8 @@ onMounted(async () => {
   server.value = await request({
     url: state.url,
     method: 'get',
+  }).catch(() => {
+    loading.close();
   });
   loading.close();
   // const canSubmit = await checkSubmit(data.formRef);
