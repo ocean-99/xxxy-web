@@ -25,6 +25,13 @@
 				<el-table-column label='登录地点' prop='addre' width='160' />
 				<el-table-column label='操作系统' prop='ageos' width='150' />
 				<el-table-column label='浏览器' prop='agbro' />
+        <el-table-column label='强退' prop='notes' width='46' align='center'>
+          <template #default='scope'>
+            <el-icon :size='20' style='top:3px;color: green;cursor: pointer' @click='kickOut(scope.row.onkey)'  title="强退">
+              <Football />
+            </el-icon>
+          </template>
+        </el-table-column>
 			</el-table>
 
 			<el-pagination
@@ -40,12 +47,12 @@
 export default { name: 'MonLogLogin' };
 </script>
 <script lang='ts' setup>
-import { Search } from '@element-plus/icons-vue';
-import { onMounted, reactive, ref } from 'vue';
+import { Search ,Football} from '@element-plus/icons-vue';
+import { onMounted, reactive } from 'vue';
 import { listSelect } from '/@/comps/page';
 import request from '/@/utils/request';
+import {ElMessageBox} from "element-plus";
 
-const drawer = ref();
 
 const state = reactive({
 	url: '/mon/online/user', loading: true, ids: [], totalList: [] as any,
@@ -76,6 +83,21 @@ const pageChange = () => {
 		state.form.pageSize * state.form.pageSize,
 	);
 }
+
+const kickOut = async (onkey: string) => {
+  ElMessageBox.confirm('确定要强退用户吗？', '提示', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'info',
+  }).then(async () => {
+    await request({
+      url: state.url + '/close',
+      method: 'post',
+      params:{onkey:onkey}
+    });
+    await listQuery();
+  });
+};
 
 
 </script>

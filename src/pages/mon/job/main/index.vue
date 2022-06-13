@@ -37,7 +37,7 @@
 					</template>
 				</el-table-column>
 				<el-table-column label='备注' prop='notes' />
-				<el-table-column label='操作' prop='notes' width='46' align='center'>
+				<el-table-column label='执行' prop='notes' width='46' align='center'>
 					<template #default='scope'>
 						<el-icon :size='20' style='top:3px;color: green;cursor: pointer' @click='doOnce(scope.row.id)'  title="立即执行一次">
 							<video-play />
