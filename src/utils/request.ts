@@ -86,11 +86,13 @@ service.interceptors.response.use(
                 });
         } else if (error.response.status == 403) {
             ElMessage.error('权限不足');
-        } else if (error.response.status == 500) {
+        } else if (error.response.status == 404) {
+            ElMessage.error('接口地址不存在');
+        }  else if (error.response.status == 500) {
             ElMessage.error('服务器内部错误');
         } else {
             if (error.response.data) ElMessage.error(error.response.statusText);
-            else ElMessage.error('接口路径找不到');
+            else ElMessage.error('未知错误');
         }
         return Promise.reject(error);
     }

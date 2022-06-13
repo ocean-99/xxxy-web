@@ -359,6 +359,21 @@ export const sysRoutes: Array<RouteRecordRaw> = [
 		},
 		children: [
 			{
+				path: '/mon/online/user',
+				name: 'MonOnlineUser',
+				component: () => import('/@/pages/mon/online/user/index.vue'),
+				meta: {
+					title: '在线用户',
+					isLink: '',
+					isHide: false,
+					isKeepAlive: true,
+					isAffix: false,
+					isIframe: false,
+					roles: ['admin'],
+					icon: 'ele-Tickets',
+				},
+			},
+			{
 				path: '/mon/log/login',
 				name: 'MonLogLogin',
 				component: () => import('/@/pages/mon/log/login/index.vue'),

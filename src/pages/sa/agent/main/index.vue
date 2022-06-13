@@ -11,7 +11,7 @@
 					<el-col :span='10' style='text-align: right'>
 						<el-button type='success' :icon='Plus' @click='tabAdd(state.url)' plain>新增</el-button>
             <el-button type='info' :icon='Upload' @click='listImp' plain>导入</el-button>
-            <el-button type='info' :icon='Download' plain @click='listExp' >导出</el-button>
+            <el-button type='info' :icon='Download' plain @click='listExp3' >导出</el-button>
 						<el-button type='danger' :icon='Delete' :disabled='state.multiple' @click='listDelete(state)' plain>删除</el-button>
 					</el-col>
 				</el-row>
@@ -85,6 +85,23 @@ const listExp=async ()=>{
   });
 }
 
+const listExp2=async ()=>{
+	await request({
+		url: "/ass/coge/table/download",
+		method: 'get',
+		params: state.form,
+		responseType: "blob",
+	});
+}
+
+const listExp3=async ()=>{
+	await request({
+		url: state.url+"/exp3",
+		method: 'get',
+		params: state.form,
+		responseType: "blob",
+	});
+}
 
 const uploadModal = ref();
 

@@ -62,6 +62,7 @@
         </el-tabs>
       </el-form>
     </div>
+		<div id="simpleSquare"></div>
     <OrgModal ref='orgModal' @close='closeOrgModal'/>
     <Amap ref='amapRef' @close='closeAmap'/>
   </el-card>
@@ -77,6 +78,7 @@ import OrgModal from '/@/comps/sys/OrgModal.vue';
 import Amap from '/@/comps/ass/amap.vue';
 import {FormInstance} from "element-plus";
 import request from "/@/utils/request";
+import { SVG } from "@svgdotjs/svg.js"
 
 const route = useRoute();
 const formRef = ref<FormInstance>();
@@ -95,6 +97,9 @@ const {form} = toRefs(state);
 onMounted(async () => {
   await editInit({state, route});
   await levelsInit();
+	let shapeModel = SVG().addTo("#simpleSquare").size("100%", "100%");
+	shapeModel.rect(100, 100).attr({ fill: "#00B1B6" });
+	//http://t.zoukankan.com/onesea-p-15292991.html
 });
 
 

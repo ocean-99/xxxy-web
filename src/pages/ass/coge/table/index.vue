@@ -91,6 +91,16 @@ const genCode=async (id:string)=>{
   });
 }
 
+
+// const genCode=async (id:string)=>{
+// 	await request({
+// 		url: state.url+"/dxf",
+// 		method: 'get',
+// 		params: {id},
+// 		responseType: "blob",
+// 	});
+// }
+
 const showRef = ref() as any;
 const showCode=async (id:string)=>{
   const data= await request({
