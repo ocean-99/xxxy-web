@@ -1,5 +1,4 @@
 <template>
-
 	<el-dialog v-model='dialogVisible' title='弹框选择' draggable width='500px' :before-close='handleClose'>
 		<el-card class='box-card' style='height: 500px;' body-style='height: 100%;overflow: auto'>
 			<template #header>
@@ -96,6 +95,10 @@ const handleCommand = (command: string | number | object) => {
 	}
 	ElMessage(`click on item ${command}`);
 };
+
+const handleClose=()=>{
+
+}
 
 
 // // 初始化表格数据

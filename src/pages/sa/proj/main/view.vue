@@ -3,10 +3,11 @@
 		<template #header>
 			<el-row>
 				<el-col :span='10'>
-					<div style='line-height: 32px'>代理商编辑</div>
+					<div style='line-height: 32px'>项目查看</div>
 				</el-col>
 				<el-col :span='14' style='text-align: right'>
-					<el-button type='success' @click='tabSave({formRef,state,proxy,route})' plain>保 存</el-button>
+					<el-button type='success' @click='viewToEdit({proxy,route,state})' plain>编 辑</el-button>
+					<el-button type='success' @click='editProd' plain>产品维护</el-button>
 					<el-button type='info' @click='tabClose({proxy,route})' plain>关 闭</el-button>
 				</el-col>
 			</el-row>
@@ -16,41 +17,33 @@
 				<el-tabs type='card' v-model='activeName'>
 					<el-tab-pane label='基本信息' name='tab1'>
 						<div class='yform-div'>
-							<el-form-item label='代理商名称：' prop='name' :rules="[{ required: true, message: '名称不能为空'}]">
-								<el-input v-model='form.name'></el-input>
+							<el-form-item label='项目名称：' prop='name' :rules="[{ required: true, message: '名称不能为空'}]">
+								<span class='zinput'>{{ form.name }}</span>
 							</el-form-item>
-							<el-form-item label='代理商分类：' prop='catid' :rules="[{ required: true, message: '分类不能为空'}]" style='width: 25%'>
-								<el-select v-model='form.catid' style='width: 100%'>
-									<el-option v-for='item in state.cates' :key='item.id' :label='item.name' :value='item.id' />
-								</el-select>
+							<el-form-item label='项目编号：'>
+								<span class='zinput'>{{ form.senum }}</span>
 							</el-form-item>
-							<el-form-item label='代理商编号：' style='width: 25%'>
-								<span v-show='form.id' style='margin-left: 5px;color: green'>{{ form.senum }}</span>
-								<span v-show='!form.id' style='margin-left: 5px;color: #b9abab'>提交后自动生成</span>
+							<el-form-item label='项目地址：' style='width: 100%'>
+								<span class='zinput'>{{ form.addre }}</span>
 							</el-form-item>
-							<el-form-item label='代理商地址：' style='width: 100%'>
-								<el-input v-model='form.addre' readonly @click='chooseAddr'></el-input>
+							<el-form-item label='代理商经办人：'>
+								<span class='zinput'>{{ form.opmna }}</span>
 							</el-form-item>
-							<el-form-item label='代理商资质：'>
-								<el-select v-model='form.level' placeholder='请选择' style='width: 100%'>
-									<el-option v-for='item in state.levels' :key='item.id' :value='item.id' :label='item.name' />
-								</el-select>
-							</el-form-item>
+
 						</div>
 					</el-tab-pane>
-
+					<el-tab-pane label='产品信息' name='tab2'>
+					</el-tab-pane>
 					<el-tab-pane label='权限信息' name='tab9'>
 						<div class='yform-div'>
 							<el-form-item label='备注：' style='width: 100%'>
-								<el-input type='textarea' :rows='4' v-model='form.notes' />
+								<el-input type='textarea' :rows='4' v-model='form.notes' readonly />
 							</el-form-item>
 							<el-form-item label='可查看者：' style='width: 50%'>
-								<el-input type='textarea' :rows='4' v-model='viewersName' readonly @click='openViewersModal'>
-								</el-input>
+								<el-input type='textarea' :rows='4' v-model='viewersName' readonly />
 							</el-form-item>
 							<el-form-item label='可编辑者：' style='width: 50%'>
-								<el-input type='textarea' :rows='4' v-model='editorsName' readonly @click='openEditorsModal'>
-								</el-input>
+								<el-input type='textarea' :rows='4' v-model='editorsName' readonly />
 							</el-form-item>
 							<el-form-item label='创建人：' style='width: 25%'>
 								<div class='zinput'> {{ form.crman ? form.crman.name : '' }}</div>
@@ -74,18 +67,15 @@
 		<Amap ref='amapRef' @close='closeAmap' />
 	</el-card>
 </template>
-<script lang='ts'>
-export default { name: 'SaAgentMainEdit' };
-</script>
 <script lang='ts' setup>
-import { computed, getCurrentInstance, onMounted, reactive, ref, toRaw, toRefs } from 'vue';
-import { editInit, tabSave, tabClose } from '/@/comps/page/edit';
+import { computed, getCurrentInstance, onMounted, reactive, ref,  toRefs } from 'vue';
+import { viewInit, tabClose, viewToEdit } from '/@/comps/page/view';
 import { useRoute } from 'vue-router';
 import OrgModal from '/@/comps/sys/OrgModal.vue';
 import Amap from '/@/comps/ass/amap.vue';
 import { FormInstance } from 'element-plus';
 import request from '/@/utils/request';
-import { SVG } from '@svgdotjs/svg.js';
+import router from '/@/router';
 
 const route = useRoute();
 const formRef = ref<FormInstance>();
@@ -93,8 +83,8 @@ const { proxy } = getCurrentInstance() as any;
 const activeName = ref('tab1');
 
 const state = reactive({
-	url: '/sa/agent/main',
-	params: { path: '', query: '' }, levels: [] as any, cates: [] as any,
+	url: '/sa/proj/main',
+	params: { path: '', query: '' }, levels: [] as any,
 	form: { avtag: true, items: [] as any } as any,
 });
 
@@ -102,52 +92,21 @@ const { form } = toRefs(state);
 
 
 onMounted(async () => {
-	await editInit({ state, route });
-	await catesInit();
+	await viewInit({ state, route });
 	await levelsInit();
-	let shapeModel = SVG().addTo('#simpleSquare').size('100%', '100%');
-	shapeModel.rect(100, 100).attr({ fill: '#00B1B6' });
-	//http://t.zoukankan.com/onesea-p-15292991.html
 });
 
 
+const editProd = async () => {
+	proxy.mittBus.emit('onCurrentContextmenuClick', Object.assign({}, { contextMenuClickId: 1, ...route }));
+	await router.push({
+		path: '/sa/prod/main',
+		query: { proj:state.form.id },
+	});
+};
+
+
 //region 经办人与可查看者选择逻辑
-const orgModal = ref();
-
-const openViewersModal = () => {
-	orgModal.value.openModal({
-		opener: 'viewers',
-		orgType: 11,
-		selectMode: 2,
-		orgs: toRaw(form.value.viewers),
-	});
-};
-
-const openEditorsModal = () => {
-	orgModal.value.openModal({
-		opener: 'editors',
-		orgType: 11,
-		selectMode: 2,
-		orgs: toRaw(form.value.editors),
-	});
-};
-
-const closeOrgModal = (data: any) => {
-	if (data.opener == 'viewers') {
-		if (data.orgs && data.orgs.length > 0) {
-			form.value.viewers = data.orgs;
-		} else {
-			form.value.viewers = null;
-		}
-	} else if (data.opener == 'editors') {
-		if (data.orgs && data.orgs.length > 0) {
-			form.value.editors = data.orgs;
-		} else {
-			form.value.editors = null;
-		}
-	}
-};
-
 const viewersName = computed(() => {
 	let names = '';
 	if (form.value.viewers && form.value.viewers.length > 0) {
@@ -192,13 +151,6 @@ const closeAmap = (data: any) => {
 const levelsInit = async () => {
 	state.levels = await request({
 		url: '/ass/dict/data/list?maiid=AG_LEVEL',
-		method: 'get',
-	});
-};
-
-const catesInit = async () => {
-	state.cates = await request({
-		url: '/sa/agent/cate/list',
 		method: 'get',
 	});
 };

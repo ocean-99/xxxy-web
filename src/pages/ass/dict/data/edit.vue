@@ -1,5 +1,5 @@
 <template>
-  <el-dialog v-model='state.show' title='字典值编辑' draggable width='500px' :before-close='handleClose'>
+  <el-dialog v-model='state.show' title='字典值编辑' draggable width='500px'>
     <el-form ref='formRef' :model='form' label-width='120px'>
       <el-form-item label='字典值编码：' prop='code' :rules="[{ required: true, message: '编码不能为空'}]">
         <el-input v-model='form.code'></el-input>

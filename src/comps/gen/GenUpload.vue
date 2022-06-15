@@ -1,5 +1,5 @@
 <template>
-  <el-dialog v-model='dialogVisible' title='文件上传' draggable width='500px' :before-close='handleClose'>
+  <el-dialog v-model='dialogVisible' title='文件上传' draggable width='500px'>
     <el-upload
         class="upload-demo"
         drag  ref="upload"

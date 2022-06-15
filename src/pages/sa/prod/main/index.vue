@@ -5,13 +5,13 @@
 				<el-row>
 					<el-col :span='14'>
 						<el-input v-model='state.form.name' placeholder='输入名称回车查询' class='list-search' clearable @keyup.enter='listQuery(state)' />
-						<el-button type='primary' @click='listQuery(state)' plain>查 询</el-button>
+						<el-button type='primary' @click='listQuery(state)' plain >查 询</el-button>
 						<el-button class='more-button' :icon='state.moreParams?ArrowUp:ArrowDown' plain @click='state.moreParams=!state.moreParams' />
 					</el-col>
 					<el-col :span='10' style='text-align: right'>
 						<el-button type='success' :icon='Plus' @click='tabAdd(state.url)' plain>新增</el-button>
-            <el-button type='info' :icon='Upload' @click='listImp' plain>导入</el-button>
-            <el-button type='info' :icon='Download' plain @click='listExp3' >导出</el-button>
+<!--            <el-button type='info' :icon='Upload' @click='listImp' plain>导入</el-button>-->
+<!--            <el-button type='info' :icon='Download' plain @click='listExp3' >导出</el-button>-->
 						<el-button type='danger' :icon='Delete' :disabled='state.multiple' @click='listDelete(state)' plain>删除</el-button>
 					</el-col>
 				</el-row>
@@ -33,15 +33,15 @@
 								border stripe @selection-change='listSelect($event,state)'>
 				<el-table-column type='selection' width='55' align='center' />
 				<el-table-column label='序号' type='index' width='55' align='center' />
-				<el-table-column label='客户编号' width='140'>
+				<el-table-column label='项目编号' width='140'>
 					<template #default='scope'>
-						<span style='cursor:pointer;color: #3e9ece' @click='tabEdit(state.url,scope.row.id)'>
+						<span style='cursor:pointer;color: #3e9ece' @click='tabView(state.url,scope.row.id)'>
 							{{ scope.row.senum }}
 						</span>
 					</template>
 				</el-table-column>
-				<el-table-column label='客户名称' prop='name' width='250' />
-				<el-table-column label='客户地址' prop='addre' />
+				<el-table-column label='项目名称' prop='name' width='250' />
+				<el-table-column label='项目地址' prop='addre' />
 				<el-table-column label='创建时间' prop='crtim' width='150' />
 				<el-table-column label='创建人' prop='crman' width='60' />
 				<el-table-column label='更新时间' prop='uptim' width='150' />
@@ -60,12 +60,12 @@
 </template>
 
 <script lang='ts' setup>
-import { Plus, Delete, ArrowDown, ArrowUp,Upload,Download } from '@element-plus/icons-vue';
+import { Plus, Delete, ArrowDown, ArrowUp} from '@element-plus/icons-vue';
 import {onMounted, reactive} from 'vue';
-import { listQuery, listDelete, tabAdd, tabEdit, listSelect } from '/@/comps/page/index';
+import { listQuery, listDelete, tabAdd,tabView, listSelect } from '/@/comps/page/index';
 
 const state = reactive({
-	url: '/sa/cust/main', loading: true, ids: [], cates: [] as any,
+	url: '/sa/proj/main', loading: true, ids: [],
 	form: {}, single: true, multiple: true, list: [], total: 0,
 });
 

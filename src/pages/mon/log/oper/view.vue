@@ -19,6 +19,9 @@
       <el-form-item label='浏览器：' style="width: 45%;">
         {{ form.agbro }}
       </el-form-item>
+			<el-form-item label='请求参数：' style="width: 100%;">
+				{{ form.params }}
+			</el-form-item>
     </el-form>
     <template #footer>
       <span class='dialog-footer'>
