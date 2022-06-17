@@ -25,3 +25,7 @@ pnpm-debug.log*
 .env
 .env.development
 .env.production
+
+/src/pages/bi/
+/src/pages/sa/
+/src/pages/te/
