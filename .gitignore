@@ -29,3 +29,4 @@ pnpm-debug.log*
 /src/pages/bi/
 /src/pages/sa/
 /src/pages/te/
+/src/router/saRoute.ts
