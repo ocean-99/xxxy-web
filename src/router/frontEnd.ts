@@ -9,9 +9,14 @@ import { useTagsViewRoutes } from '/@/stores/tagsViewRoutes';
 import { useRoutesList } from '/@/stores/routesList';
 import { NextLoading } from '/@/utils/loading';
 import {sysRoutes} from '/@/router/sysRoute';
+import {saRoutes} from '/@/router/saRoute';
 
 for (const sysRoute of sysRoutes) {
 	dynamicRoutes[0].children?.push(sysRoute);
+}
+
+for (const saRoute of saRoutes) {
+	dynamicRoutes[0].children?.push(saRoute);
 }
 
 

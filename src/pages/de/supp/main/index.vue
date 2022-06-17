@@ -31,13 +31,14 @@
                 border stripe @selection-change='listSelect($event,state)'>
         <el-table-column type='selection' width='55' align='center'/>
         <el-table-column label='序号' type='index' width='55' align='center'/>
-        <el-table-column label='供应商名称' width='180'>
+        <el-table-column label='供应商编号' width='160'>
           <template #default='scope'>
 						<span style='cursor:pointer;color: #3e9ece' @click='tabEdit(state.url,scope.row.id)'>
-							{{ scope.row.name }}
+							{{ scope.row.senum }}
 						</span>
           </template>
         </el-table-column>
+        <el-table-column label='供应商名称' prop='name' width="180"/>
         <el-table-column label='地址' prop='addre' width="350"/>
         <el-table-column label='备注' prop='notes'/>
         <el-table-column label='创建时间' prop='crtim' width='160'/>
