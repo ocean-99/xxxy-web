@@ -1,5 +1,5 @@
 <template>
-	<el-dialog v-model='dialogVisible' title='弹框选择' draggable width='500px' :before-close='handleClose'>
+	<el-dialog v-model='dialogVisible' title='弹框选择' draggable width='500px'>
 		<el-card class='box-card' style='height: 500px;' body-style='height: 100%;overflow: auto'>
 			<template #header>
 				<div class='card-header'>
@@ -51,6 +51,7 @@ import { ElMessage } from 'element-plus';
 
 const props = defineProps({
 	url: String,
+  maInit: Boolean,
 });
 
 interface Tree {
@@ -80,7 +81,8 @@ const filterNode = (value: string, data: Tree) => {
 
 const state = reactive({
 	data: [] as any,
-});
+  params:{},
+}) as any;
 
 
 const handleCommand = (command: string | number | object) => {
@@ -96,28 +98,34 @@ const handleCommand = (command: string | number | object) => {
 	ElMessage(`click on item ${command}`);
 };
 
-const handleClose=()=>{
-
-}
-
-
 // // 初始化表格数据
 const initTreeData = async () => {
 	state.data = await request({
 		url: props.url,
 		method: 'get',
+    params:state.params
 	});
 };
 
 const dialogVisible = ref(false);
-const openModal = async (id: string) => {
+const openModal = async (data:any) => {
+  if(data&&data.params){
+    state.params=data.params;
+  }else{
+    state.params={}
+  }
+  if(data&&data.reload){
+    await initTreeData();
+  }
 	dialogVisible.value = true;
 };
 
 defineExpose({ openModal });
 
-onMounted(() => {
-	initTreeData();
+onMounted(async () => {
+  if(props.maInit==false){
+    await initTreeData();
+  }
 });
 
 const emits = defineEmits(['close']);

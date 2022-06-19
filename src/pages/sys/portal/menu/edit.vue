@@ -27,7 +27,7 @@
             <el-col :span='12'>
               <el-form-item label='上级菜单：'>
                 <el-input v-model='form.parna' readonly :suffix-icon='Search' @click='openParentModal'></el-input>
-                <ParentModal url='/sys/portal/menu/tree' ref='parentModal' @close='closeParentModal'/>
+                <ParentModal url='/sys/portal/menu/tree' :maInit="true" ref='parentModal' @close='closeParentModal'/>
               </el-form-item>
             </el-col>
           </el-row>
@@ -199,7 +199,7 @@ onMounted(() => {
 const parentModal = ref();
 
 const openParentModal = () => {
-  parentModal.value.openModal();
+  parentModal.value.openModal({reload:true,params:{porid:state.form.porid}});
 };
 
 const closeParentModal = (node: any) => {

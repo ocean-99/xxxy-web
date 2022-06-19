@@ -20,7 +20,7 @@
         {{ form.agbro }}
       </el-form-item>
 			<el-form-item label='请求参数：' style="width: 100%;">
-				{{ form.params }}
+				{{ form.param }}
 			</el-form-item>
     </el-form>
     <template #footer>

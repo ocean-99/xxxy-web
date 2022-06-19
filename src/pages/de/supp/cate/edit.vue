@@ -62,7 +62,7 @@ const openModal = async (data: any) => {
       form.value.parent = {id: data.pid, name: data.pname};
       form.value.pid = data.pid;
     }
-    console.log(form.value);
+    // console.log(form.value);
   }
   await catesInit();
   state.show = true;
