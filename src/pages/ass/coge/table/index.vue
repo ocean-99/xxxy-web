@@ -10,7 +10,8 @@
 					</el-col>
 					<el-col :span='10' style='text-align: right'>
 						<el-button type='success' :icon='Plus' @click='tabAdd(state.url)' plain>新增</el-button>
-<!--						<el-button type='info' :icon='Upload' plain>导入</el-button>-->
+						<el-button type='info' :icon='Upload' plain @click='toFinish'>从数据库导入</el-button>
+						<el-button type='info' :icon='Upload' plain @click='toFinish'>从Excel导入</el-button>
 						<el-button type='danger' :icon='Delete' :disabled='state.multiple' @click='listDelete(state)' plain>删除</el-button>
 					</el-col>
 				</el-row>
@@ -69,7 +70,7 @@ export default { name: 'AssCogeMain' };
 <script lang='ts' setup>
 import { Plus, Delete, ArrowDown, ArrowUp,Download,View} from '@element-plus/icons-vue';
 import {onMounted, reactive, ref} from 'vue';
-import { listQuery, listDelete, tabAdd, tabEdit, listSelect } from '/@/comps/page/index';
+import { listQuery, listDelete, tabAdd, tabEdit, listSelect,toFinish} from '/@/comps/page/index';
 import request from "/@/utils/request";
 import Show from './show.vue';
 

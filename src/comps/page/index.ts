@@ -154,6 +154,8 @@ export const pageView = (url: string) => {
 	window.open(import.meta.env.VITE_PUBLIC_PATH + '#/page/' + url);
 };
 
-
+export const toFinish = () => {
+	window.alert("待完成");
+};
 
 
