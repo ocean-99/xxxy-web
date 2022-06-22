@@ -45,7 +45,7 @@
                 </el-select>
               </el-form-item>
               <el-form-item label='编辑页类型：' prop='edtyp' :rules="[{ required: true, message: '名称不能为空'}]">
-                <el-select v-model='form.edtyp' style='width: 100%'>
+                <el-select v-model='form.edtyp' style='width: 100%' @click="edtypChange">
                   <el-option label='弹出框' value='popup' />
                   <el-option label='抽屉页' value='drawer' />
                   <el-option label='标签页' value='tab' />
@@ -55,7 +55,7 @@
                 <el-select v-model='form.pecol' style='width: 100%'>
                   <el-option label='1列' :value='1' />
                   <el-option label='2列' :value='2' />
-                  <el-option label='4列' :value='4' />
+                  <el-option label='4列' :value='4' v-show='form.edtyp=="tab"'/>
                 </el-select>
               </el-form-item>
 							<el-form-item label='路由类型：'>
@@ -207,6 +207,12 @@ const nameChange=()=>{
   let resStr=form.value.name.replace(/\_(\w)/g, (_, letter:any) => letter.toUpperCase());
   resStr = resStr.slice(0, 1).toUpperCase() + resStr.slice(1);
   form.value.bunam=resStr;
+}
+
+const edtypChange=()=>{
+  if(form.value.pecol==4){
+    form.value.pecol=1;
+  }
 }
 
 
