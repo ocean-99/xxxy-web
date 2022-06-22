@@ -221,6 +221,12 @@
   width: 100%;
 }
 
+.xform .el-form-item{
+  width:50%;
+  margin-left: 0;
+  margin-right: 0;
+}
+
 //去除阴影
 .el-card.is-always-shadow, .el-card.is-hover-shadow:focus, .el-card.is-hover-shadow:hover{
   box-shadow: none;

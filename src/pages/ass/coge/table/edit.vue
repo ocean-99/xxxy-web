@@ -58,6 +58,15 @@
                   <el-option label='4列' :value='4' />
                 </el-select>
               </el-form-item>
+							<el-form-item label='路由类型：'>
+								<el-select v-model='form.rotyp' style='width: 100%'>
+									<el-option label='前端' value='front' />
+									<el-option label='后端' value='back' />
+								</el-select>
+							</el-form-item>
+							<el-form-item label='排序字段：'>
+								<el-input v-model='form.orfie'></el-input>
+							</el-form-item>
 <!--              <el-form-item label='排序号：' prop='ornum'>-->
 <!--                <el-input-number v-model='form.ornum' controls-position='right' style='width: 100%' />-->
 <!--              </el-form-item>-->
