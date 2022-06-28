@@ -319,6 +319,9 @@ const handlePreview: UploadProps['onPreview'] = (uploadFile) => {
 const handleSuccess = (a: any, b: any, c: any) => {
 	c[c.length - 1] = { ...a };
 	c[c.length - 1].name = a.pname + '.' + a.sname;
+  if(form.value.id){
+    c[c.length - 1].maiid=form.value.id;
+  }
 };
 
 const handleExceed: UploadProps['onExceed'] = (files, uploadFiles) => {

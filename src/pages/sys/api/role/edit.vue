@@ -47,10 +47,11 @@
               </div>
             </div>
           </el-tab-pane>
-          <el-tab-pane label='菜单分配' name='tab3'>
+          <el-tab-pane label='接口分配' name='tab3'>
             <div style='margin-bottom: 10px'>
               <el-button @click='expandAll' plain>展 开</el-button>
               <el-button @click='collapseAll' plain>折 叠</el-button>
+              <span style="margin-left: 10px;color: green">按钮通过绑定接口授权</span>
             </div>
             <div style='border: 1px solid #eee'>
               <el-tree ref='treeRef' :data='treeData' show-checkbox node-key='id' :props="{children: 'children',label: 'name'}"/>
