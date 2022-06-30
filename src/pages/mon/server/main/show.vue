@@ -183,7 +183,7 @@ import {ElLoading} from "element-plus";
 
 
 const state = reactive({
-  url: '/mon/server/main', loading: true, ids: [], cates: [] as any,
+  url: '/mon/server/main', loading: true, ids: [],
   single: true, multiple: true, list: [], total: 0,
 });
 

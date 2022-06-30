@@ -16,7 +16,7 @@
 				<template v-else>
 					<a :href="val.meta.isLink" target="_blank" rel="opener" class="w100">
 						<SvgIcon :name="val.meta.icon" />
-						{{ $t(val.meta.title) }}
+            <span>{{ $t(val.meta.title) }}</span>
 					</a>
 				</template>
 			</el-menu-item>

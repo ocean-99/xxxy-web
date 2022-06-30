@@ -4,51 +4,67 @@
       <template #header>
         <el-row>
           <el-col :span='14'>
-            <el-input v-model='state.form.name' placeholder='输入名称回车查询' class='list-search' clearable @keyup.enter='vxeQuery($refs.gridRef)'/>
-            <el-button type='primary' @click='vxeQuery($refs.gridRef)' plain>查 询</el-button>
+            <el-input v-model='state.form.name' placeholder='输入名称回车查询' class='list-search' clearable @keyup.enter='listQuery(state)'/>
+            <el-button type='primary' @click='listQuery(state)' plain>查 询</el-button>
+            <el-button class='more-button' :icon='state.moreParams?ArrowUp:ArrowDown' plain @click='state.moreParams=!state.moreParams'/>
           </el-col>
           <el-col :span='10' style='text-align: right'>
             <el-button type='success' :icon='Plus' @click='tabAdd(state.url)' plain>新增</el-button>
-            <el-button type='danger' :icon='Delete' :disabled='state.multiple' @click='vxeDelete($refs.gridRef,state.url)' plain>删除</el-button>
+            <el-button type='danger' :icon='Delete' :disabled='state.multiple' @click='listDelete(state)' plain>删除</el-button>
           </el-col>
         </el-row>
+        <div v-show='state.moreParams' class='more-params'>
+          <el-form :inline='true' label-width='100px'>
+            <el-form-item label='更多参数1'>
+              <el-input v-model='state.form.xxx' placeholder='更多参数1'/>
+            </el-form-item>
+            <el-form-item label='更多参数2'>
+              <el-input v-model='state.form.yyy' placeholder='更多参数2'/>
+            </el-form-item>
+            <el-form-item/>
+          </el-form>
+        </div>
       </template>
 
-      <vxe-grid ref='gridRef' v-bind="gridOptions">
-        <template #name_default="{ row }">
-          <span @click="tabEdit(state.url,row.id)" style="cursor:pointer;color: #3e9ece">
-            {{ row.name }}
-          </span>
-        </template>
-      </vxe-grid>
+      <el-table height='400' :cell-style="{padding:'2px'}" :row-style="{height: '36px'}"
+                v-loading='state.loading' :data='state.list'
+                border stripe @selection-change='listSelect($event,state)'>
+        <el-table-column type='selection' width='55' align='center'/>
+        <el-table-column label='序号' type='index' width='55' align='center'/>
+        <el-table-column label='客户名称' width='160'>
+          <template #default='scope'>
+						<span style='cursor:pointer;color: #3e9ece' @click='tabEdit(state.url,scope.row.id)'>
+							{{ scope.row.name }}
+						</span>
+          </template>
+        </el-table-column>
+        <el-table-column label='备注' prop='notes'/>
+        <el-table-column label='创建时间' prop='crtim' width='160'/>
+        <el-table-column label='更新时间' prop='uptim' width='160'/>
+      </el-table>
 
+      <el-pagination
+          @size-change='listQuery(state)' @current-change='listQuery(state)'
+          class='mt8' :pager-count='5' :page-sizes='[10, 20, 30]' background
+          :total='state.total' v-model:current-page='state.form.page'
+          v-model:page-size='state.form.pageSize'
+          layout='total, sizes, prev, pager, next, jumper'
+      />
     </el-card>
   </div>
 </template>
 
 <script lang='ts' setup>
-import {Plus, Delete} from '@element-plus/icons-vue';
+import {Plus, Delete, ArrowDown, ArrowUp} from '@element-plus/icons-vue';
 import {onMounted, reactive} from 'vue';
-import {VxeGridProps} from 'vxe-table'
-import {tabAdd, tabEdit} from '/@/comps/page';
-import {vxeInit, vxeQuery, vxeDelete} from '/@/comps/vxe';
+import {listQuery, listDelete, tabAdd, tabEdit, listSelect} from '/@/comps/page';
 
 const state = reactive({
-  url: '/de/supp/main',
-  form: {},
-});
-
-const gridOptions = reactive<VxeGridProps>({
-  columns: [
-    {type: 'checkbox', align: 'center', width: 42, fixed: 'left'},
-    {type: 'seq', align: 'center', width: 50, fixed: 'left'},
-    {field: 'name', title: '供应商名称', width: 300, fixed: 'left', slots: {default: 'name_default'}},
-    {field: 'crtim', title: '创建时间', width: 160},
-    {field: 'notes', title: '备注'}
-  ],
+  url: '/de/cust/main', loading: true, ids: [],
+  form: {}, single: true, multiple: true, list: [], total: 0,
 });
 
 onMounted(() => {
-  vxeInit(state, gridOptions);
+  listQuery(state);
 });
 </script>
