@@ -13,7 +13,8 @@ import { computed, defineComponent } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useThemeConfig } from '/@/stores/themeConfig';
 
-import logoMini from '/@/assets/logo-mini.svg';
+// import logoMini from '/@/assets/logo-mini.svg';
+import logoMini from '/@/assets/vboot.png';
 
 export default defineComponent({
 	name: 'layoutLogo',
@@ -54,6 +55,9 @@ export default defineComponent({
 	animation: logoAnimation 0.3s ease-in-out;
 	span {
 		white-space: nowrap;
+    font-size: 16px;
+    font-weight: bolder;
+    color: white;
 		display: inline-block;
 	}
 	&:hover {
@@ -62,7 +66,7 @@ export default defineComponent({
 		}
 	}
 	&-medium-img {
-		width: 20px;
+		width: 32px;
 		margin-right: 5px;
 	}
 }
@@ -73,7 +77,7 @@ export default defineComponent({
 	cursor: pointer;
 	animation: logoAnimation 0.3s ease-in-out;
 	&-img {
-		width: 20px;
+		width: 32px;
 		margin: auto;
 	}
 	&:hover {

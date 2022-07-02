@@ -14,7 +14,7 @@ export const sysRoutes: Array<RouteRecordRaw> = [
             isAffix: false,
             isIframe: false,
             roles: ['admin', 'common'],
-            icon: 'iconfont icon-xitongshezhi',
+            icon: 'ele-Setting',
         },
         children: [
             {
@@ -60,7 +60,7 @@ export const sysRoutes: Array<RouteRecordRaw> = [
                             isAffix: false,
                             isIframe: false,
                             roles: ['admin'],
-                            icon: 'iconfont icon-caidan',
+                            icon: 'ele-Tickets',
                         },
                     },
                     {
@@ -90,7 +90,7 @@ export const sysRoutes: Array<RouteRecordRaw> = [
                             isAffix: false,
                             isIframe: false,
                             roles: ['admin'],
-                            icon: 'iconfont icon-caidan',
+                            icon: 'ele-Tickets',
                         },
                     },
                     {
@@ -120,7 +120,7 @@ export const sysRoutes: Array<RouteRecordRaw> = [
                             isAffix: false,
                             isIframe: false,
                             roles: ['admin'],
-                            icon: 'iconfont icon-caidan',
+                            icon: 'ele-Tickets',
                         },
                     },
                     {
@@ -150,7 +150,7 @@ export const sysRoutes: Array<RouteRecordRaw> = [
                             isAffix: false,
                             isIframe: false,
                             roles: ['admin'],
-                            icon: 'iconfont icon-caidan',
+                            icon: 'ele-Tickets',
                         },
                     },
                     {
@@ -180,7 +180,7 @@ export const sysRoutes: Array<RouteRecordRaw> = [
                             isAffix: false,
                             isIframe: false,
                             roles: ['admin'],
-                            icon: 'iconfont icon-caidan',
+                            icon: 'ele-Tickets',
                         },
                     },
                     {
@@ -195,7 +195,7 @@ export const sysRoutes: Array<RouteRecordRaw> = [
                             isAffix: false,
                             isIframe: false,
                             roles: ['admin'],
-                            icon: 'iconfont icon-caidan',
+                            icon: 'ele-Tickets',
                         },
                     },
                 ],
