@@ -1,65 +1,66 @@
 <template>
   <div class="app-container" style="overflow: hidden">
     <el-row :gutter="10">
-      <el-col :lg="24" class="card-box" v-if="server.cpu" >
+      <el-col :lg="24" class="card-box" v-if="server.cpu">
         <el-card class="box-card">
           <template #header>
             <span>系统状态</span>
           </template>
 
-          <el-col :xs="24" :sm="24" :md="8" :lg="8" :xl="8" class="mr30">
-            <div class="title">CPU使用率</div>
-            <el-tooltip placement="top-end">
-              <template #content>
-                <div style="font-size: 12px">
-                  <div style="padding: 3px">当前空闲率：{{ server.cpu.free }}</div>
-                  <div style="padding: 3px">系统使用率：{{ server.cpu.sys }}</div>
-                  <div style="padding: 3px">用户使用率：{{ server.cpu.used }}</div>
+          <el-row>
+            <el-col :xs="24" :sm="12" :md="8" :lg="6" :xl="4">
+              <div class="title">CPU使用率</div>
+              <el-tooltip placement="top-end">
+                <template #content>
+                  <div style="font-size: 12px">
+                    <div style="padding: 3px">当前空闲率：{{ server.cpu.free }}</div>
+                    <div style="padding: 3px">系统使用率：{{ server.cpu.sys }}</div>
+                    <div style="padding: 3px">用户使用率：{{ server.cpu.used }}</div>
+                  </div>
+                </template>
+                <div class="content">
+                  <el-progress type="dashboard" :percentage="parseFloat(server.cpu.sys)"/>
                 </div>
-              </template>
-              <div class="content">
-                <el-progress type="dashboard" :percentage="parseFloat(server.cpu.sys)"/>
-              </div>
-            </el-tooltip>
-            <div class="footer" v-if="server.sys">{{ server.cpu.cpuNum }} 核心</div>
-          </el-col>
+              </el-tooltip>
+              <div class="footer" v-if="server.sys">{{ server.cpu.cpuNum }} 核心</div>
+            </el-col>
 
-          <el-col :xs="24" :sm="24" :md="8" :lg="8" :xl="8"  class="mr30">
-            <div class="title">内存使用率</div>
-            <el-tooltip placement="top-end">
-              <template #content>
-                <div style="font-size: 12px">
-                  <div style="padding: 3px">总量：{{ server.mem.total }}</div>
-                  <div style="padding: 3px">已使用：{{ server.mem.used }}</div>
-                  <div style="padding: 3px">空闲：{{ server.mem.free }}</div>
+            <el-col :xs="24" :sm="12" :md="8" :lg="6" :xl="4">
+              <div class="title">内存使用率</div>
+              <el-tooltip placement="top-end">
+                <template #content>
+                  <div style="font-size: 12px">
+                    <div style="padding: 3px">总量：{{ server.mem.total }}</div>
+                    <div style="padding: 3px">已使用：{{ server.mem.used }}</div>
+                    <div style="padding: 3px">空闲：{{ server.mem.free }}</div>
+                  </div>
+                </template>
+
+                <div class="content">
+                  <el-progress type="dashboard" :percentage="server.mem.usage"/>
                 </div>
-              </template>
+              </el-tooltip>
+              <div class="footer">{{ server.mem.used }}GB / {{ server.mem.total }}GB</div>
+            </el-col>
 
-              <div class="content">
-                <el-progress type="dashboard" :percentage="server.mem.usage"/>
-              </div>
-            </el-tooltip>
-            <div class="footer">{{ server.mem.used }}GB / {{ server.mem.total }}GB </div>
-          </el-col>
+            <el-col :xs="24" :sm="12" :md="8" :lg="6" :xl="4">
+              <div class="title">JVM使用率</div>
+              <el-tooltip placement="top-end">
+                <template #content>
+                  <div style="font-size: 12px">
+                    <div style="padding: 3px">总量：{{ server.jvm.total }}</div>
+                    <div style="padding: 3px">已使用：{{ server.jvm.used }}</div>
+                    <div style="padding: 3px">空闲：{{ server.jvm.free }}</div>
+                  </div>
+                </template>
 
-
-          <el-col :xs="24" :sm="24" :md="8" :lg="8" :xl="8"  class="mr30">
-            <div class="title">JVM使用率</div>
-            <el-tooltip placement="top-end">
-              <template #content>
-                <div style="font-size: 12px">
-                  <div style="padding: 3px">总量：{{ server.jvm.total }}</div>
-                  <div style="padding: 3px">已使用：{{ server.jvm.used }}</div>
-                  <div style="padding: 3px">空闲：{{ server.jvm.free }}</div>
+                <div class="content">
+                  <el-progress type="dashboard" :percentage="server.jvm.usage"/>
                 </div>
-              </template>
-
-              <div class="content">
-                <el-progress type="dashboard" :percentage="server.jvm.usage"/>
-              </div>
-            </el-tooltip>
-            <div class="footer">{{ server.jvm.used }}GB / {{ server.jvm.total }}GB </div>
-          </el-col>
+              </el-tooltip>
+              <div class="footer">{{ server.jvm.used }}GB / {{ server.jvm.total }}GB</div>
+            </el-col>
+          </el-row>
         </el-card>
       </el-col>
 
@@ -68,24 +69,26 @@
           <template #header>
             <span>磁盘状态</span>
           </template>
-          <el-col :xs="24" :sm="24" :md="8" :lg="8" :xl="8" class="mr30" v-for="sysFile in server.sysFiles" :key="sysFile.dirName">
-            <div class="title">{{ sysFile.dirName }}盘使用率</div>
-            <div class="content">
-              <el-tooltip placement="top-end">
-                <template #content>
-                  <div style="font-size: 12px">
-                    <div style="padding: 3px">总量：{{ sysFile.total }}</div>
-                    <div style="padding: 3px">空闲：{{ sysFile.free }}</div>
-                    <div style="padding: 3px">已用：{{ sysFile.used }}</div>
+          <el-row>
+            <el-col :xs="24" :sm="12" :md="8" :lg="6" :xl="4" v-for="sysFile in server.sysFiles" :key="sysFile.dirName">
+              <div class="title">{{ sysFile.dirName }}盘使用率</div>
+              <div class="content">
+                <el-tooltip placement="top-end">
+                  <template #content>
+                    <div style="font-size: 12px">
+                      <div style="padding: 3px">总量：{{ sysFile.total }}</div>
+                      <div style="padding: 3px">空闲：{{ sysFile.free }}</div>
+                      <div style="padding: 3px">已用：{{ sysFile.used }}</div>
+                    </div>
+                  </template>
+                  <div class="content">
+                    <el-progress type="dashboard" :percentage="parseFloat(sysFile.usage)"/>
                   </div>
-                </template>
-                <div class="content">
-                  <el-progress type="dashboard" :percentage="parseFloat(sysFile.usage)"/>
-                </div>
-              </el-tooltip>
-            </div>
-            <div class="footer">{{ sysFile.used }}/{{ sysFile.total }}</div>
-          </el-col>
+                </el-tooltip>
+              </div>
+              <div class="footer">{{ sysFile.used }}/{{ sysFile.total }}</div>
+            </el-col>
+          </el-row>
         </el-card>
       </el-col>
 
@@ -143,28 +146,56 @@
             <table cellspacing="0" style="width: 100%;table-layout:fixed;">
               <tbody>
               <tr>
-                <td class="el-table__cell is-leaf"><div class="cell">Java名称</div></td>
-                <td class="el-table__cell is-leaf"><div class="cell" v-if="server.jvm">{{ server.jvm.name }}</div></td>
-                <td class="el-table__cell is-leaf"><div class="cell">Java版本</div></td>
-                <td class="el-table__cell is-leaf"><div class="cell" v-if="server.jvm">{{ server.jvm.version }}</div></td>
+                <td class="el-table__cell is-leaf">
+                  <div class="cell">Java名称</div>
+                </td>
+                <td class="el-table__cell is-leaf">
+                  <div class="cell" v-if="server.jvm">{{ server.jvm.name }}</div>
+                </td>
+                <td class="el-table__cell is-leaf">
+                  <div class="cell">Java版本</div>
+                </td>
+                <td class="el-table__cell is-leaf">
+                  <div class="cell" v-if="server.jvm">{{ server.jvm.version }}</div>
+                </td>
               </tr>
               <tr>
-                <td class="el-table__cell is-leaf"><div class="cell">启动时间</div></td>
-                <td class="el-table__cell is-leaf"><div class="cell" v-if="server.jvm">{{ server.jvm.startTime }}</div></td>
-                <td class="el-table__cell is-leaf"><div class="cell">运行时长</div></td>
-                <td class="el-table__cell is-leaf"><div class="cell" v-if="server.jvm">{{ server.jvm.runTime }}</div></td>
+                <td class="el-table__cell is-leaf">
+                  <div class="cell">启动时间</div>
+                </td>
+                <td class="el-table__cell is-leaf">
+                  <div class="cell" v-if="server.jvm">{{ server.jvm.startTime }}</div>
+                </td>
+                <td class="el-table__cell is-leaf">
+                  <div class="cell">运行时长</div>
+                </td>
+                <td class="el-table__cell is-leaf">
+                  <div class="cell" v-if="server.jvm">{{ server.jvm.runTime }}</div>
+                </td>
               </tr>
               <tr>
-                <td colspan="1" class="el-table__cell is-leaf"><div class="cell">安装路径</div></td>
-                <td colspan="3" class="el-table__cell is-leaf"><div class="cell" v-if="server.jvm">{{ server.jvm.home }}</div></td>
+                <td colspan="1" class="el-table__cell is-leaf">
+                  <div class="cell">安装路径</div>
+                </td>
+                <td colspan="3" class="el-table__cell is-leaf">
+                  <div class="cell" v-if="server.jvm">{{ server.jvm.home }}</div>
+                </td>
               </tr>
               <tr>
-                <td colspan="1" class="el-table__cell is-leaf"><div class="cell">项目路径</div></td>
-                <td colspan="3" class="el-table__cell is-leaf"><div class="cell" v-if="server.sys">{{ server.sys.userDir }}</div></td>
+                <td colspan="1" class="el-table__cell is-leaf">
+                  <div class="cell">项目路径</div>
+                </td>
+                <td colspan="3" class="el-table__cell is-leaf">
+                  <div class="cell" v-if="server.sys">{{ server.sys.userDir }}</div>
+                </td>
               </tr>
               <tr>
-                <td colspan="1" class="el-table__cell is-leaf"><div class="cell">运行参数</div></td>
-                <td colspan="3" class="el-table__cell is-leaf"><div class="cell" v-if="server.jvm">{{ server.jvm.inputArgs }}</div></td>
+                <td colspan="1" class="el-table__cell is-leaf">
+                  <div class="cell">运行参数</div>
+                </td>
+                <td colspan="3" class="el-table__cell is-leaf">
+                  <div class="cell" v-if="server.jvm">{{ server.jvm.inputArgs }}</div>
+                </td>
               </tr>
               </tbody>
             </table>
@@ -197,7 +228,7 @@ onMounted(async () => {
   const loading = ElLoading.service({
     lock: true,
     fullscreen: true,
-    text:'正在获取服务器监控数据，请稍等',
+    text: '正在获取服务器监控数据，请稍等',
     background: 'rgba(0, 0, 0, 0.5)',
   });
   server.value = await request({
