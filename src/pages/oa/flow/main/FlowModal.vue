@@ -12,7 +12,7 @@
 						<ul class='z-flow-search' style='padding: 2px'>
 							<li v-for='item in receItems' :key='item.id' class='f-flow' @click='receItemClick(item)'>
 								<el-checkbox v-model='item.checked' />
-								<img src='https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1813762643,1914315241&amp;fm=26&amp;gp=0.jpg'>
+								<img src='https://zsvg.gitee.io/vboot-vue/public/vboot.png'>
 								<span class='layui-elip f-flow-name'>{{ item.name }}</span>
 								<span class='layui-elip f-flow-cate'>{{ item.catna }}</span>
 							</li>
@@ -31,7 +31,7 @@
 								<ul class='z-cate-tree'>
 									<li v-for='item in tierItems' :key='item.id' class='f-flow' title='444444444' @click='tierItemClick(item)'>
 										<el-checkbox v-model='item.checked' />
-										<img src='https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1813762643,1914315241&amp;fm=26&amp;gp=0.jpg'>
+										<img src='https://zsvg.gitee.io/vboot-vue/public/vboot.png'>
 										<span class='layui-elip f-flow-name'>{{ item.name }}</span>
 										<span class='layui-elip f-flow-cate'>{{ item.catna }}</span>
 									</li>
