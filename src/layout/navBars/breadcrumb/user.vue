@@ -1,5 +1,5 @@
 <template>
-	<div class="layout-navbars-breadcrumb-user pr15" :style="{ flex: layoutUserFlexNum }">
+	<div class="layout-navbars-breadcrumb-user" :style="{ flex: layoutUserFlexNum }">
     <div>
       <el-select v-show="userInfos.portals.length>1" v-model='userInfos.dePortal' placeholder='门户名称' @change="portalChange" style='margin-right: 10px;width: 140px'>
         <el-option
@@ -10,18 +10,18 @@
         />
       </el-select>
     </div>
-		<el-dropdown :show-timeout="70" :hide-timeout="50" trigger="click" @command="onComponentSizeChange">
-			<div class="layout-navbars-breadcrumb-user-icon">
-				<i class="iconfont icon-ziti" :title="$t('message.user.title0')"></i>
-			</div>
-			<template #dropdown>
-				<el-dropdown-menu>
-					<el-dropdown-item command="large" :disabled="disabledSize === 'large'">{{ $t('message.user.dropdownLarge') }}</el-dropdown-item>
-					<el-dropdown-item command="default" :disabled="disabledSize === 'default'">{{ $t('message.user.dropdownDefault') }}</el-dropdown-item>
-					<el-dropdown-item command="small" :disabled="disabledSize === 'small'">{{ $t('message.user.dropdownSmall') }}</el-dropdown-item>
-				</el-dropdown-menu>
-			</template>
-		</el-dropdown>
+<!--		<el-dropdown :show-timeout="70" :hide-timeout="50" trigger="click" @command="onComponentSizeChange">-->
+<!--			<div class="layout-navbars-breadcrumb-user-icon">-->
+<!--				<i class="iconfont icon-ziti" :title="$t('message.user.title0')"></i>-->
+<!--			</div>-->
+<!--			<template #dropdown>-->
+<!--				<el-dropdown-menu>-->
+<!--					<el-dropdown-item command="large" :disabled="disabledSize === 'large'">{{ $t('message.user.dropdownLarge') }}</el-dropdown-item>-->
+<!--					<el-dropdown-item command="default" :disabled="disabledSize === 'default'">{{ $t('message.user.dropdownDefault') }}</el-dropdown-item>-->
+<!--					<el-dropdown-item command="small" :disabled="disabledSize === 'small'">{{ $t('message.user.dropdownSmall') }}</el-dropdown-item>-->
+<!--				</el-dropdown-menu>-->
+<!--			</template>-->
+<!--		</el-dropdown>-->
 		<el-dropdown :show-timeout="70" :hide-timeout="50" trigger="click" @command="onLanguageChange">
 			<div class="layout-navbars-breadcrumb-user-icon">
 				<i class="iconfont" :class="disabledI18n === 'en' ? 'icon-fuhao-yingwen' : 'icon-fuhao-zhongwen'" :title="$t('message.user.title1')"></i>
@@ -38,9 +38,6 @@
 			<el-icon :title="$t('message.user.title2')">
 				<ele-Search />
 			</el-icon>
-		</div>
-		<div class="layout-navbars-breadcrumb-user-icon" @click="onLayoutSetingClick">
-			<i class="icon-skin iconfont" :title="$t('message.user.title3')"></i>
 		</div>
 		<div class="layout-navbars-breadcrumb-user-icon">
 			<el-popover placement="bottom" trigger="click" transition="el-zoom-in-top" :width="300" :persistent="false">
@@ -83,6 +80,12 @@
 			</template>
 		</el-dropdown>
 		<Search ref="searchRef" />
+    <div class="layout-navbars-breadcrumb-user-icon" style="width: 42px" @click="onLayoutSetingClick">
+<!--      <i class="icon-skin iconfont" :title="$t('message.user.title3')"></i>-->
+      <el-icon class="el-icon--right">
+        <ele-Setting />
+      </el-icon>
+    </div>
 	</div>
 </template>
 
@@ -276,6 +279,7 @@ export default defineComponent({
 
 <style scoped lang="scss">
 .layout-navbars-breadcrumb-user {
+  cursor: pointer;
 	display: flex;
 	align-items: center;
 	justify-content: flex-end;

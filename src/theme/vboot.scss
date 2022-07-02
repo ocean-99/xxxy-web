@@ -260,3 +260,38 @@
 .el-sub-menu__title .el-tooltip__trigger .el-tooltip__trigger{
   padding-left: 10px;
 }
+
+.el-menu--vertical .el-menu-item.is-active{
+  background-color: #0960bd !important;
+  color: white;
+}
+
+//.el-menu--vertical .el-menu-item.is-hover{
+//  background-color: red !important;
+//  color: white;
+//}
+//
+//.el-menu--vertical .el-sub-menu .is-active .el-sub-menu__title{
+//  color: white;
+//}
+
+
+.el-menu--vertical .el-menu-item{
+  color: #b3b9bf ;
+  height: 48px !important;
+  line-height: 48px !important;
+}
+
+.el-menu--vertical .el-menu-item:hover{
+  color: white ;
+}
+
+.el-menu--vertical .el-sub-menu__title{
+  color: #b3b9bf;
+  height: 48px !important;
+  line-height: 48px !important;
+}
+
+.el-menu--vertical .el-sub-menu__title:hover{
+  color: white ;
+}
