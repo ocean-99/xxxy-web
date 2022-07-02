@@ -1,4 +1,4 @@
-<div align="center"><h1 align="center">vboot-vben</h1></div>
+<div align="center"><h1 align="center">vboot-vue</h1></div>
 <div align="center"><h3 align="center">一个开箱即用的快速开发平台vue前端</h3></div>
 
 # 🍿 相关地址
