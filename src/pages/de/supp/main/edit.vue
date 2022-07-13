@@ -31,8 +31,8 @@
 								<el-input v-model='form.addre' readonly @click='chooseAddr'></el-input>
 							</el-form-item>
 							<el-form-item label='供应商资质：' style='width: 50%'>
-								<el-select v-model='form.level' placeholder='请选择' style='width: 100%'>
-									<el-option v-for='item in state.levels' :key='item.id' :value='item.id' :label='item.name' />
+								<el-select v-model='form.grade' placeholder='请选择' style='width: 100%'>
+									<el-option v-for='item in state.grades' :key='item.id' :value='item.id' :label='item.name' />
 								</el-select>
 							</el-form-item>
 							<el-form-item label='经办人：' style='width: 50%'>
@@ -158,7 +158,7 @@ const { proxy } = getCurrentInstance() as any;
 const activeName = ref('tab1');
 
 const state = reactive({
-	url: '/de/supp/main', cates: [] as any, levels: [] as any,
+	url: '/de/supp/main', cates: [] as any, grades: [] as any,
 	params: { path: '', query: '' },
 	form: { avtag: true, contacts: [] as any, atts: [] as any } as any,
 	uploadUrl: '', headers: {} as any,
@@ -170,7 +170,7 @@ const { form } = toRefs(state);
 onMounted(async () => {
 	await editInit({ state, route });
 	await catesInit();
-	await levelsInit();
+	await gradesInit();
 	state.uploadUrl = `${import.meta.env.VITE_API_URL}gen/att/up`;
 	state.headers = { 'Authorization': Session.get('token') };
 });
@@ -319,9 +319,9 @@ const handlePreview: UploadProps['onPreview'] = (uploadFile) => {
 const handleSuccess = (a: any, b: any, c: any) => {
 	c[c.length - 1] = { ...a };
 	c[c.length - 1].name = a.pname + '.' + a.sname;
-  if(form.value.id){
-    c[c.length - 1].maiid=form.value.id;
-  }
+	if(form.value.id){
+		c[c.length - 1].maiid=form.value.id;
+	}
 };
 
 const handleExceed: UploadProps['onExceed'] = (files, uploadFiles) => {
@@ -342,8 +342,8 @@ const catesInit = async () => {
 	});
 };
 
-const levelsInit = async () => {
-	state.levels = await request({
+const gradesInit = async () => {
+	state.grades = await request({
 		url: '/ass/dict/data/list?maiid=SU_LEVEL',
 		method: 'get',
 	});
