@@ -99,7 +99,7 @@ const { proxy } = getCurrentInstance() as any;
 const activeName = ref('tab1');
 
 const state = reactive({
-	url: '/sys/org/ttree', cates: [] as any, levels: [] as any,
+	url: '/sys/org/ttree', cates: [] as any,
 	params: { path: '', query: '' },
 	form: { avtag: true, roles: [] as any, }
 });

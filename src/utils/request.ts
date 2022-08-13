@@ -30,7 +30,7 @@ service.interceptors.response.use(
     (response) => {
         // 对响应数据做点什么
         const res = response.data;
-        if (res.code && res.code !== 0) {
+        if (res.code && res.code !== 200) {
             // `token` 过期或者账号已在别处登录
             if (res.code === 401 || res.code === 4001) {
                 Session.clear(); // 清除浏览器全部临时缓存
@@ -45,9 +45,9 @@ service.interceptors.response.use(
             } else if (res.code === 402) {
                 ElMessage.error('账号密码错误');
             } else if (res.code === 500) {
-                ElMessage.error('服务器内部错误:' + res.message);
+                ElMessage.error('服务器内部错误:' + res.msg);
             } else {
-                ElMessage.error('未知错误' + res.code + ':' + res.message);
+                ElMessage.error('未知错误' + res.code + ':' + res.msg);
             }
             return Promise.reject(service.interceptors.response);
         } else {
@@ -64,7 +64,7 @@ service.interceptors.response.use(
                 // link.click();
                 // URL.revokeObjectURL(url);
             } else {
-                return response.data.result;
+                return response.data.data;
             }
         }
     },

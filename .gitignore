@@ -22,11 +22,11 @@ pnpm-debug.log*
 *.sln
 *.sw?
 
-.env
-.env.development
-.env.production
+#.env
+#.env.development
+#.env.production
 
-/src/pages/bi/
-/src/pages/sa/
-/src/pages/te/
-/src/router/saRoute.ts
+#/src/pages/bi/
+#/src/pages/sa/
+#/src/pages/te/
+#/src/router/saRoute.ts

@@ -18,7 +18,7 @@
           <el-input v-model='form.opnot' type='textarea' :rows='5' placeholder=' '/>
       </el-form-item>
       <el-form-item label='附件'>
-          <el-upload class='upload-demo' action='https://jsonplaceholder.typicode.com/posts/' :file-list='fileList'>
+          <el-upload class='upload-demo' action='https://jsonplaceholder.typicode.com/posts/' v-model:file-list='fileList'>
             <el-button type='primary'>上 传</el-button>
           </el-upload>
       </el-form-item>

@@ -14,7 +14,8 @@ import 'bpmn-js/dist/assets/bpmn-font/css/bpmn.css'
 import 'bpmn-js/dist/assets/bpmn-font/css/bpmn-codes.css'
 import 'bpmn-js/dist/assets/bpmn-font/css/bpmn-embedded.css'
 import OrgModal from '/@/comps/sys/OrgModal.vue';
-
+import customModule from './custom'
+import CustomModeler from './customModeler'
 
 
 const orgModal = ref();
@@ -37,8 +38,16 @@ const { bpmnModeler } = toRefs(state);
 
 onMounted( () => {
 	bpmnModeler.value=new BpmnModeler({
-		container: canvasRef.value
+		container: canvasRef.value,
+		additionalModules: [
+			customModule
+		]
 	})
+	// bpmnModeler.value=new CustomModeler({
+	// 	container: canvasRef.value,
+	// 	additionalModules: [
+	// 	]
+	// })
 	bpmnModeler.value.importXML(xmlStr, (err:any) => {
 		if (err) {
 			console.error(err)
@@ -87,10 +96,10 @@ const addEventBusListener=()=> {
 			// console.log(e)
 
 			console.log(shape.businessObject.id);
-			shape.businessObject.name='李四';
-			bpmnModeler.value.get('modeling').updateProperties(shape,{
-				name: '我是修改后的Task名称'
-			})
+			// shape.businessObject.name='李四';
+			// bpmnModeler.value.get('modeling').updateProperties(shape,{
+			// 	name: '我是修改后的Task名称'
+			// })
 
 			// this.getModeling().updateProperties(this.getShape(), {
 			// 	[modelName]: multiple ? [newElement] : newElement,
@@ -242,7 +251,7 @@ const xmlStr = '<?xml version="1.0" encoding="UTF-8"?>\n' +
 	'      <bpmn2:incoming>L6</bpmn2:incoming>\n' +
 	'      <bpmn2:outgoing>L8</bpmn2:outgoing>\n' +
 	'    </bpmn2:userTask>\n' +
-	'    <bpmn2:userTask id="N7" name="赵六审批" activiti:assignee="zhao6" activiti:candidateUsers="">\n' +
+	'    <bpmn2:userTask id="N7" name="赵六审批" activiti:assignee="z6" activiti:candidateUsers="">\n' +
 	'      <bpmn2:extensionElements>\n' +
 	'        <activiti:formProperty id="userid" type="string" />\n' +
 	'        <activiti:taskListener class="do some thing" event="complete" />\n' +

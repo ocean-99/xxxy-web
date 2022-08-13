@@ -56,18 +56,18 @@
             </el-col>
           </el-row>
 
-          <el-row style='height: 48px' v-show="form.type === 'M'||form.type === 'D'">
-            <el-col :span='12'>
-              <el-form-item label='图标：'>
-                <IconSelector placeholder='请输入菜单图标' v-model='form.icon' type='all' style='width: 100%'/>
-              </el-form-item>
-            </el-col>
-            <el-col :span='12'>
-              <el-form-item label='是否显示：'>
-                <el-switch v-model='form.shtag'/>
-              </el-form-item>
-            </el-col>
-          </el-row>
+					<el-row style='height: 48px' v-show="form.type === 'M'||form.type === 'D'">
+						<el-col :span='12'>
+							<el-form-item label='图标：'>
+								<IconSelector placeholder='请输入菜单图标' v-model='form.icon' type='all' style='width: 100%'/>
+							</el-form-item>
+						</el-col>
+						<el-col :span='12'>
+							<el-form-item label='是否显示：'>
+								<el-switch v-model='form.shtag'/>
+							</el-form-item>
+						</el-col>
+					</el-row>
 
           <el-row style='height: 48px' v-show="form.type === 'M'">
             <el-col :span='12'>
@@ -75,25 +75,25 @@
                 <el-input v-model='form.comp'></el-input>
               </el-form-item>
             </el-col>
-            <el-col :span='12'>
-              <el-form-item label='是否缓存：'>
-                <el-switch v-model='form.catag'/>
-              </el-form-item>
-            </el-col>
+						<el-col :span='12'>
+							<el-form-item label='是否缓存：'>
+								<el-switch v-model='form.catag'/>
+							</el-form-item>
+						</el-col>
           </el-row>
 
-          <el-row style='height: 48px' v-show="form.type === 'M'">
-            <el-col :span='12'>
-              <el-form-item label='是否Iframe：'>
-                <el-switch v-model='form.iftag'/>
-              </el-form-item>
-            </el-col>
-            <el-col :span='12'>
-              <el-form-item label='是否外链：'>
-                <el-switch v-model='form.extag'/>
-              </el-form-item>
-            </el-col>
-          </el-row>
+					<el-row style='height: 48px' v-show="form.type === 'M'">
+						<el-col :span='12'>
+							<el-form-item label='是否Iframe：'>
+								<el-switch v-model='form.iftag'/>
+							</el-form-item>
+						</el-col>
+						<el-col :span='12'>
+							<el-form-item label='是否外链：'>
+								<el-switch v-model='form.extag'/>
+							</el-form-item>
+						</el-col>
+					</el-row>
 
           <el-row style='height: 48px' v-show='form.crtim'>
             <el-col :span='12'>

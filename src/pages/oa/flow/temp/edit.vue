@@ -258,7 +258,7 @@ const defxml = '<?xml version="1.0" encoding="UTF-8"?>\n' +
     '      <bpmn2:incoming>L6</bpmn2:incoming>\n' +
     '      <bpmn2:outgoing>L8</bpmn2:outgoing>\n' +
     '    </bpmn2:userTask>\n' +
-    '    <bpmn2:userTask id="N7" name="赵六审批" activiti:assignee="zhao6" activiti:candidateUsers="">\n' +
+    '    <bpmn2:userTask id="N7" name="赵六审批" activiti:assignee="z6" activiti:candidateUsers="">\n' +
     '      <bpmn2:extensionElements>\n' +
     '        <activiti:formProperty id="userid" type="string" />\n' +
     '        <activiti:taskListener class="do some thing" event="complete" />\n' +

@@ -35,7 +35,7 @@
                   border stripe @selection-change='listSelect($event,state)'>
           <el-table-column type='selection' width='55' align='center'/>
           <el-table-column label='序号' type='index' width='55' align='center'/>
-          <el-table-column label='部门名称' width='180'>
+          <el-table-column label='部门名称' width='250'>
             <template #default='scope'>
               <span style='cursor:pointer;color: #3e9ece' @click='tabEdit(state.url,scope.row.id)'>{{ scope.row.name }}</span>
             </template>

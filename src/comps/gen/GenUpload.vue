@@ -15,7 +15,7 @@
       </div>
       <template #tip>
         <div class="el-upload__tip">
-          请选择.xlsx的文件上传
+<!--          请选择文件上传-->
         </div>
       </template>
     </el-upload>
@@ -50,8 +50,16 @@ const state = reactive({
 const upload = ref()
 
 const dialogVisible = ref(false);
-const openModal = async () => {
-  state.uploadUrl=`${import.meta.env.VITE_API_URL}sa/agent/main/imp`
+const openModal = async (url:string) => {
+  if(url){
+    if(url.startsWith("/")){
+      state.uploadUrl=`${import.meta.env.VITE_API_URL}`+url.substring(1,url.length-1);
+    }else{
+      state.uploadUrl=`${import.meta.env.VITE_API_URL}`+url;
+    }
+  }else{
+    state.uploadUrl=`${import.meta.env.VITE_API_URL}gen/oss/upload`
+  }
   dialogVisible.value = true;
 };
 
@@ -62,10 +70,10 @@ onMounted(() => {
 });
 
 const emits = defineEmits(['close']);
-const handleConfirm = () => {
-  ElMessage.warning("演示模式不支持导入")
-  //upload.value!.submit();
-  emits('close', { id: '333' });
+const handleConfirm =async () => {
+  // ElMessage.warning("演示模式不支持导入")
+  await upload.value!.submit();
+  emits('close', { uptag: true });
   dialogVisible.value = false;
 };
 
@@ -73,7 +81,6 @@ const clearAndcloseModal = () => {
   emits('close', null);
   dialogVisible.value = false;
 };
-
 
 
 </script>
