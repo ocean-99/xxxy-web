@@ -1,6 +1,6 @@
 <template>
 	<el-drawer v-model='state.show' size='70%'>
-		<template #title>
+		<template #header>
 			<h4>登录日志</h4>
 		</template>
 		<template #default>

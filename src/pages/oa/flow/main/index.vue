@@ -2,18 +2,18 @@
 	<div>
 		<el-card class='box-card'>
 			<template #header>
-				<el-row>
-					<el-col :span='14'>
+				<div class='zjustify'>
+					<div>
 						<el-input v-model='state.form.name' placeholder='输入名称回车查询' clearable class='list-search' @keyup.enter='listQuery(state)' />
 						<el-button type='primary' :icon='Search' @click='listQuery(state)' plain>查询</el-button>
 						<el-button class='more-button' :icon='state.moreParams?ArrowUp:ArrowDown' plain @click='state.moreParams=!state.moreParams' />
 						<span style='margin-left: 10px;color: red'>可切换登录用户，模拟流程流转</span>
-					</el-col>
-					<el-col :span='10' style='text-align: right'>
+					</div>
+					<div>
 						<el-button type='success' :icon='Plus' @click='openFlowModal()' plain>新增</el-button>
 						<el-button type='danger' :icon='Delete' :disabled='state.multiple' @click='listDelete(state)' plain>删除</el-button>
-					</el-col>
-				</el-row>
+					</div>
+				</div>
 				<div v-show='state.moreParams' class='more-params'>
 					<el-form :inline='true' label-width='100px'>
 						<el-form-item label='更多参数1'>
@@ -27,7 +27,7 @@
 				</div>
 			</template>
 			<FlowModal ref='flowModalRef' @close='closeFlowModal' />
-			<TempModal url='oa/flow/temp/tree' ref='tempModal' />
+			<TempModal url='oa/flow/tmpl/tree' ref='tmplModal' />
 
 			<el-table height='400' :cell-style="{padding:'2px'}" :row-style="{height: '36px'}" v-loading='state.loading' :data='state.list'
 								border stripe @selection-change='listSelect($event,state)'>
@@ -75,7 +75,7 @@
 import { Search, Plus, Delete, ArrowDown, ArrowUp } from '@element-plus/icons-vue';
 import { onMounted, reactive, ref } from 'vue';
 import { listQuery, listDelete, listSelect, pageView } from '/@/comps/page/index';
-import TempModal from '/@/comps/gen/GenModal.vue';
+import TmplModal from '/@/comps/gen/GenModal.vue';
 import FlowModal from './FlowModal.vue';
 
 const state = reactive({
@@ -89,13 +89,13 @@ onMounted(() => {
 
 
 //分类弹框逻辑
-// const tempModal = ref();
-// const openTempModal = () => {
-// 	tempModal.value.openModal();
+// const tmplModal = ref();
+// const openTmplModal = () => {
+// 	tmplModal.value.openModal();
 // };
-// const tempModalClose=(node:any)=>{
-//   if(node.type=="temp"){
-//     window.open("#/page/ofme?temid="+node.id);
+// const tmplModalClose=(node:any)=>{
+//   if(node.type=="tmpl"){
+//     window.open("#/page/ofme?tmpid="+node.id);
 //   }else if(node.type=="cate"){
 //     ElMessage.info("当前选择的是流程分类，请选择最下级的流程模板节点，比如请假申请");
 //   }
@@ -109,7 +109,7 @@ const openFlowModal = () => {
 const closeFlowModal = (node: any) => {
 	setTimeout(() => {
 		if (node && node.id) {
-			window.open('#/page/ofme?temid=' + node.id);
+			window.open('#/page/ofme?tmpid=' + node.id);
 		}
 	}, 50);
 };

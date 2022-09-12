@@ -282,7 +282,16 @@ export default defineComponent({
     };
     // 2、刷新当前 tagsView：
     const refreshCurrentTagsView = async (fullPath: string) => {
-      const item = state.tagsViewList.find((v: any) => (getThemeConfig.value.isShareTagsView ? v.path === fullPath : v.url === fullPath));
+      let fullPath2="";
+      if(fullPath.indexOf("?")>0){
+        const pathArr=fullPath.split("?");
+        fullPath2=pathArr[0]+"-";
+        const paramArr=pathArr[1].split("&");
+        for (const zparam of paramArr) {
+          fullPath2+=zparam.split("=")[1];
+        }
+      }
+      const item = state.tagsViewList.find((v: any) => (getThemeConfig.value.isShareTagsView ? v.path === fullPath : (v.url === fullPath||v.url===fullPath2)));
       if (item != null) {
         await storesKeepALiveNames.delCachedView(item);
         proxy.mittBus.emit('onTagsViewRefreshRouterView', fullPath);

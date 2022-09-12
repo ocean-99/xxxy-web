@@ -47,7 +47,7 @@ export async function initBackEndControlRoutes() {
 	if(res===409){
 		Session.clear();
 		location.href="/#/login";
-		// location.href="/#/login"+"?redirect=/sa/agent/main&params={}";
+		// location.href="/#/login"+"?redirect=/sa/deal/main&params={}";
 	}
 	// 存储接口原始路由（未处理component），根据需求选择使用
 	// console.log(res);

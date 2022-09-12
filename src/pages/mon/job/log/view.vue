@@ -1,11 +1,10 @@
 <template>
-
 	<el-drawer v-model='state.show' size='70%'>
-		<template #title>
+		<template #header>
 			<h4>定时任务日志</h4>
 		</template>
 		<template #default>
-			<div style='padding: 20px;border-top: 1px solid #ccc'>
+			<div style='padding: 20px;'>
 				<el-form ref='formRef' :model='form' label-width='160px'>
 					<el-row style='height: 48px'>
 						<el-col :span='12'>

@@ -2,16 +2,16 @@
 	<div>
 		<el-card class='box-card'>
 			<template #header>
-				<el-row>
-					<el-col :span='14'>
+				<div class='zjustify'>
+					<div>
 						<el-input v-model='state.form.name' placeholder='输入名称回车查询' clearable class="list-search" @keyup.enter='treeQuery(state)' />
 						<el-button type='primary' @click='treeQuery(state)' :icon="Search" plain>查询</el-button>
-					</el-col>
-					<el-col :span='10' style='text-align: right'>
+					</div>
+					<div>
 						<el-button type='success' :icon='Plus' @click='tabAdd(state.url)' plain>新增</el-button>
 						<el-button type='danger' :icon='Delete' :disabled='state.multiple' @click='treeDelete(state)' plain>删除</el-button>
-					</el-col>
-				</el-row>
+					</div>
+				</div>
 			</template>
 
 			<el-table ref='tableRef' row-key='id' :cell-style="{padding:'2px'}" :row-style="{height: '36px'}" v-loading='state.loading' :data='state.list'

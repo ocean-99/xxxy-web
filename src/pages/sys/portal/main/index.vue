@@ -2,16 +2,16 @@
 	<div>
 		<el-card class='box-card'>
 			<template #header>
-				<el-row>
-					<el-col :span='14'>
+				<div class='zjustify'>
+					<div>
 						<el-input v-model='state.form.name' placeholder='输入名称回车查询' class='list-search' clearable @keyup.enter='listQuery(state)' />
 						<el-button type='primary' @click='listQuery(state)' plain>查 询</el-button>
-					</el-col>
-					<el-col :span='10' style='text-align: right'>
-						<el-button type='success' :icon='Plus' @click='tabAdd(state.url)' plain>新增</el-button>
+					</div>
+					<div>
+						<el-button type='success' :icon='Plus' @click='tabAdd(state.url,null,{flush})' plain>新增</el-button>
 						<el-button type='danger' :icon='Delete' :disabled='state.multiple' @click='listDelete(state)' plain>删除</el-button>
-					</el-col>
-				</el-row>
+					</div>
+				</div>
 			</template>
 
 			<el-table height='400' :cell-style="{padding:'2px'}" :row-style="{height: '36px'}"
@@ -51,6 +51,11 @@ const state = reactive({
 	url: '/sys/portal/main', loading: true, ids: [], cates: [] as any,
 	form: {}, single: true, multiple: true, list: [], total: 0,
 });
+
+const flush = async () => {
+	await listQuery(state);
+};
+
 
 onMounted(() => {
 	listQuery(state);

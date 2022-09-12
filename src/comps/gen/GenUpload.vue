@@ -34,7 +34,6 @@
 import { defineExpose, onMounted, reactive, ref } from 'vue';
 import { UploadFilled } from '@element-plus/icons-vue'
 import {Session} from "/@/utils/storage";
-import {ElMessage} from "element-plus";
 
 const props = defineProps({
   url: String,
@@ -77,10 +76,10 @@ const handleConfirm =async () => {
   dialogVisible.value = false;
 };
 
-const clearAndcloseModal = () => {
-  emits('close', null);
-  dialogVisible.value = false;
-};
+// const clearAndcloseModal = () => {
+//   emits('close', null);
+//   dialogVisible.value = false;
+// };
 
 
 </script>

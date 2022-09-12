@@ -46,6 +46,16 @@ service.interceptors.response.use(
                 ElMessage.error('账号密码错误');
             } else if (res.code === 500) {
                 ElMessage.error('服务器内部错误:' + res.msg);
+            } else if (res.code === 222) {
+                return response.data;
+            } else if (res.code === 202) {
+                ElMessage({
+                    type: "warning",
+                    message: res.msg,
+                    offset:300,
+                    center: true,
+                    dangerouslyUseHTMLString: true,
+                })
             } else {
                 ElMessage.error('未知错误' + res.code + ':' + res.msg);
             }

@@ -95,7 +95,7 @@ async function tabChange(tab: any) {
 
 async function onSearch() {
 	receItems.value = await request({
-		url: '/oa/flow/temp/list?type=' + p_flow_type,
+		url: '/oa/flow/tmpl/list?type=' + p_flow_type,
 		method: 'get',
 		params: { name: state.receSearch },
 	});
@@ -136,7 +136,7 @@ function receItemClick(item: any) {
 async function nodeClick(node: any) {
 	if (node && node.id) {
 		tierItems.value = await request({
-			url: '/oa/flow/temp/list?type=' + p_flow_type,
+			url: '/oa/flow/tmpl/list?type=' + p_flow_type,
 			method: 'get',
 			params: { catid: node.id },
 		});

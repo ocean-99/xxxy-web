@@ -2,6 +2,7 @@ import request from '/@/utils/request';
 import { ElMessage, ElMessageBox } from 'element-plus';
 import router from '/@/router';
 import { uuid } from '/@/utils/xutil';
+import { putPage } from '/@/comps/page/store';
 
 export async function listQuery(state: any) {
 	const data: any = await request({
@@ -32,9 +33,9 @@ export async function listDelete(state: any) {
 		type: 'warning',
 	})
 		.then(async () => {
-			// ElMessage.warning('演示模式，禁用了删除');
-			await request({url: state.url + '/' + delIds, method: 'delete',});
-			await listQuery(state);
+			ElMessage.warning('演示模式，禁用了删除');
+			// await request({url: state.url + '/' + delIds, method: 'delete',});
+			// await listQuery(state);
 		})
 		.catch(() => ElMessage.info('已取消删除'));
 }
@@ -46,9 +47,9 @@ export const listItemDelete = async (state: any, id: string) => {
 		type: 'warning',
 	})
 		.then(async () => {
-			// ElMessage.warning('演示模式，禁用了删除');
-			await request({url: state.url + '/' + id, method: 'delete',});
-			await listQuery(state);
+			ElMessage.warning('演示模式，禁用了删除');
+			// await request({url: state.url + '/' + id, method: 'delete',});
+			// await listQuery(state);
 		})
 		.catch(() => ElMessage.info('已取消删除'));
 };
@@ -81,9 +82,9 @@ export async function treeDelete(state: any) {
 		type: 'warning',
 	})
 		.then(async () => {
-			// ElMessage.warning('演示模式，禁用了删除');
-			await request({url: state.url + '/' + delIds, method: 'delete',});
-			await treeQuery(state);
+			ElMessage.warning('演示模式，禁用了删除');
+			// await request({url: state.url + '/' + delIds, method: 'delete',});
+			// await treeQuery(state);
 		})
 		.catch(() => ElMessage.info('已取消删除'));
 }
@@ -95,21 +96,42 @@ export const treeItemDelete = async (state: any, id: string) => {
 		type: 'warning',
 	})
 		.then(async () => {
-			// ElMessage.warning('演示模式，禁用了删除');
-			await request({url: state.url + '/' + id, method: 'delete',});
-			await treeQuery(state);
+			ElMessage.warning('演示模式，禁用了删除');
+			// await request({url: state.url + '/' + id, method: 'delete',});
+			// await treeQuery(state);
 		})
 		.catch(() => ElMessage.info('已取消删除'));
 };
 
 
-export const tabAdd = async (url: string,data?:any) => {
+export const tabAdd = async (url: string,data?:any,datax?:any) => {
 	if(!data){
 		data = {};
 	}
 	data.uuid=uuid();
+	if(datax){
+		if(datax.flush){
+			putPage({id:url,flush:datax.flush});
+		}
+	}
 	await router.push({
 		path: url + '/edit',
+		query: data,
+	});
+};
+
+export const tabAdd2 = async (url: string,data?:any,datax?:any) => {
+	if(!data){
+		data = {};
+	}
+	data.uuid=uuid();
+	if(datax){
+		if(datax.flush){
+			putPage({id:url,flush:datax.flush});
+		}
+	}
+	await router.push({
+		path: url + '/edit2',
 		query: data,
 	});
 };

@@ -1,26 +1,26 @@
 <template>
   <el-card class='box-card' :body-style="{padding:'2px 8px'}" shadow='never'>
     <template #header>
-      <el-row>
-        <el-col :span='10'>
-          <div style='line-height: 32px'>岗位信息</div>
-        </el-col>
-        <el-col :span='14' style='text-align: right'>
-          <el-button type='success' @click='tabSave({formRef,state,proxy,route})' plain>保 存</el-button>
-          <el-button type='info' @click='tabClose({proxy,route})' plain>关 闭</el-button>
-        </el-col>
-      </el-row>
+			<div class='zjustify'>
+				<div>
+					<div style='line-height: 32px'>岗位信息</div>
+				</div>
+				<div>
+					<el-button type='success' @click='tabSave({formRef,state,proxy,route,flush:state.url})' plain>保 存</el-button>
+					<el-button type='info' @click='tabClose({proxy,route})' plain>关 闭</el-button>
+				</div>
+			</div>
     </template>
     <div style='margin-top: 8px;margin-bottom: 8px'>
-      <el-form ref="formRef" :inline="true" class='yform' :model='form' label-width='140px'>
+      <el-form ref="formRef" :inline="true" class='zform' :model='form' label-width='140px'>
         <el-tabs type='card' v-model='activeName'>
           <el-tab-pane label='基本信息' name='tab1'>
-            <div class="yform-div">
+            <div class="zform-div">
               <el-form-item label='岗位名称：' prop='name' :rules="[{ required: true, message: '名称不能为空'}]" style="width: 100%;">
                   <el-input v-model='form.name'/>
               </el-form-item>
-              <el-form-item label='所属部门：' prop='deptna' :rules="[{ required: true, message: '所属部门不能为空'}]">
-                  <el-input v-model='form.deptna' @click='openDeptModal' readonly :suffix-icon='Search'/>
+              <el-form-item label='所属部门：' prop='depna' :rules="[{ required: true, message: '所属部门不能为空'}]">
+                  <el-input v-model='form.depna' @click='openDeptModal' readonly :suffix-icon='Search'/>
               </el-form-item>
               <el-form-item label='排序号：' style="width: 25%">
                   <el-input-number v-model='form.ornum' controls-position='right' style='width: 100%'/>
@@ -34,7 +34,7 @@
             </div>
           </el-tab-pane>
           <el-tab-pane label='其他信息' name='tab9'>
-            <div class="yform-div">
+            <div class="zform-div">
               <el-form-item label='备注：' style="width: 100%">
                 <el-input type='textarea' :rows='4' v-model='form.notes'/>
               </el-form-item>
@@ -78,16 +78,16 @@ const {form} = toRefs(state);
 
 onMounted(async () => {
 	state.params = <any>route;
-	const deptid = state.params.query?.deptid;
-	const deptna = state.params.query?.deptna;
-	if (deptid) {
-		form.value.dept = { id: deptid, name: deptna };
-		form.value.deptid = deptid;
-		form.value.deptna = deptna;
+	const depid = state.params.query?.depid;
+	const depna = state.params.query?.depna;
+	if (depid) {
+		form.value.dept = { id: depid, name: depna };
+		form.value.depid = depid;
+		form.value.depna = depna;
 	}
   await editInit({state, route});
   if (form.value.dept) {
-    form.value.deptna = form.value.dept.name;
+    form.value.depna = form.value.dept.name;
   }
 });
 
@@ -116,8 +116,8 @@ const closeOrgModal = (data: any) => {
   if (data.opener == 'dept') {
     if (data.orgs && data.orgs.length > 0) {
       form.value.dept = {id: data.orgs[0].id, name: data.orgs[0].name};
-      form.value.deptna = data.orgs[0].name;
-      form.value.deptid = data.orgs[0].id;
+      form.value.depna = data.orgs[0].name;
+      form.value.depid = data.orgs[0].id;
     }
   } else if (data.opener == 'users') {
     form.value.users = data.orgs;

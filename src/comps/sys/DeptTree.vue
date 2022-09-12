@@ -27,7 +27,7 @@
 			</div>
 		</template>
 		<div style='margin-bottom: 45px'>
-			<el-tree highlight-current :default-expanded-keys="['wc']" node-key="id" ref='treeRef' class='filter-tree' :data='state.data' :props='defaultProps' :filter-node-method='filterNode' @node-click="nodeClick"/>
+			<el-tree highlight-current :default-expanded-keys="['1']" node-key="id" ref='treeRef' class='filter-tree' :data='state.data' :props='defaultProps' :filter-node-method='filterNode' @node-click="nodeClick"/>
 		</div>
 	</el-card>
 </template>
@@ -58,7 +58,7 @@ watch(filterText, (val) => {
 	treeRef.value!.filter(val);
 	if(val==''){
 		for (let i = 0; i < treeRef.value!.store._getAllNodes().length; i++) {
-			if(treeRef.value!.store._getAllNodes()[i].data.id!='wc'){
+			if(treeRef.value!.store._getAllNodes()[i].data.id!='1'){
 				treeRef.value!.store._getAllNodes()[i].expanded = false;
 			}
 		}

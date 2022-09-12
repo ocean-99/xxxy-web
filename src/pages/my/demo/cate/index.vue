@@ -1,75 +1,66 @@
 <template>
-  <div>
-    <el-card class='box-card'>
-      <template #header>
-        <el-row>
-          <el-col :span='14'>
-            <el-input v-model='state.form.name' placeholder='输入名称回车查询' clearable class="list-search" @keyup.enter='treeQuery(state)'/>
-            <el-button type='primary' @click='treeQuery(state)' :icon="Search" plain>查询</el-button>
-          </el-col>
-          <el-col :span='10' style='text-align: right'>
-            <el-button type='success' :icon='Plus' @click='editRef.openModal()' plain>新增</el-button>
-            <el-button type='danger' :icon='Delete' :disabled='state.multiple' @click='treeDelete(state)' plain>删除</el-button>
-          </el-col>
-        </el-row>
-      </template>
-
-      <el-table ref='tableRef' row-key='id' :cell-style="{padding:'2px'}" :row-style="{height: '36px'}" v-loading='state.loading' :data='state.list'
-                border stripe @selection-change='treeSelect($event,state)'
-                :tree-props="{ children: 'children', hasChildren: 'hasChildren' }">
-        <el-table-column type='selection' width='55' align='center'/>
-        <el-table-column label='序号' type='index' width='55' align='center'/>
-        <el-table-column label='分类名称' width='180'>
-          <template #default='scope'>
-            <span style='cursor:pointer;color: #972fcb' @click='toggle(scope.row)'>{{ scope.row.name }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label='创建时间' prop='crtim' width='160'/>
-        <el-table-column label='更新时间' prop='uptim' width='160'/>
-        <el-table-column label='备注' prop='notes'/>
-        <el-table-column label='操作' width='110' header-align='center' align="center">
-          <template #default="scope">
-            <el-icon @click='editRef.openModal({pname:scope.row.name,pid:scope.row.id})' style="cursor: pointer;font-size: 18px;top:2px;color: #52C41A">
-              <circle-plus/>
-            </el-icon>
-            <el-icon @click='editRef.openModal({id:scope.row.id})' style="cursor: pointer;font-size: 18px;top:2px;margin-left: 11px;color: #2874C5">
-              <edit/>
-            </el-icon>
-            <el-icon @click='treeItemDelete(state,scope.row.id)' style="cursor: pointer;font-size: 18px;top:2px;margin-left: 10px;color: #ED6F6F">
-              <delete/>
-            </el-icon>
-          </template>
-        </el-table-column>
-      </el-table>
-    </el-card>
-    <CateEdit ref='editRef' @close='treeQuery(state)'/>
-  </div>
+	<div>
+		<el-card class='box-card'>
+			<vxe-toolbar ref='toolbarRef' custom>
+				<template #buttons>
+					<vxe-input v-model='state.filterName' placeholder='请输入名称' @keyup='treeSearch'/>
+					<vxe-button status='primary' @click='treeSearch'>查 询</vxe-button>
+					<vxe-button @click='tabAdd(state.url)'>新 增</vxe-button>
+					<vxe-button @click='tableRef.setAllTreeExpand(true)'>展 开</vxe-button>
+					<vxe-button @click='tableRef.clearTreeExpand()'>折 叠</vxe-button>
+				</template>
+			</vxe-toolbar>
+			<vxe-table ref='tableRef' max-height='600' :loading='state.loading' :data='state.list' :tree-config="{children: 'children'}">
+				<vxe-column field='name' title='分类名称' tree-node width='250'>
+					<template #default='{ row }'>
+						<span style='cursor:pointer;color: #3e9ece' @click='tabEdit(state.url,row.id)'>{{ row.name }}</span>
+					</template>
+				</vxe-column>
+				<vxe-column field='crtim' title='创建时间' width='160' />
+				<vxe-column field='uptim' title='更新时间' width='160' />
+				<vxe-column field='notes' title='备注' />
+				<vxe-column title='操作' width='100' show-overflow header-align='center' align='right'>
+					<template #default='{ row }'>
+						<el-icon @click='tabAdd(state.url,{pid:row.id,pname:row.name})' style='cursor: pointer;font-size: 18px;top:2px;margin-right: 8px;color: #52C41A'>
+							<CirclePlus />
+						</el-icon>
+						<el-icon @click='tabEdit(state.url,row.id)' style='cursor: pointer;font-size: 18px;top:2px;margin-right: 8px;color: #2874C5'>
+							<Edit />
+						</el-icon>
+						<el-icon @click='vTreeDelete(state,tableRef,row.id)' style='cursor: pointer;font-size: 18px;top:2px;margin-right: 8px;color: #ED6F6F'>
+							<Delete />
+						</el-icon>
+					</template>
+				</vxe-column>
+			</vxe-table>
+		</el-card>
+	</div>
 </template>
 <script lang='ts' setup>
-import {Search, Plus, Delete, Edit, CirclePlus} from '@element-plus/icons-vue';
-import {onMounted, reactive, ref} from 'vue';
-import {treeDelete, treeItemDelete, treeSelect, treeQuery} from '/@/comps/page';
-import CateEdit from './edit.vue';
+import { Delete, Edit, CirclePlus } from '@element-plus/icons-vue';
+import { onMounted, reactive, ref, nextTick } from 'vue';
+import { VxeTableInstance, VxeToolbarInstance } from 'vxe-table';
+import { tabAdd,tabEdit} from '/@/comps/page/index';
+import { vTreeQuery, vTreeFetch, vTreeDelete } from '/@/comps/vxe';
+import XEUtils from 'xe-utils';
 
 const state = reactive({
-  url: '/my/demo/cate', loading: true, ids: [],
-  form: {}, single: true, multiple: true, list: [], total: 0,
+	url: '/my/demo/cate', form: {},
+	filterName: '', loading: false, odata: [] as any, list: [] as any[],
 });
 
-const tableRef = ref();
-const editRef = ref() as any;
+const tableRef = ref({} as VxeTableInstance);
+const toolbarRef = ref({} as VxeToolbarInstance);
 
-onMounted(() => {
-  treeQuery(state);
+const treeSearch = XEUtils.debounce(async () => {
+	await vTreeQuery(state, tableRef.value);
+}, 500, { leading: false, trailing: true });
+
+onMounted(async () => {
+	await vTreeFetch(state, tableRef.value);
+	await nextTick(() => {
+		tableRef.value.connect(toolbarRef.value);
+	});
 });
-
-const toggle = (row: any) => {
-  tableRef.value.toggleRowExpansion(row);
-}
-
 
 </script>
-
-<style scoped>
-
-</style>

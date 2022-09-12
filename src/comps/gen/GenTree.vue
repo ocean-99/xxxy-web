@@ -27,7 +27,7 @@
 			</div>
 		</template>
 		<div style='margin-bottom: 45px'>
-			<el-tree ref='treeRef' class='filter-tree' :data='state.data' :props='defaultProps' :filter-node-method='filterNode' @node-click="nodeClick"/>
+			<el-tree highlight-current ref='treeRef' class='filter-tree' :data='state.data' :props='defaultProps' :filter-node-method='filterNode' @node-click="nodeClick"/>
 		</div>
 	</el-card>
 </template>

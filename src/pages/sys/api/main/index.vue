@@ -2,15 +2,15 @@
 	<div>
 		<el-card class='box-card'>
 			<template #header>
-				<el-row>
-					<el-col :span='14'>
+				<div class='zjustify'>
+					<div>
 						<el-input v-model='state.form.id' placeholder='输入名称回车查询' clearable class="list-search" @keyup.enter='listQuery(state)' />
 						<el-button type='primary' @click='listQuery(state)' plain :icon="Search">查询</el-button>
-					</el-col>
-					<el-col :span='10' style='text-align: right'>
+					</div>
+					<div>
 						<el-button type='danger' :icon='Delete' :disabled='state.multiple' @click='listDelete(state)' plain>删除</el-button>
-					</el-col>
-				</el-row>
+					</div>
+				</div>
 			</template>
 
 			<el-table height='400' :cell-style="{padding:'2px'}" :row-style="{height: '36px'}" v-loading='state.loading' :data='state.list'

@@ -125,7 +125,7 @@ export const staticRoutes: Array<RouteRecordRaw> = [
 	{
 		path: '/page/ofte',
 		name: 'pageOfte',
-		component: () => import('/@/pages/oa/flow/temp/edit.vue'),
+		component: () => import('/@/pages/oa/flow/tmpl/edit.vue'),
 		meta: {
 			title: '流程模板配置',
 		},

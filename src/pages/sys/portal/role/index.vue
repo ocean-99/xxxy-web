@@ -2,17 +2,17 @@
 	<div>
 		<el-card class='box-card'>
 			<template #header>
-				<el-row>
-					<el-col :span='14'>
-						<el-input v-model='state.form.name' placeholder='输入名称回车查询' clearable class="list-search" @keyup.enter='listQuery(state)' />
-						<el-button type='primary' @click='listQuery(state)' plain :icon="Search">查询</el-button>
-					</el-col>
-					<el-col :span='10' style='text-align: right'>
-						<el-button type='success' :icon='Plus' @click='tabAdd(state.url)' plain>新增</el-button>
+				<div class='zjustify'>
+					<div>
+						<el-input v-model='state.form.name' placeholder='输入名称回车查询' clearable class='list-search' @keyup.enter='listQuery(state)' />
+						<el-button type='primary' @click='listQuery(state)' plain :icon='Search'>查询</el-button>
+					</div>
+					<div>
+						<el-button type='success' :icon='Plus' @click='tabAdd(state.url,null,{flush})' plain>新增</el-button>
 						<el-button type='warning' :icon='Refresh' @click='flushPerm()' plain>刷新权限</el-button>
 						<el-button type='danger' :icon='Delete' :disabled='state.multiple' @click='listDelete(state)' plain>删除</el-button>
-					</el-col>
-				</el-row>
+					</div>
+				</div>
 			</template>
 
 			<el-table height='400' :cell-style="{padding:'2px'}" :row-style="{height: '36px'}" v-loading='state.loading' :data='state.list'
@@ -42,7 +42,7 @@
 export default { name: 'SysPortalRole' };
 </script>
 <script lang='ts' setup>
-import { Search,Plus, Delete,Refresh } from '@element-plus/icons-vue';
+import { Search, Plus, Delete, Refresh } from '@element-plus/icons-vue';
 import { onMounted, reactive } from 'vue';
 import { listQuery, listDelete, tabAdd, tabEdit, listSelect } from '/@/comps/page/index';
 import request from '/@/utils/request';
@@ -57,13 +57,17 @@ onMounted(() => {
 	listQuery(state);
 });
 
-const flushPerm=async ()=>{
+const flush = async () => {
+	await listQuery(state);
+};
+
+const flushPerm = async () => {
 	await request({
-		url: state.url+'/flush',
-		method: 'post'
+		url: state.url + '/flush',
+		method: 'post',
 	});
-	ElMessage.success("刷新成功");
-}
+	ElMessage.success('刷新成功');
+};
 
 
 </script>

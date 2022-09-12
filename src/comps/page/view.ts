@@ -37,6 +37,14 @@ export const viewToEdit = async (data: IviewToEdit) => {
     });
 };
 
+export const viewToEdit2 = async (data: IviewToEdit) => {
+    tabClose({proxy: data.proxy, route: data.route});
+    await router.push({
+        path: data.state.url + '/edit2',
+        query: {id: data.state.form.id},
+    });
+};
+
 
 interface IviewTabClose {
     proxy: any;

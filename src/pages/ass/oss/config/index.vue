@@ -2,17 +2,17 @@
   <div>
     <el-card class='box-card'>
       <template #header>
-        <el-row>
-          <el-col :span='14'>
-            <el-input v-model='state.form.name' placeholder='输入名称回车查询' class='list-search' clearable @keyup.enter='listQuery(state)'/>
-            <el-button type='primary' @click='listQuery(state)' plain>查 询</el-button>
-            <el-button class='more-button' :icon='state.moreParams?ArrowUp:ArrowDown' plain @click='state.moreParams=!state.moreParams'/>
-          </el-col>
-          <el-col :span='10' style='text-align: right'>
-            <el-button type='success' :icon='Plus' @click='editRef.openModal()' plain>新增</el-button>
-            <el-button type='danger' :icon='Delete' :disabled='state.multiple' @click='listDelete(state)' plain>删除</el-button>
-          </el-col>
-        </el-row>
+				<div class='zjustify'>
+					<div>
+						<el-input v-model='state.form.name' placeholder='输入名称回车查询' class='list-search' clearable @keyup.enter='listQuery(state)'/>
+						<el-button type='primary' @click='listQuery(state)' plain>查 询</el-button>
+						<el-button class='more-button' :icon='state.moreParams?ArrowUp:ArrowDown' plain @click='state.moreParams=!state.moreParams'/>
+					</div>
+					<div>
+						<el-button type='success' :icon='Plus' @click='editRef.openModal()' plain>新增</el-button>
+						<el-button type='danger' :icon='Delete' :disabled='state.multiple' @click='listDelete(state)' plain>删除</el-button>
+					</div>
+				</div>
         <div v-show='state.moreParams' class='more-params'>
           <el-form :inline='true' label-width='100px'>
             <el-form-item label='更多参数1'>

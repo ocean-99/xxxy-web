@@ -2,24 +2,19 @@
 	<div>
 		<el-card class='box-card'>
 			<template #header>
-				<el-row>
-					<el-col :span='14'>
-            <el-select v-model='state.form.maiid' @change="listQuery(state)" filterable clearable placeholder='字典名称' style='margin-right:10px;width: 180px'>
-              <el-option
-                  v-for='item in state.dicts'
-                  :key='item.id'
-                  :label='item.name'
-                  :value='item.id'
-              />
-            </el-select>
+				<div class='zjustify'>
+					<div>
+						<el-select v-model='state.form.maiid' @change='listQuery(state)' filterable clearable placeholder='字典名称' style='margin-right:10px;width: 180px'>
+							<el-option v-for='item in state.dicts' :key='item.id' :label='item.name' :value='item.id' />
+						</el-select>
 						<el-input v-model='state.form.name' placeholder='字典值编码/名称' class='list-search' style='width: 180px' clearable @keyup.enter='listQuery(state)' />
 						<el-button type='primary' @click='listQuery(state)' plain>查 询</el-button>
-					</el-col>
-					<el-col :span='10' style='text-align: right'>
-            <el-button type='success' :icon='Plus' @click='editRef.openModal({maiid:state.form.maiid})' plain>新增</el-button>
+					</div>
+					<div>
+						<el-button type='success' :icon='Plus' @click='editRef.openModal({maiid:state.form.maiid})' plain>新增</el-button>
 						<el-button type='danger' :icon='Delete' :disabled='state.multiple' @click='listDelete(state)' plain>删除</el-button>
-					</el-col>
-				</el-row>
+					</div>
+				</div>
 			</template>
 
 			<el-table height='400' :cell-style="{padding:'2px'}" :row-style="{height: '36px'}"
@@ -49,17 +44,18 @@
 				layout='total, sizes, prev, pager, next, jumper'
 			/>
 		</el-card>
-    <Edit ref="editRef" @close="listQuery(state)"/>
+		<Edit ref='editRef' @close='listQuery(state)' />
 	</div>
 </template>
 
 <script lang='ts' setup>
 import { Plus, Delete } from '@element-plus/icons-vue';
-import {onMounted, reactive, ref} from 'vue';
+import { onMounted, reactive, ref } from 'vue';
 import { listQuery, listDelete, listSelect } from '/@/comps/page/index';
 import Edit from './edit.vue';
-import request from "/@/utils/request";
-import {useRoute} from "vue-router";
+import request from '/@/utils/request';
+import { useRoute } from 'vue-router';
+
 const route = useRoute();
 
 
@@ -70,17 +66,17 @@ const state = reactive({
 });
 
 onMounted(() => {
-  state.form.maiid=route.query?.maiid;
+	state.form.maiid = route.query?.maiid;
 	listQuery(state);
-  dictsInit();
+	dictsInit();
 });
 
 
 const dictsInit = async () => {
-  state.dicts = await request({
-    url: '/ass/dict/main/list',
-    method: 'get',
-  });
+	state.dicts = await request({
+		url: '/ass/dict/main/list',
+		method: 'get',
+	});
 };
 
 

@@ -39,7 +39,7 @@ VXETable.setup({
         // sortMethod: null
       },
       filterConfig: {
-        remote: true,//所有列是否使用服务端筛选，如果设置为 true 则不会对数据进行处理
+        // remote: true,//所有列是否使用服务端筛选，如果设置为 true 则不会对数据进行处理
         // filterMethod: null
       },
       // expandConfig: {

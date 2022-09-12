@@ -2,19 +2,19 @@
 	<div>
 		<el-card class='box-card'>
 			<template #header>
-				<el-row>
-					<el-col :span='14'>
+				<div class='zjustify'>
+					<div>
 						<el-input v-model='state.form.name' placeholder='输入名称回车查询' clearable class='list-search' @keyup.enter='listQuery(state)' />
 						<el-button type='primary' @click='listQuery(state)' plain>查 询</el-button>
 						<el-button class='more-button' :icon='state.moreParams?ArrowUp:ArrowDown' plain @click='state.moreParams=!state.moreParams'/>
-					</el-col>
-					<el-col :span='10' style='text-align: right'>
-						<el-button type='success' :icon='Plus' @click='tabAdd(state.url)' plain>新增</el-button>
+					</div>
+					<div>
+						<el-button type='success' :icon='Plus' @click='tabAdd(state.url,null,{flush})' plain>新增</el-button>
 						<el-button type='info' :icon='Upload' plain @click='toFinish'>从数据库导入</el-button>
 						<el-button type='info' :icon='Upload' plain @click='toFinish'>从Excel导入</el-button>
 						<el-button type='danger' :icon='Delete' :disabled='state.multiple' @click='listDelete(state)' plain>删除</el-button>
-					</el-col>
-				</el-row>
+					</div>
+				</div>
 				<div v-show='state.moreParams' class='more-params'>
 					<el-form :inline='true' label-width='100px'>
 						<el-form-item label='备注'>
@@ -65,7 +65,7 @@
 	</div>
 </template>
 <script lang='ts'>
-export default { name: 'AssCogeMain' };
+export default { name: 'AssCogeTable' };
 </script>
 <script lang='ts' setup>
 import { Plus, Delete, ArrowDown, ArrowUp,Download,View} from '@element-plus/icons-vue';
@@ -82,6 +82,10 @@ const state = reactive({
 onMounted(() => {
 	listQuery(state);
 });
+
+const flush = async () => {
+	await listQuery(state);
+};
 
 const genCode=async (id:string)=>{
   await request({

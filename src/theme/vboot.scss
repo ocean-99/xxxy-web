@@ -7,47 +7,47 @@
   padding: 0 4px;
 }
 
-.zform .el-form-item--default .el-form-item__label {
-  line-height: 38px;
-}
-
-.zform .el-form-item__label {
-  padding: 0 2px 0 0;
-}
-
-.zform .el-form-item__content {
-  background-color: white;
-  border-left: 1px solid #d2d2d2;
-}
-
-.zform .el-form-item--mini.el-form-item,
-.zform .el-form-item--small.el-form-item {
-  margin-top: 0;
-  margin-bottom: 0;
-}
-
-.zform .el-row {
-  border-bottom: 1px solid #d2d2d2;
-  border-left: 1px solid #d2d2d2;
-  background-color: #f6f6f6;
-  padding: 0;
-}
-
-.zform .zinput {
-  padding: 4px;
-  border-right: 1px solid #d2d2d2;
-  //border-left: 1px solid #d2d2d2;
-  height: 40px;
-  width: 100%;
-  //min-width: 200px;
-  background-color: white;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  //overflow-x: auto;
-  //overflow-y: hidden;
-  overflow: hidden;
-
-}
+//.zform .el-form-item--default .el-form-item__label {
+//  line-height: 38px;
+//}
+//
+//.zform .el-form-item__label {
+//  padding: 0 2px 0 0;
+//}
+//
+//.zform .el-form-item__content {
+//  background-color: white;
+//  border-left: 1px solid #d2d2d2;
+//}
+//
+//.zform .el-form-item--mini.el-form-item,
+//.zform .el-form-item--small.el-form-item {
+//  margin-top: 0;
+//  margin-bottom: 0;
+//}
+//
+//.zform .el-row {
+//  border-bottom: 1px solid #d2d2d2;
+//  border-left: 1px solid #d2d2d2;
+//  background-color: #f6f6f6;
+//  padding: 0;
+//}
+//
+//.zform .zinput {
+//  padding: 4px;
+//  border-right: 1px solid #d2d2d2;
+//  //border-left: 1px solid #d2d2d2;
+//  height: 40px;
+//  width: 100%;
+//  //min-width: 200px;
+//  background-color: white;
+//  white-space: nowrap;
+//  text-overflow: ellipsis;
+//  //overflow-x: auto;
+//  //overflow-y: hidden;
+//  overflow: hidden;
+//
+//}
 
 
 .p-flex {
@@ -66,6 +66,10 @@
   width: 100%;
 }
 
+.zjustify{
+  display:flex;
+  justify-content:space-between;
+}
 
 .list-search {
   width: 200px;
@@ -174,52 +178,61 @@
 
 
 //表单样式
-.yform .yform-div {
+.zform .zform-div {
   border-top: 1px solid #d2d2d2;
   border-right: 1px solid #d2d2d2
 }
 
-.yform .el-form-item--default {
+.zform .el-form-item--default {
   margin: 0;
   padding: 0;
   border-left: 1px solid #d2d2d2;
   border-bottom: 1px solid #d2d2d2;
 }
 
-.yform .yform-item{
+.zform .zform-item{
   border-left: 1px solid #d2d2d2;
   border-bottom: 1px solid #d2d2d2;
 }
 
-.yform .el-form-item--default .el-form-item__label {
+.zform .el-form-item--default .el-form-item__label {
   height: auto !important;
   background-color: #f6f6f6;
   line-height: 38px;
   padding: 0 2px 0 6px;
 }
 
-.yform .el-form-item--default .el-form-item__content {
+.zform .el-form-item--default .el-form-item__content {
   padding: 4px;
   background-color: white;
   border-left: 1px solid #d2d2d2;
 }
 
-.yform .el-form-item__content .zinput{
+.zform .el-form-item__content .zinput{
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
   margin-left: 8px;
+  min-height: 32px;
 }
 
-.yform .el-form-item{
+.zform .el-form-item__content .ztextarea{
+  //white-space: nowrap;
+  //text-overflow: ellipsis;
+  //overflow: hidden;
+  margin-left: 8px;
+  min-height: 96px;
+}
+
+.zform .el-form-item{
   width: 50%;
 }
 
-.yform25 .yform-div .el-form-item{
+.zform25 .zform-div .el-form-item{
   width: 25%;
 }
 
-.yform100 .yform-div .el-form-item{
+.zform100 .zform-div .el-form-item{
   width: 100%;
 }
 
@@ -298,12 +311,12 @@
   color: white ;
 }
 
-.yview .el-input__wrapper{
+.zview .el-input__wrapper{
   border: 0 !important;
   box-shadow:0 0 0 0 !important;
 }
 
-.yview .el-textarea__inner{
+.zview .el-textarea__inner{
   border: 0 !important;
   box-shadow:0 0 0 0 !important;
 }

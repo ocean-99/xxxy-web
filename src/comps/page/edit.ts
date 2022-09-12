@@ -1,5 +1,6 @@
 import request from '/@/utils/request';
 import {ElLoading, ElMessage} from "element-plus";
+import { getPage } from '/@/comps/page/store';
 
 interface IeditInit {
     state: any;
@@ -25,6 +26,7 @@ interface ItabSave {
     proxy:any;
     route:any;
     iouField?: string;
+    flush?:any;
 }
 export const tabSave = async (data:ItabSave) => {
     const canSubmit = await checkSubmit(data.formRef);
@@ -48,6 +50,12 @@ export const tabSave = async (data:ItabSave) => {
         });
     }
     tabClose({proxy:data.proxy, route:data.route});
+    if(data.flush){
+        const page= getPage(data.flush);
+        if(page){
+            page.flush();
+        }
+    }
 };
 
 interface ItabClose {

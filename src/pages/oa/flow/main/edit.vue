@@ -2,28 +2,28 @@
 	<div :style='{ height: `calc(100vh)`}' class='zpage'>
 		<el-card class='box-card' :body-style="{padding:'2px 8px'}" shadow='never'>
 			<template #header>
-				<el-row>
-					<el-col :span='10'>
+				<div class='zjustify'>
+					<div>
 						<div style='line-height: 32px'>流程实例</div>
-					</el-col>
-					<el-col :span='14' style='text-align: right'>
+					</div>
+					<div>
 						<el-button type='success' @click='save' plain>提 交</el-button>
 						<el-button type='info' @click='pageClose()' plain>关 闭</el-button>
-					</el-col>
-				</el-row>
+					</div>
+				</div>
 			</template>
 			<div style='margin-top: 8px;margin-bottom: 8px'>
 				<el-form ref='formRef' :model='form' label-width='140px'>
 					<el-tabs type='card' v-model='activeName'>
-						<el-tab-pane label='基本信息' class='yform yform100' name='tab1'>
-              <div class="yform-div">
-                <el-form-item label='主题：' prop='name' :rules="[{ required: true, message: '主题不能为空'}]">
-                    <el-input v-model='form.name'></el-input>
-                </el-form-item>
-                <el-form-item label='备注：'>
-                    <el-input v-model='form.notes'  type='textarea' :rows='4' ></el-input>
-                </el-form-item>
-              </div>
+						<el-tab-pane label='基本信息' class='zform zform100' name='tab1'>
+							<div class='zform-div'>
+								<el-form-item label='主题：' prop='name' :rules="[{ required: true, message: '主题不能为空'}]">
+									<el-input v-model='form.name'></el-input>
+								</el-form-item>
+								<el-form-item label='备注：'>
+									<el-input v-model='form.notes' type='textarea' :rows='4'></el-input>
+								</el-form-item>
+							</div>
 						</el-tab-pane>
 						<el-tab-pane label='审批内容' name='tab2'>
 							<v-form-render v-if='state.vformShow' :form-json='formJson' :form-data='formData' :option-data='optionData' ref='vFormRef'>
@@ -31,7 +31,7 @@
 							<div style='color: green'>注：此页面内容通过在线表单设计器渲染</div>
 						</el-tab-pane>
 						<el-tab-pane label='流程处理' name='tab3'>
-							<BpmEdit v-if='form.protd' :temid='form.protd' ref='bpmRef' />
+							<BpmEdit v-if='form.protd' :tmpid='form.protd' ref='bpmRef' />
 						</el-tab-pane>
 						<el-tab-pane label='权限信息' name='tab4'>
 							<!--						<img :src='qx' style='width:100%' />-->
@@ -83,13 +83,13 @@ const editInitx = async (state: any, route: any) => {
 			method: 'get',
 		});
 	} else {
-		let temid = state.params.query?.temid;
+		let tmpid = state.params.query?.tmpid;
 		const data: any = await request({
-			url: '/oa/flow/temp/one/' + temid,
+			url: '/oa/flow/tmpl/one/' + tmpid,
 			method: 'get',
 		});
 		form.value.protd = data.protd;
-		form.value.temid = temid;
+		form.value.tmpid = tmpid;
 		form.value.avtag = true;
 		formJson.value = JSON.parse(data.vform);
 		formData.value = {};
@@ -110,7 +110,7 @@ const save = async () => {
 		form.value.zform = JSON.stringify(formData);
 		form.value.zbpm = bpmRef.value.getOperateInfo();
 		// alert(JSON.stringify(formData));
-		await pageSave({formRef:formRef.value, state});
+		await pageSave({ formRef: formRef.value, state });
 	}).catch(error => {
 		ElMessage.error(error);
 	});

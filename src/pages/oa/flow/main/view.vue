@@ -4,20 +4,20 @@
 	<div :style='{ height: `calc(100vh)`}' class='zpage'>
 		<el-card class='box-card' :body-style="{padding:'2px 8px'}" shadow='never'>
 			<template #header>
-				<el-row>
-					<el-col :span='10'>
+				<div class='zjustify'>
+					<div>
 						<div style='line-height: 32px'>流程实例</div>
-					</el-col>
-					<el-col :span='14' style='text-align: right'>
+					</div>
+					<div>
 						<el-button type='info' @click='pageClose()' plain>关 闭</el-button>
-					</el-col>
-				</el-row>
+					</div>
+				</div>
 			</template>
 			<div style='margin-top: 8px;margin-bottom: 8px'>
 				<el-form ref='formRef' :model='form' label-width='140px'>
 					<el-tabs type='card' v-model='activeName'>
-						<el-tab-pane label='基本信息' name='tab1' class='yform yform100'>
-              <div class="yform-div">
+						<el-tab-pane label='基本信息' name='tab1' class='zform zform100'>
+              <div class="zform-div">
                 <el-form-item label='主题：' prop='name' :rules="[{ required: true, message: '主题不能为空'}]">
                     <el-input v-model='form.name'></el-input>
                 </el-form-item>
@@ -88,7 +88,7 @@ const viewInitx = async (state: any, route: any) => {
 		});
 
 		const data: any = await request({
-			url: '/oa/flow/temp/one/' + state.form.temid,
+			url: '/oa/flow/tmpl/one/' + state.form.tmpid,
 			method: 'get',
 		});
 		formJson.value = JSON.parse(data.vform);

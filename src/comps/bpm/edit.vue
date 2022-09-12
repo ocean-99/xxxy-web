@@ -1,6 +1,6 @@
 <template>
-  <el-form class='yform yform100' :inline="true" :model='form' label-width='160px' label-position='left'>
-    <div class="yform-div">
+  <el-form class='zform zform100' :inline="true" :model='form' label-width='160px' label-position='left'>
+    <div class="zform-div">
       <el-form-item label='流程说明'>
           这是一个测试的流程，目前功能还不完善
       </el-form-item>
@@ -22,10 +22,10 @@
             <el-button type='primary'>上 传</el-button>
           </el-upload>
       </el-form-item>
-      <div class="yform-item" style="padding-left: 6px">
+      <div class="zform-item" style="padding-left: 6px">
         <el-checkbox v-model='state.chtag' @change='toggleFlowChart'>流程图</el-checkbox>
       </div>
-      <div class="yform-item" v-show='state.chtag'>
+      <div class="zform-item" v-show='state.chtag'>
         <div style='background-color: white;height:1000px'>
           <Modeler2 />
         </div>
@@ -78,7 +78,7 @@ defineExpose({getOperateInfo});
 
 
 const props = defineProps({
-  temid: String,
+  tmpid: String,
 });
 
 
@@ -87,7 +87,7 @@ const toggleFlowChart = async () => {
     const map= await request({
       url: '/bpm/proc/main/texml',
       method: 'get',
-      params:{temid:props.temid}
+      params:{tmpid:props.tmpid}
     }) as any;
     form.value.tarno = map.tarno;
     form.value.tarna = map.tarna;

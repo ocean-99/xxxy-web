@@ -1,13 +1,13 @@
 <template>
-  <el-form class='yform yform100' :inline="true" :model='form' label-width='160px' label-position='left'>
-    <div class="yform-div">
+  <el-form class='zform zform100' :inline="true" :model='form' label-width='160px' label-position='left'>
+    <div class="zform-div">
       <el-form-item label='流程说明'>
         这是一个测试的流程，目前功能还不完善
       </el-form-item>
-      <div class="yform-item" style="padding-left: 6px">
+      <div class="zform-item" style="padding-left: 6px">
         <el-checkbox v-model='state.autag'>显示审批记录</el-checkbox>
       </div>
-      <div class="yform-item" v-show='state.autag'>
+      <div class="zform-item" v-show='state.autag'>
         <el-table :data='audits' style='width: 100%'>
           <el-table-column prop='crtim' label='时间' width='160'/>
           <el-table-column prop='facno' label='节点编号' width='80'/>
@@ -67,10 +67,10 @@
       <el-form-item label='已经处理人'>
         {{ state.hiHamen }}
       </el-form-item>
-      <div class="yform-item" style="padding-left: 6px">
+      <div class="zform-item" style="padding-left: 6px">
         <el-checkbox v-model='state.chtag' @change='toggleFlowChart'>流程图</el-checkbox>
       </div>
-      <div class="yform-item" v-show='state.chtag'>
+      <div class="zform-item" v-show='state.chtag'>
         <div style='height:1000px'>
           <Modeler2/>
         </div>

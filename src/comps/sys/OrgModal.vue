@@ -219,7 +219,7 @@ async function nodeClick(node: any) {
 		tierItems.value = await request({
 			url: '/gen/org/main?type=' + p_org_type,
 			method: 'get',
-			params: { deptid: node.id },
+			params: { depid: node.id },
 		});
 		for (const tItem of tierItems.value) {
 			for (const sItem of seldItems.value) {

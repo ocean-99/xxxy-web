@@ -2,22 +2,22 @@
 	<div>
 		<el-card class='box-card'>
 			<template #header>
-				<el-row>
-					<el-col :span='14'>
+				<div class='zjustify'>
+					<div>
 						<el-input v-model='state.form.name' placeholder='输入名称回车查询' class='list-search' clearable @keyup.enter='listQuery(state)' />
-<!--						<el-button type='primary' @click='chooseAddr()' plain>地图弹框</el-button>-->
+						<!--						<el-button type='primary' @click='chooseAddr()' plain>地图弹框</el-button>-->
 						<el-button type='primary' @click='listQuery(state)' plain v-waves='purple'>查 询</el-button>
 						<el-button class='more-button' :icon='state.moreParams?ArrowUp:ArrowDown' plain @click='state.moreParams=!state.moreParams' />
-            <span style='margin-left: 10px;color: red'>数据通过高德API拉取</span>
-					</el-col>
-					<el-col :span='10' style='text-align: right'>
-						<el-button type='success' :icon='Plus' @click='tabAdd(state.url)' plain>新增</el-button>
-            <el-button type='info' :icon='Upload' @click='listImp' plain>导入</el-button>
-            <el-button type='info' :icon='Download' plain @click='listExp' >导出</el-button>
-            <el-button type='warning' :icon='Lightning' @click='dataAsync()' plain>高德同步</el-button>
+						<span style='margin-left: 10px;color: red'>数据通过高德API拉取</span>
+					</div>
+					<div>
+<!--						<el-button type='success' :icon='Plus' @click='tabAdd(state.url)' plain>新增</el-button>-->
+						<el-button type='info' :icon='Upload' @click='listImp' plain>导入</el-button>
+						<el-button type='info' :icon='Download' plain @click='listExp' >导出</el-button>
+						<el-button type='warning' :icon='Lightning' @click='dataAsync()' plain>高德同步</el-button>
 						<el-button type='danger' :icon='Delete' :disabled='state.multiple' @click='listDelete(state)' plain>删除</el-button>
-					</el-col>
-				</el-row>
+					</div>
+				</div>
 				<div v-show='state.moreParams' class='more-params'>
 					<el-form :inline='true' label-width='100px'>
 						<el-form-item label='备注'>
