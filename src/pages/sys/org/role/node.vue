@@ -14,7 +14,7 @@
 							<el-button class='more-button' :icon='state.moreParams?ArrowUp:ArrowDown' plain @click='state.moreParams=!state.moreParams' />
 						</div>
 						<div>
-							<el-button type='success' :icon='Plus' @click='drawer.open({pid:state.pid})' plain>新增</el-button>
+							<el-button type='success' :icon='Plus' @click='drawer.open({pid:state.pid,treid:state.form.treid})' plain>新增</el-button>
 							<el-button type='danger' :icon='Delete' :disabled='state.multiple' @click='listDelete(state)' plain>删除</el-button>
 						</div>
 					</div>
@@ -35,9 +35,9 @@
 									border stripe @selection-change='listSelect($event,state)'>
 					<el-table-column type='selection' width='55' align='center' />
 					<el-table-column label='序号' type='index' width='55' align='center' />
-					<el-table-column label='层级节点名称' width='180'>
+					<el-table-column label='角色树节点名称' width='180'>
 						<template #default='scope'>
-							<span style='cursor:pointer;color: #3e9ece' @click='drawer.open({id:scope.row.id,pid:state.pid})'>{{ scope.row.name }}</span>
+							<span style='cursor:pointer;color: #3e9ece' @click='drawer.open({id:scope.row.id,pid:state.pid,treid:state.form.treid})'>{{ scope.row.name }}</span>
 						</template>
 					</el-table-column>
 					<el-table-column label='备注' prop='notes' />
@@ -66,18 +66,22 @@ import { listQuery, listDelete, listSelect } from '/@/comps/page/index';
 import Wrap from '/@/comps/page/Wrap.vue';
 import NodeTree from './node_tree.vue';
 import NodeEdit from './node_edit.vue';
+import { useRoute } from 'vue-router';
 
+const route = useRoute();
 const state = reactive({
-	url: '/sys/org/tnode', loading: true, ids: [], moreParams: false,
-	form: {} as any, single: true, multiple: true, list: [], total: 0,
+	url: '/sys/org/rnode', loading: true, ids: [], moreParams: false,
+	form: {treid:''} as any, single: true, multiple: true, list: [], total: 0,
 });
 
 onMounted(() => {
+
+	state.form.treid=route.query?.id
 	listQuery(state);
 });
 
 
-//region a 左侧层级树点击
+//region a 左侧角色树点击
 const nodeClick = async (node: any) => {
 	state.form.pid = node.id;
 	state.form.pname = node.name;

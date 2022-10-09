@@ -99,7 +99,7 @@ const toggleFlowChart = async () => {
     const elementRegistry = BpmnStore.getModeler().get('elementRegistry');
     const list1 = [] as any;
     elementRegistry.forEach((item: any) => {
-      if (item.id == 'N1') {
+      if (item.id == 'NS') {
         list1.push(item);
       }
     });
@@ -113,15 +113,24 @@ const toggleFlowChart = async () => {
 
     const list3 = [] as any;
     elementRegistry.forEach((item: any) => {
-      if (item.id == 'N2') {
+      if (item.id == 'N1') {
         list3.push(item);
       }
     });
+
+		const list4 = [] as any;
+		elementRegistry.forEach((item: any) => {
+			if (item.id == map.tarno) {
+				list4.push(item);
+			}
+		});
+
 
     let modeling = BpmnStore.modeler.get('modeling');
     modeling.setColor(list1, {fill: '#e4feef'});
     modeling.setColor(list2, {stroke: '#009900'});
     modeling.setColor(list3, {fill: '#fed6d6'});
+    modeling.setColor(list4, {fill: '#e3f1ff'});
   }
 };
 

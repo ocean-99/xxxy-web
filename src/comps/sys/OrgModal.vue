@@ -41,8 +41,28 @@
 								</el-col>
 							</el-row>
 						</el-tab-pane>
-						<el-tab-pane label='常用群组' name='k3'>暂不支持，待开发</el-tab-pane>
-						<el-tab-pane label='我的收藏' name='k4'>这个也暂不支持，待开发</el-tab-pane>
+						<el-tab-pane label='常用群组' name='k3' v-if='(state.p_org_type & 16) !== 0'>暂不支持，待开发</el-tab-pane>
+						<el-tab-pane label='常用角色' name='k4' v-if='(state.p_org_type & 32) !== 0'>
+							<el-row>
+								<el-col :span='12'>
+									<div style='height: 390px;'>
+										<RoleTree url='/gen/org/role/tree' @node-click='roleNodeClick'  :maInit='true' ref='roleTreeRef' />
+									</div>
+								</el-col>
+								<el-col :span='12'>
+									<div style='border: 1px solid #ccc;height: 390px;margin-left: 5px;overflow: auto'>
+										<ul class='z-org-tree'>
+											<li v-for='item in roleItems' :key='item.id' class='f-user' title='444444444' @click='roleItemClick(item)'>
+												<el-checkbox v-model='item.checked' />
+												<img src='https://zsvg.gitee.io/vboot-vue/public/xiaoyoutai.png'>
+												<span class='layui-elip f-user-name'>{{ item.name }}</span>
+											</li>
+										</ul>
+									</div>
+								</el-col>
+							</el-row>
+						</el-tab-pane>
+						<el-tab-pane label='我的收藏' name='k9'>这个也暂不支持，待开发</el-tab-pane>
 					</el-tabs>
 				</el-col>
 				<el-col :span='8'>
@@ -79,26 +99,29 @@
 import { defineExpose, reactive, ref, toRaw, toRefs } from 'vue';
 import { CircleClose } from '@element-plus/icons-vue';
 import DeptTree from '/@/comps/sys/DeptTree.vue';
+import RoleTree from '/@/comps/gen/GenTree.vue';
 import request from '/@/utils/request';
 
-let p_org_type = -1;//0为综合，1为机构,2为部门,4为岗位,8为用户,16为常用群组,32为角色线
 let p_tab_key = 'k1';
 let p_select_mode = 1;//1单选，2多选
 let p_opener = null as any;//弹框打开者标记
-// let p_tier_init_flag = false;//层级架构页签初始化标记
-let p_tier_init_flag = false;//层级架构页签初始化标记
+let p_dept_init_flag = false;//层级架构页签初始化标记
+let p_role_init_flag = false;//常用角色页签初始化标记
 
 const deptTreeRef = ref();
+const roleTreeRef = ref();
 
 const state = reactive({
 	isShow: false,
+	p_org_type:-1,//0为综合，1为机构,2为部门,4为岗位,8为用户,16为常用群组,32为角色线
 	receSearch: '' as string,
 	receItems: [] as any,
 	tierItems: [] as any,
 	seldItems: [] as any,
+	roleItems: [] as any,
 });
 
-const { receItems, tierItems, seldItems } = toRefs(state);
+const { receItems, tierItems, seldItems,roleItems } = toRefs(state);
 
 const activeName = ref('k1');
 
@@ -120,9 +143,9 @@ async function tabChange(tab: any) {
 			}
 		}
 	} else if (p_tab_key === 'k2') {
-		if (!p_tier_init_flag) {
+		if (!p_dept_init_flag) {
 			await deptTreeRef.value.init();
-			p_tier_init_flag = true;
+			p_dept_init_flag = true;
 		}
 		for (const tItem of tierItems.value) {
 			let flag = false;
@@ -137,6 +160,24 @@ async function tabChange(tab: any) {
 				tItem.checked = false;
 			}
 		}
+	} else if (p_tab_key === 'k4') {
+		if (!p_role_init_flag) {
+			await roleTreeRef.value.init();
+			p_role_init_flag = true;
+		}
+		for (const rItem of roleItems.value) {
+			let flag = false;
+			for (const sItem of seldItems.value) {
+				if (sItem.id == rItem.id) {
+					rItem.checked = true;
+					flag = true;
+					break;
+				}
+			}
+			if (!flag) {
+				rItem.checked = false;
+			}
+		}
 	}
 }
 
@@ -147,7 +188,7 @@ async function tabChange(tab: any) {
 
 async function onSearch() {
 	receItems.value = await request({
-		url: '/gen/org/main?type=' + p_org_type,
+		url: '/gen/org/main?type=' + state.p_org_type,
 		method: 'get',
 		params: { name: state.receSearch },
 	});
@@ -168,7 +209,7 @@ async function onSearch() {
 
 const receInit = async () => {
 	receItems.value = await request({
-		url: '/gen/org/rece?type=' + p_org_type,
+		url: '/gen/org/rece?type=' + state.p_org_type,
 		method: 'get',
 	});
 };
@@ -217,7 +258,7 @@ function receItemClick(item: any) {
 async function nodeClick(node: any) {
 	if (node && node.id) {
 		tierItems.value = await request({
-			url: '/gen/org/main?type=' + p_org_type,
+			url: '/gen/org/main?type=' + state.p_org_type,
 			method: 'get',
 			params: { depid: node.id },
 		});
@@ -274,7 +315,65 @@ function tierItemClick(item: any) {
 
 //endregion
 
-//region x.4 我的收藏
+//region x.4 常用角色
+
+async function roleNodeClick(node: any) {
+	if (node && node.id) {
+		roleItems.value = await request({
+			url: '/gen/org/role/list',
+			method: 'get',
+			params: { treid: node.id },
+		});
+		for (const rItem of roleItems.value) {
+			for (const sItem of seldItems.value) {
+				if (sItem.id === rItem.id) {
+					rItem.checked = true;
+					break;
+				}
+			}
+		}
+	}
+}
+
+function roleItemClick(item: any) {
+	item.checked = !item.checked;
+	if (p_select_mode == 1) {//单选
+		if (seldItems.value.length > 0) {
+			seldItems.value.splice(0, 1);
+		}
+		seldItems.value.push(item);
+		for (let i = 0; i < roleItems.value.length; i++) {
+			if (roleItems.value[i].id !== item.id) {
+				roleItems.value[i].checked = false;
+			}
+		}
+		// closeOrgModal();改成不自动关
+	} else {//多选
+		if (item.checked) {
+			let flag = false;
+			for (const sItem of seldItems.value) {
+				if (sItem.id === item.id) {
+					flag = true;
+					break;
+				}
+			}
+			if (!flag) {
+				seldItems.value.push(item);
+			}
+		} else {
+			for (let i = 0; i < seldItems.value.length; i++) {
+				if (seldItems.value[i].id === item.id) {
+					seldItems.value.splice(i, 1);
+					break;
+				}
+			}
+		}
+	}
+}
+
+//endregion
+
+//region x.5 我的收藏
 
 //endregion
 
@@ -314,8 +413,8 @@ const openModal = async (data: any) => {
 	if (!data.selectMode) {
 		data.selectMode = 1;
 	}
-	if (p_org_type != data.orgType) {
-		p_org_type = data.orgType;
+	if (state.p_org_type != data.orgType) {
+		state.p_org_type = data.orgType;
 		await receInit();
 		tierItems.value.splice(0, tierItems.value.length);
 	}

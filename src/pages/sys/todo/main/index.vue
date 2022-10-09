@@ -9,7 +9,7 @@
 					</div>
 					<div>
 						<!--<el-button type='success' :icon='Plus' @click='tabAdd(state.url)' plain>新增</el-button>-->
-						<!--<el-button type='danger' :icon='Delete' :disabled='state.multiple' @click='listDelete(state)' plain>删除</el-button>-->
+						<el-button type='danger' :icon='Delete' :disabled='state.multiple' @click='listDelete(state)' plain>删除</el-button>
 					</div>
 				</div>
 			</template>
@@ -52,7 +52,8 @@ onMounted(() => {
 });
 
 const pageView=(link:string)=>{
-	window.open(import.meta.env.VITE_PUBLIC_PATH+link);
+	// window.open(import.meta.env.VITE_PUBLIC_PATH+link);
+	window.open(link);
 }
 
 </script>

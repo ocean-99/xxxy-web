@@ -242,6 +242,14 @@
   margin-right: 0;
 }
 
+.xform .el-form-item__content .zinput{
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  margin-left: 8px;
+  min-height: 32px;
+}
+
 //去除阴影
 .el-card.is-always-shadow, .el-card.is-hover-shadow:focus, .el-card.is-hover-shadow:hover{
   box-shadow: none;

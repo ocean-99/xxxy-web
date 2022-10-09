@@ -17,128 +17,68 @@
 		<div style='margin-top: 8px;margin-bottom: 8px'>
 			<el-form ref='formRef' :model='form' label-width='140px'>
 				<el-tabs type='card' v-model='activeName'>
-					<el-tab-pane label='基本信息' name='tab1' class='zform'>
-						<el-row style='border-top: 1px solid #d2d2d2;'>
-							<el-col :span='12'>
-								<el-form-item label='模板名称：' prop='name' :rules="[{ required: true, message: '名称不能为空'}]">
-									<div class='zinput'>
-										<el-input v-model='form.name'></el-input>
-									</div>
-								</el-form-item>
-							</el-col>
-							<el-col :span='12'>
-								<el-form-item label='所属分类：' prop='cate' :rules="[{ required: true, message: '分类不能为空'}]">
-									<div class='zinput'>
-										<el-input :value='form.cate?.name' :suffix-icon='Search' :readonly='true' @click='openCateModal'></el-input>
-									</div>
-								</el-form-item>
-							</el-col>
-						</el-row>
-						<el-row>
-							<el-col :span='12'>
-								<el-form-item label='排序号：'>
-									<div class='zinput'>
-										<el-input-number v-model='form.ornum' controls-position='right' style='width: 100%' />
-									</div>
-								</el-form-item>
-							</el-col>
-							<el-col :span='12'>
-								<el-form-item label='是否可用：'>
-									<div class='zinput'>
-										<el-switch v-model='form.avtag'>
-										</el-switch>
-									</div>
-								</el-form-item>
-							</el-col>
-						</el-row>
-					</el-tab-pane>
 
-					<el-tab-pane label='审批内容' name='tab2'>
-						<el-row style='border-top: 1px solid #d2d2d2;'>
-							<el-col :span='24'>
-								<v-form-designer ref='vform' />
-							</el-col>
-						</el-row>
+					<el-tab-pane label='基本信息' name='tab1' class='zform el-form--inline'>
+						<div class="zform-div">
+							<el-form-item label='模板名称：' prop='name' :rules="[{ required: true, message: '名称不能为空'}]">
+								<el-input v-model='form.name'></el-input>
+							</el-form-item>
+							<el-form-item label='所属分类：' prop='cate' :rules="[{ required: true, message: '分类不能为空'}]">
+								<el-input :value='form.cate?.name' :suffix-icon='Search' :readonly='true' @click='openCateModal'></el-input>
+							</el-form-item>
+							<el-form-item label='排序号：'>
+								<el-input-number v-model='form.ornum' controls-position='right' style='width: 100%'/>
+							</el-form-item>
+							<el-form-item label='是否可用：'>
+								<el-switch v-model='form.avtag'>
+								</el-switch>
+							</el-form-item>
+						</div>
 					</el-tab-pane>
 
 					<el-tab-pane label='流程配置' name='tab3'>
 						<div style='width: 100%;height: 720px'>
-							<!--							<Modeler2 @bpmnMounted='bpmnMounted' />-->
-							<Modeler @bpmnMounted='bpmnMounted' />
-							<Panel />
-							<BpmnActions />
+							<BpmTmplEdit/>
 						</div>
 					</el-tab-pane>
 
-					<el-tab-pane label='权限配置' name='tab4' class='zform'>
-						<el-row style='border-top: 1px solid #d2d2d2;'>
-							<el-col :span='24'>
-								<el-form-item label='备注：'>
-									<div class='zinput' style='height: auto'>
-										<el-input style="font-family: 'Courier New', Helvetica, Arial, sans-serif; font-size:16px"
-															type='textarea' :rows='4'
-															v-model='form.notes'>
-										</el-input>
-									</div>
-								</el-form-item>
-							</el-col>
-						</el-row>
+					<el-tab-pane label='其他信息' name='tab9' class='zform el-form--inline'>
+						<div class="zform-div">
+							<el-form-item label='备注：' style="width: 100%">
+								<el-input style="font-family: 'Courier New', Helvetica, Arial, sans-serif; font-size:16px"
+													type='textarea' :rows='4' v-model='form.notes'>
+								</el-input>
+							</el-form-item>
+							<el-form-item label='创建人：' style="width: 25%">
+								<div class='zinput'> {{ form.crman ? form.crman.name : '' }}</div>
+							</el-form-item>
+							<el-form-item label='创建时间：' style="width: 25%">
+								<div class='zinput'> {{ form.crtim }}</div>
+							</el-form-item>
+							<el-form-item label='更新人：' style="width: 25%">
+								<div class='zinput'> {{ form.upman ? form.upman.name : '' }}</div>
+							</el-form-item>
+							<el-form-item label='更新时间：' style="width: 25%">
+								<div class='zinput'> {{ form.uptim }}</div>
+							</el-form-item>
+						</div>
 					</el-tab-pane>
 
-					<el-tab-pane label='其他信息' name='tab9' class='zform'>
-						<el-row style='border-top: 1px solid #d2d2d2;'>
-							<el-col :span='24'>
-								<el-form-item label='备注：'>
-									<div class='zinput' style='height: auto'>
-										<el-input style="font-family: 'Courier New', Helvetica, Arial, sans-serif; font-size:16px"
-															type='textarea' :rows='4'
-															v-model='form.notes'>
-										</el-input>
-									</div>
-								</el-form-item>
-							</el-col>
-						</el-row>
-						<el-row v-show='form.crtim'>
-							<el-col :span='6'>
-								<el-form-item label='创建人：'>
-									<div class='zinput'>{{ form.crman ? form.crman.name : '' }}</div>
-								</el-form-item>
-							</el-col>
-							<el-col :span='6'>
-								<el-form-item label='创建时间：'>
-									<div class='zinput'>{{ form.crtim }}</div>
-								</el-form-item>
-							</el-col>
-							<el-col :span='6'>
-								<el-form-item label='更新人：'>
-									<div class='zinput'>{{ form.upman ? form.upman.name : '' }}</div>
-								</el-form-item>
-							</el-col>
-							<el-col :span='6'>
-								<el-form-item label='更新时间：'>
-									<div class='zinput'>{{ form.uptim }}</div>
-								</el-form-item>
-							</el-col>
-						</el-row>
-					</el-tab-pane>
 				</el-tabs>
 			</el-form>
 		</div>
 	</el-card>
 </template>
 <script lang='ts'>
-export default { name: 'OaFlowTmplEdit3' };
+export default { name: 'OaFlowTmplEditNew' };
 </script>
 <script lang='ts' setup>
 import { onMounted, reactive, ref, toRefs } from 'vue';
 import { pageSave, pageClose } from '/@/comps/page/edit';
 import { useRoute } from 'vue-router';
-import Modeler from '/@/comps/Activiti/Modeler';
-import Panel from '/@/comps/Activiti/panel';
-import BpmnActions from '/@/comps/Activiti/bpmn-actions';
-import { BpmnStore } from '/@/bpmn/store';
 import { NextLoading } from '/@/utils/loading';
-import CateModal from '/@/comps/gen/GenModal.vue';
+import CateModal from '/@/comps/gen/GenTreeModal.vue';
+import BpmTmplEdit from '/@/comps/bpm/tmpl/edit';
 import { FormInstance } from 'element-plus';
 import request from '/@/utils/request';
 
@@ -171,28 +111,13 @@ onMounted(async () => {
 		}
 		state.form.avtag = true;
 	}
-
-	if (form.value.id) {
-		await BpmnStore.importXML(form.value.prxml);
-	} else {
-		await BpmnStore.importXML(defxml);
-	}
-
 });
 
 
 async function save(state: any) {
-
-	const bpmn = await BpmnStore.getXML();
-	// console.log(typeof (bpmn.xml));
-	// xFlow.value.getData();
-	form.value.vform = JSON.stringify(vform.value.getFormJson());
-	form.value.prxml = bpmn.xml;
-	console.log(bpmn.xml);
   await pageSave({formRef:formRef.value, state});
 }
 
-const vform = ref();
 
 
 const defxml = '<?xml version="1.0" encoding="UTF-8"?>\n' +

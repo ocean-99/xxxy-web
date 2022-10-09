@@ -20,16 +20,16 @@
 							<el-form-item label='姓名：' prop='name' :rules="[{ required: true, message: '名称不能为空'}]">
 								<el-input v-model='form.name' />
 							</el-form-item>
-							<el-form-item label='昵称：'>
-								<el-input v-model='form.ninam' />
-							</el-form-item>
 							<el-form-item label='登录名：' prop='usnam' :rules="[{ required: true, message: '登录名不能为空'}]">
 								<el-input v-model='form.usnam' />
 							</el-form-item>
-							<el-form-item label='密码：' prop='pacod' :rules="[{ required: true, message: '密码不能为空'}]">
-								<el-input type='password' v-model='form.pacod' show-password />
+							<el-form-item label='密码：' style='width:50%' prop='pacod' :rules="[{ required: !form.id, message: '密码不能为空'}]">
+								<el-input type='password' v-model='form.pacod' show-password v-if='!form.id'/>
+								<el-input v-model='state.pacod' v-if='form.id' style='width: 135px;margin-right: 10px'/>
+								<el-button type='success' @click='randomPassword' v-if='form.id'>随机设置</el-button>
+								<el-button type='warning' @click='resetPassword' v-if='form.id'>重置密码</el-button>
 							</el-form-item>
-							<el-form-item label='所属部门：' prop='depna' :rules="[{ required: true, message: '所属部门不能为空'}]" style='width: 50%'>
+							<el-form-item label='所属部门：' prop='depna' :rules="[{ required: true, message: '所属部门不能为空'}]" style='width:50%'>
 								<el-input v-model='form.depna' @click='openOrgModal' readonly :suffix-icon='Search' />
 							</el-form-item>
 							<el-form-item label='排序号：'>
@@ -38,7 +38,10 @@
 							<el-form-item label='是否可用：'>
 								<el-switch v-model='form.avtag' />
 							</el-form-item>
-							<el-form-item label='职务：' style='width: 50%'>
+							<el-form-item label='昵称：'>
+								<el-input v-model='form.ninam' />
+							</el-form-item>
+							<el-form-item label='职务：'>
 								<el-input v-model='form.job' />
 							</el-form-item>
 							<el-form-item label='手机号：'>
@@ -77,7 +80,8 @@ import { getCurrentInstance, onMounted, reactive, ref, toRefs } from 'vue';
 import { editInit, tabSave, tabClose } from '/@/comps/page/edit';
 import { useRoute } from 'vue-router';
 import OrgModal from '/@/comps/sys/OrgModal.vue';
-import { FormInstance } from 'element-plus';
+import { ElMessage, FormInstance } from 'element-plus';
+import request from '/@/utils/request';
 
 const route = useRoute();
 const formRef = ref<FormInstance>();
@@ -124,4 +128,37 @@ const closeOrgModal = (data: any) => {
 	}
 };
 //endregion
+
+const randomPassword=()=>{
+	const amm=['!','@','#','$','%','&','*','(',')','_'];//定义特殊字符数组
+	let num=Math.floor(Math.random()*1000) as any;//生成0-9随机数
+	let tmp=Math.floor(Math.random()*10) as any;//生成0-9随机数
+	let s="";
+	//生成大写字母
+	for(let i=0;i<3;i++){
+		tmp=Math.floor(Math.random()*26);
+		s=s+String.fromCharCode(65+tmp);
+	}
+	s=s+amm[Math.floor(Math.random()*10)];//取特殊字符
+	s=s+num;
+	//生成小写字母
+	for(let i=0;i<3;i++){
+		tmp=Math.floor(Math.random()*26);
+		s=s+String.fromCharCode(97+tmp);
+	}
+	state.pacod=s;
+}
+
+const resetPassword=async ()=>{
+	if(!state.pacod){
+		ElMessage.warning("请先填写新密码");
+		return ;
+	}
+	await request({
+		url: state.url + '/pacod',
+		method: 'post',
+		data:{id:state.form.id,pacod:state.pacod}
+	});
+	ElMessage.success("重置密码成功");
+}
 </script>

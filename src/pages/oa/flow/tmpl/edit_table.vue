@@ -123,7 +123,7 @@ import { onMounted, reactive, ref, toRefs } from 'vue';
 import { pageSave, pageClose } from '/@/comps/page/edit';
 import { useRoute } from 'vue-router';
 import { NextLoading } from '/@/utils/loading';
-import CateModal from '/@/comps/gen/GenModal.vue';
+import CateModal from '/@/comps/gen/GenTreeModal.vue';
 import MyBpmn from '/@/comps/bpmn/MyBpmn.vue';
 import { FormInstance } from 'element-plus';
 import request from '/@/utils/request';

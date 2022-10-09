@@ -16,9 +16,11 @@
 						<span style='cursor:pointer;color: #3e9ece' @click='tabEdit(state.url,row.id)'>{{ row.name }}</span>
 					</template>
 				</vxe-column>
-				<vxe-column field='crtim' title='创建时间' width='160' />
-				<vxe-column field='uptim' title='更新时间' width='160' />
 				<vxe-column field='notes' title='备注' />
+				<vxe-column field='crman.name' title='创建人' width='66' />
+				<vxe-column field='crtim' title='创建时间' width='148' />
+				<vxe-column field='upman.name' title='更新人' width='66' />
+				<vxe-column field='uptim' title='更新时间' width='148' />
 				<vxe-column title='操作' width='100' show-overflow header-align='center' align='right'>
 					<template #default='{ row }'>
 						<el-icon @click='tabAdd(state.url,{pid:row.id,pname:row.name})' style='cursor: pointer;font-size: 18px;top:2px;margin-right: 8px;color: #52C41A'>

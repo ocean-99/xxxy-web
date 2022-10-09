@@ -3,7 +3,7 @@
 		<template #header>
 			<div class='zjustify'>
 				<div>
-					<div style='line-height: 32px'>层级树编辑</div>
+					<div style='line-height: 32px'>角色树编辑</div>
 				</div>
 				<div>
 					<el-button type='success' @click='tabSave({formRef,state,proxy,route})' plain>保 存</el-button>
@@ -16,10 +16,10 @@
 				<el-tabs type='card' v-model='activeName'>
 					<el-tab-pane label='基本信息' name='tab1'>
 						<div class='zform-div'>
-							<el-form-item label='层级树名称：' prop='name' style='width:100%' :rules="[{ required: true, message: '名称不能为空'}]">
+							<el-form-item label='角色树名称：' prop='name' style='width:100%' :rules="[{ required: true, message: '名称不能为空'}]">
 								<el-input v-model='form.name' />
 							</el-form-item>
-							<el-form-item label='层级角色：' style='width: 100%'>
+							<el-form-item label='包含角色：' style='width: 100%'>
 								<el-table size='small' border :data='form.roles' :row-style="{height: '36px'}" style='width: 100%'>
 									<el-table-column label='排序号' width='90'>
 										<template #default='scope'>
@@ -99,7 +99,7 @@ const { proxy } = getCurrentInstance() as any;
 const activeName = ref('tab1');
 
 const state = reactive({
-	url: '/sys/org/ttree', cates: [] as any,
+	url: '/sys/org/rtree', cates: [] as any,
 	params: { path: '', query: '' },
 	form: { avtag: true, roles: [] as any, }
 });

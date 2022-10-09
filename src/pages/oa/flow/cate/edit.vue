@@ -68,7 +68,7 @@ import { Search } from '@element-plus/icons-vue';
 import { getCurrentInstance, onMounted, reactive, ref, toRefs } from 'vue';
 import { tabSave, tabClose } from '/@/comps/page/edit';
 import { useRoute } from 'vue-router';
-import CateModal from '/@/comps/gen/GenModal.vue';
+import CateModal from '/@/comps/gen/GenTreeModal.vue';
 import request from '/@/utils/request';
 import { FormInstance } from 'element-plus';
 

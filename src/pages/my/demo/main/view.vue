@@ -89,7 +89,7 @@
 						</div>
 					</el-tab-pane>
 					<el-tab-pane label='流程流转' name='tab11' v-if='form.protd'>
-							<BpmView @submit='submit' :proid='form.id' />
+							<BpmView @submit='submit' :proid='form.id' modty="app_demo"/>
 					</el-tab-pane>
 				</el-tabs>
 			</el-form>

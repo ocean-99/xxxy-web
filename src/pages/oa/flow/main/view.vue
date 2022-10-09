@@ -33,7 +33,7 @@
 						</el-tab-pane>
 						<el-tab-pane label='流程处理' name='tab3'>
 							<template v-if='form.id'>
-								<BpmView @submit='submit' :proid='form.id' />
+								<BpmView @submit='submit' :proid='form.id' modty="oaFlow"/>
 							</template>
 						</el-tab-pane>
 						<el-tab-pane label='权限信息' name='tab4'>

@@ -90,7 +90,7 @@ const handleCommand =async (command: string | number | object) => {
 // // 初始化表格数据
 const initTreeData = async () => {
 	state.data = await request({
-		url: '/sys/org/tnode/tree',
+		url: '/sys/org/rnode/tree',
 		method: 'get',
 	});
 

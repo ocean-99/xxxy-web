@@ -85,7 +85,7 @@ import { Search } from '@element-plus/icons-vue';
 import { onMounted, reactive, ref, toRefs } from 'vue';
 import { drawerOpen, drawerSave } from '/@/comps/page/edit';
 import IconSelector from '/@/components/iconSelector/index.vue';
-import ParentModal from '/@/comps/gen/GenModal.vue';
+import ParentModal from '/@/comps/gen/GenTreeModal.vue';
 import { FormInstance } from 'element-plus';
 
 const formRef = ref<FormInstance>();

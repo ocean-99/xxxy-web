@@ -32,8 +32,7 @@
 								</el-select>
 							</el-form-item>
 							<el-form-item label='是否有流程：' style='width: 25%'>
-<!--								<el-switch v-model='form.prtag' @change='prtagChange'>-->
-								<el-switch v-model='form.prtag'>
+								<el-switch v-model='form.prtag' @change='prtagChange'>
 								</el-switch>
 							</el-form-item>
 							<el-form-item label='排序号：' style='width: 25%' prop='ornum' :rules="[{ required: true, message: '排序号不能为空'}]">
@@ -268,9 +267,17 @@
 
 					<el-tab-pane label='流程配置' name='tab4' v-if='form.prtag'>
 						<div style='width: 100%;height: 720px'>
-							<BpmTmplEdit ref="bpmTmplEditRef" v-if='state.bpmShowTag' :prxml='form.prxml'/>
+							<!--							<Modeler2 @bpmnMounted='bpmnMounted' />-->
+							<Modeler @bpmnMounted='bpmnMounted' />
+							<Panel />
+							<BpmnActions />
 						</div>
 					</el-tab-pane>
+
+					<!--          <el-tab-pane label='流程配置' name='tab4'>-->
+					<!--            流程配置-->
+					<!--          </el-tab-pane>-->
+
 
 				</el-tabs>
 			</el-form>
@@ -284,7 +291,7 @@ export default { name: 'MyDemoCateEdit' };
 </script>
 <script lang='ts' setup>
 import { Search, Setting } from '@element-plus/icons-vue';
-import { computed, getCurrentInstance, onMounted, reactive, ref, toRaw, toRefs } from 'vue';
+import { computed, getCurrentInstance, nextTick, onMounted, reactive, ref, toRaw, toRefs } from 'vue';
 import { tabSave, tabClose } from '/@/comps/page/edit';
 import { useRoute } from 'vue-router';
 import CateModal from '/@/comps/gen/GenTreeModal.vue';
@@ -294,7 +301,10 @@ import { ElMessage, FormInstance } from 'element-plus';
 import { uuid } from '/@/utils/xutil';
 import TabEdit from './tab.vue';
 import { VxeTableInstance } from 'vxe-table';
-import BpmTmplEdit from '/@/comps/bpm/tmpl/edit.vue';
+import Modeler from '/@/comps/Activiti/Modeler';
+import Panel from '/@/comps/Activiti/panel';
+import BpmnActions from '/@/comps/Activiti/bpmn-actions';
+import { BpmnStore } from '/@/bpmn/store';
 
 
 const route = useRoute();
@@ -303,7 +313,7 @@ const { proxy } = getCurrentInstance() as any;
 const activeName = ref('tab1');
 
 const state = reactive({
-	url: '/my/demo/cate', fieldSelectedIds: [] as any,bpmShowTag:false,
+	url: '/my/demo/cate', fieldSelectedIds: [] as any,
 	params: { path: '', query: '' }, xtab: '' as any, xindex: 0 as any,
 	form: {
 		avtag: true, fields: [] as any,remen: [] as any,
@@ -339,10 +349,10 @@ const { form } = toRefs(state);
 
 onMounted(async () => {
 	await editInitx();
-	state.bpmShowTag=true;
+	if (form.value.prtag && form.value.id) {
+		await BpmnStore.importXML(form.value.prxml);
+	}
 });
-
-const bpmTmplEditRef=ref();
 
 const editInitx = async () => {
 	state.params = <any>route;
@@ -367,20 +377,20 @@ const editInitx = async () => {
 	}
 };
 
-// const prtagChange = async (value: any) => {
-// 	if (value === true) {
-// 		await nextTick(async () => {
-// 			if (form.value.prxml) {
-// 				await BpmnStore.importXML(form.value.prxml);
-// 			} else {
-// 				await BpmnStore.importXML(defxml);
-// 			}
-// 		});
-// 	} else {
-// 		const bpmn = await BpmnStore.getXML();
-// 		form.value.prxml = bpmn.xml;
-// 	}
-// };
+const prtagChange = async (value: any) => {
+	if (value === true) {
+		await nextTick(async () => {
+			if (form.value.prxml) {
+				await BpmnStore.importXML(form.value.prxml);
+			} else {
+				await BpmnStore.importXML(defxml);
+			}
+		});
+	} else {
+		const bpmn = await BpmnStore.getXML();
+		form.value.prxml = bpmn.xml;
+	}
+};
 
 
 //region -----组织架构逻辑-----
@@ -648,11 +658,67 @@ const save = async () => {
 	form.value.ljson = JSON.stringify(form.value.links);
 
 	if (form.value.prtag) {
-		form.value.prxml =await bpmTmplEditRef.value.getXml();
+		const bpmn = await BpmnStore.getXML();
+		form.value.prxml = bpmn.xml;
 	}
 
 	await tabSave({ formRef: formRef.value, state, proxy, route });
 };
+
+const defxml = '<?xml version="1.0" encoding="UTF-8"?>\n' +
+	'<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:activiti="http://activiti.org/bpmn" id="sample-diagram" targetNamespace="http://activiti.org/bpmn" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd">\n' +
+	'  <bpmn2:process id="Process_1" name="1" isExecutable="true">\n' +
+	'    <bpmn2:startEvent id="N1" name="开始节点">\n' +
+	'      <bpmn2:outgoing>L1</bpmn2:outgoing>\n' +
+	'    </bpmn2:startEvent>\n' +
+	'    <bpmn2:sequenceFlow id="L1" sourceRef="N1" targetRef="N2" />\n' +
+	'    <bpmn2:endEvent id="N3" name="结束节点">\n' +
+	'      <bpmn2:incoming>L2</bpmn2:incoming>\n' +
+	'    </bpmn2:endEvent>\n' +
+	'    <bpmn2:userTask id="N2" name="起草节点" activiti:assignee="l4" activiti:candidateUsers="">\n' +
+	'      <bpmn2:documentation>起草节点，表单数据一般从绑定的表单提取</bpmn2:documentation>\n' +
+	'      <bpmn2:extensionElements>\n' +
+	'        <activiti:formProperty id="userid" type="string" />\n' +
+	'        <activiti:formProperty id="money" type="int" />\n' +
+	'        <activiti:properties>\n' +
+	'          <activiti:property name="编辑" value="edit" />\n' +
+	'          <activiti:property name="撤回" value="back" />\n' +
+	'          <activiti:property name="提交" value="commit" />\n' +
+	'        </activiti:properties>\n' +
+	'      </bpmn2:extensionElements>\n' +
+	'      <bpmn2:incoming>L1</bpmn2:incoming>\n' +
+	'      <bpmn2:outgoing>L2</bpmn2:outgoing>\n' +
+	'    </bpmn2:userTask>\n' +
+	'    <bpmn2:sequenceFlow id="L2" sourceRef="N2" targetRef="N3" />\n' +
+	'  </bpmn2:process>\n' +
+	'  <bpmndi:BPMNDiagram id="BPMNDiagram_1">\n' +
+	'    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1">\n' +
+	'      <bpmndi:BPMNEdge id="Flow_1u6pmzo_di" bpmnElement="L1">\n' +
+	'        <di:waypoint x="360" y="78" />\n' +
+	'        <di:waypoint x="360" y="160" />\n' +
+	'      </bpmndi:BPMNEdge>\n' +
+	'      <bpmndi:BPMNEdge id="Flow_0rj5mf6_di" bpmnElement="L2">\n' +
+	'        <di:waypoint x="360" y="240" />\n' +
+	'        <di:waypoint x="360" y="422" />\n' +
+	'      </bpmndi:BPMNEdge>\n' +
+	'      <bpmndi:BPMNShape id="Event_0byql27_di" bpmnElement="N1">\n' +
+	'        <dc:Bounds x="342" y="42" width="36" height="36" />\n' +
+	'        <bpmndi:BPMNLabel>\n' +
+	'          <dc:Bounds x="339" y="12" width="43" height="14" />\n' +
+	'        </bpmndi:BPMNLabel>\n' +
+	'      </bpmndi:BPMNShape>\n' +
+	'      <bpmndi:BPMNShape id="Activity_0g48n8q_di" bpmnElement="N2">\n' +
+	'        <dc:Bounds x="310" y="160" width="100" height="80" />\n' +
+	'      </bpmndi:BPMNShape>\n' +
+	'      <bpmndi:BPMNShape id="Event_1h4oob7_di" bpmnElement="N3">\n' +
+	'        <dc:Bounds x="342" y="422" width="36" height="36" />\n' +
+	'        <bpmndi:BPMNLabel>\n' +
+	'          <dc:Bounds x="339" y="465" width="43" height="14" />\n' +
+	'        </bpmndi:BPMNLabel>\n' +
+	'      </bpmndi:BPMNShape>\n' +
+	'    </bpmndi:BPMNPlane>\n' +
+	'  </bpmndi:BPMNDiagram>\n' +
+	'</bpmn2:definitions>\n';
 
 </script>
 
