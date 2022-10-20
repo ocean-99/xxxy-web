@@ -30,7 +30,7 @@
 								<el-col :span='12'>
 									<div style='border: 1px solid #ccc;height: 390px;margin-left: 5px;overflow: auto'>
 										<ul class='z-org-tree'>
-											<li v-for='item in tierItems' :key='item.id' class='f-user' title='444444444' @click='tierItemClick(item)'>
+											<li v-for='item in tierItems' :key='item.id' class='f-user' title=' ' @click='tierItemClick(item)'>
 												<el-checkbox v-model='item.checked' />
 												<img src='https://zsvg.gitee.io/vboot-vue/public/xiaoyoutai.png'>
 												<span class='layui-elip f-user-name'>{{ item.name }}</span>
@@ -41,8 +41,27 @@
 								</el-col>
 							</el-row>
 						</el-tab-pane>
-						<el-tab-pane label='常用群组' name='k3' v-if='(state.p_org_type & 16) !== 0'>暂不支持，待开发</el-tab-pane>
-						<el-tab-pane label='常用角色' name='k4' v-if='(state.p_org_type & 32) !== 0'>
+						<el-tab-pane label='常用群组' name='k3' v-if='(state.p_org_type & 16) !== 0'>
+							<el-row>
+								<el-col :span='12'>
+									<div style='height: 390px;'>
+										<GroupTree url='/gen/org/group/tree' @node-click='groupNodeClick' :maInit='true' ref='groupTreeRef' />
+									</div>
+								</el-col>
+								<el-col :span='12'>
+									<div style='border: 1px solid #ccc;height: 390px;margin-left: 5px;overflow: auto'>
+										<ul class='z-org-tree'>
+											<li v-for='item in groupItems' :key='item.id' class='f-user' title=' ' @click='groupItemClick(item)'>
+												<el-checkbox v-model='item.checked' />
+												<img src='https://zsvg.gitee.io/vboot-vue/public/xiaoyoutai.png'>
+												<span class='layui-elip f-user-name'>{{ item.name }}</span>
+											</li>
+										</ul>
+									</div>
+								</el-col>
+							</el-row>
+						</el-tab-pane>
+						<el-tab-pane label='审批角色' name='k4' v-if='(state.p_org_type & 32) !== 0'>
 							<el-row>
 								<el-col :span='12'>
 									<div style='height: 390px;'>
@@ -52,7 +71,27 @@
 								<el-col :span='12'>
 									<div style='border: 1px solid #ccc;height: 390px;margin-left: 5px;overflow: auto'>
 										<ul class='z-org-tree'>
-											<li v-for='item in roleItems' :key='item.id' class='f-user' title='444444444' @click='roleItemClick(item)'>
+											<li v-for='item in roleItems' :key='item.id' class='f-user' title=' ' @click='roleItemClick(item)'>
+												<el-checkbox v-model='item.checked' />
+												<img src='https://zsvg.gitee.io/vboot-vue/public/xiaoyoutai.png'>
+												<span class='layui-elip f-user-name'>{{ item.name }}</span>
+											</li>
+										</ul>
+									</div>
+								</el-col>
+							</el-row>
+						</el-tab-pane>
+						<el-tab-pane label='外部协同' name='k5' v-if='(state.p_coop_type >= 0)'>
+							<el-row>
+								<el-col :span='12'>
+									<div style='height: 390px;'>
+										<CoopTree url='/gen/coop/tree?type=user' @node-click='coopNodeClick' :maInit='true' ref='coopTreeRef' />
+									</div>
+								</el-col>
+								<el-col :span='12'>
+									<div style='border: 1px solid #ccc;height: 390px;margin-left: 5px;overflow: auto'>
+										<ul class='z-org-tree'>
+											<li v-for='item in coopItems' :key='item.id' class='f-user' title=' ' @click='coopItemClick(item)'>
 												<el-checkbox v-model='item.checked' />
 												<img src='https://zsvg.gitee.io/vboot-vue/public/xiaoyoutai.png'>
 												<span class='layui-elip f-user-name'>{{ item.name }}</span>
@@ -100,28 +139,37 @@ import { defineExpose, reactive, ref, toRaw, toRefs } from 'vue';
 import { CircleClose } from '@element-plus/icons-vue';
 import DeptTree from '/@/comps/sys/DeptTree.vue';
 import RoleTree from '/@/comps/gen/GenTree.vue';
+import GroupTree from '/@/comps/gen/GenTree.vue';
+import CoopTree from '/@/comps/gen/GenTree.vue';
 import request from '/@/utils/request';
 
 let p_tab_key = 'k1';
 let p_select_mode = 1;//1单选，2多选
 let p_opener = null as any;//弹框打开者标记
 let p_dept_init_flag = false;//层级架构页签初始化标记
-let p_role_init_flag = false;//常用角色页签初始化标记
+let p_role_init_flag = false;//审批角色页签初始化标记
+let p_group_init_flag = false;//常用群组页签初始化标记
+let p_coop_init_flag = false;//外部协同页签初始化标记
 
 const deptTreeRef = ref();
 const roleTreeRef = ref();
+const groupTreeRef = ref();
+const coopTreeRef = ref();
 
 const state = reactive({
 	isShow: false,
 	p_org_type:-1,//0为综合，1为机构,2为部门,4为岗位,8为用户,16为常用群组,32为角色线
+	p_coop_type:-1,//0为综合，1为协调分类,2为协调公司,4为协同部门
 	receSearch: '' as string,
 	receItems: [] as any,
 	tierItems: [] as any,
 	seldItems: [] as any,
 	roleItems: [] as any,
+	groupItems: [] as any,
+	coopItems: [] as any,
 });
 
-const { receItems, tierItems, seldItems,roleItems } = toRefs(state);
+const { receItems, tierItems, seldItems,roleItems,groupItems,coopItems } = toRefs(state);
 
 const activeName = ref('k1');
 
@@ -160,12 +208,48 @@ async function tabChange(tab: any) {
 				tItem.checked = false;
 			}
 		}
+	}else if (p_tab_key === 'k3') {
+		if (!p_group_init_flag) {
+			await groupTreeRef.value.init();
+			p_group_init_flag = true;
+		}
+		for (const gItem of groupItems.value) {
+			let flag = false;
+			for (const sItem of seldItems.value) {
+				if (sItem.id == gItem.id) {
+					gItem.checked = true;
+					flag = true;
+					break;
+				}
+			}
+			if (!flag) {
+				gItem.checked = false;
+			}
+		}
 	} else if (p_tab_key === 'k4') {
 		if (!p_role_init_flag) {
 			await roleTreeRef.value.init();
 			p_role_init_flag = true;
 		}
 		for (const rItem of roleItems.value) {
+			let flag = false;
+			for (const sItem of seldItems.value) {
+				if (sItem.id == rItem.id) {
+					rItem.checked = true;
+					flag = true;
+					break;
+				}
+			}
+			if (!flag) {
+				rItem.checked = false;
+			}
+		}
+	} else if (p_tab_key === 'k5') {
+		if (!p_coop_init_flag) {
+			await coopTreeRef.value.init();
+			p_coop_init_flag = true;
+		}
+		for (const rItem of coopItems.value) {
 			let flag = false;
 			for (const sItem of seldItems.value) {
 				if (sItem.id == rItem.id) {
@@ -312,10 +396,62 @@ function tierItemClick(item: any) {
 //endregion
 
 //region x.3 常用群组
+async function groupNodeClick(node: any) {
+	if (node && node.id) {
+		groupItems.value = await request({
+			url: '/gen/org/group/list',
+			method: 'get',
+			params: { pid: node.id,type:node.type },
+		});
+		for (const gItem of groupItems.value) {
+			for (const sItem of seldItems.value) {
+				if (sItem.id === gItem.id) {
+					gItem.checked = true;
+					break;
+				}
+			}
+		}
+	}
+}
 
+function groupItemClick(item: any) {
+	item.checked = !item.checked;
+	if (p_select_mode == 1) {//单选
+		if (seldItems.value.length > 0) {
+			seldItems.value.splice(0, 1);
+		}
+		seldItems.value.push(item);
+		for (let i = 0; i < groupItems.value.length; i++) {
+			if (groupItems.value[i].id !== item.id) {
+				groupItems.value[i].checked = false;
+			}
+		}
+		// closeOrgModal();改成不自动关
+	} else {//多选
+		if (item.checked) {
+			let flag = false;
+			for (const sItem of seldItems.value) {
+				if (sItem.id === item.id) {
+					flag = true;
+					break;
+				}
+			}
+			if (!flag) {
+				seldItems.value.push(item);
+			}
+		} else {
+			for (let i = 0; i < seldItems.value.length; i++) {
+				if (seldItems.value[i].id === item.id) {
+					seldItems.value.splice(i, 1);
+					break;
+				}
+			}
+		}
+	}
+}
 //endregion
 
-//region x.4 常用角色
+//region x.4 审批角色
 
 async function roleNodeClick(node: any) {
 	if (node && node.id) {
@@ -373,7 +509,65 @@ function roleItemClick(item: any) {
 
 //endregion
 
-//region x.5 我的收藏
+//region x.5 外部协同
+
+async function coopNodeClick(node: any) {
+	if (node) {
+		coopItems.value = await request({
+			url: '/gen/coop/list',
+			method: 'get',
+			params: { pid: node.id ,type:state.p_coop_type},
+		});
+		for (const rItem of coopItems.value) {
+			for (const sItem of seldItems.value) {
+				if (sItem.id === rItem.id) {
+					rItem.checked = true;
+					break;
+				}
+			}
+		}
+	}
+}
+
+function coopItemClick(item: any) {
+	item.checked = !item.checked;
+	if (p_select_mode == 1) {//单选
+		if (seldItems.value.length > 0) {
+			seldItems.value.splice(0, 1);
+		}
+		seldItems.value.push(item);
+		for (let i = 0; i < coopItems.value.length; i++) {
+			if (coopItems.value[i].id !== item.id) {
+				coopItems.value[i].checked = false;
+			}
+		}
+		// closeOrgModal();改成不自动关
+	} else {//多选
+		if (item.checked) {
+			let flag = false;
+			for (const sItem of seldItems.value) {
+				if (sItem.id === item.id) {
+					flag = true;
+					break;
+				}
+			}
+			if (!flag) {
+				seldItems.value.push(item);
+			}
+		} else {
+			for (let i = 0; i < seldItems.value.length; i++) {
+				if (seldItems.value[i].id === item.id) {
+					seldItems.value.splice(i, 1);
+					break;
+				}
+			}
+		}
+	}
+}
+
+//endregion
+
+//region x.6 我的收藏
 
 //endregion
 
@@ -417,6 +611,9 @@ const openModal = async (data: any) => {
 		state.p_org_type = data.orgType;
 		await receInit();
 		tierItems.value.splice(0, tierItems.value.length);
+	}
+	if (data.coopType&&state.p_coop_type != data.coopType) {
+		state.p_coop_type = data.coopType;
 	}
 	p_select_mode = data.selectMode;
 	p_opener = data.opener;

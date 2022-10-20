@@ -176,7 +176,7 @@
   </el-card>
 </template>
 <script lang='ts'>
-export default {name: 'AssCogeMainEdit'};
+export default {name: 'AssCogeTableEdit'};
 </script>
 <script lang='ts' setup>
 import {getCurrentInstance, onMounted, reactive, ref, toRefs} from 'vue';

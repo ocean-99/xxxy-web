@@ -33,9 +33,9 @@ export async function listDelete(state: any) {
 		type: 'warning',
 	})
 		.then(async () => {
-			// ElMessage.warning('演示模式，禁用了删除');
-			await request({url: state.url + '/' + delIds, method: 'delete',});
-			await listQuery(state);
+			ElMessage.warning('演示模式，禁用了删除');
+			// await request({url: state.url + '/' + delIds, method: 'delete',});
+			// await listQuery(state);
 		})
 		.catch(() => ElMessage.info('已取消删除'));
 }
@@ -47,9 +47,9 @@ export const listItemDelete = async (state: any, id: string) => {
 		type: 'warning',
 	})
 		.then(async () => {
-			// ElMessage.warning('演示模式，禁用了删除');
-			await request({url: state.url + '/' + id, method: 'delete',});
-			await listQuery(state);
+			ElMessage.warning('演示模式，禁用了删除');
+			// await request({url: state.url + '/' + id, method: 'delete',});
+			// await listQuery(state);
 		})
 		.catch(() => ElMessage.info('已取消删除'));
 };
@@ -82,9 +82,9 @@ export async function treeDelete(state: any) {
 		type: 'warning',
 	})
 		.then(async () => {
-			// ElMessage.warning('演示模式，禁用了删除');
-			await request({url: state.url + '/' + delIds, method: 'delete',});
-			await treeQuery(state);
+			ElMessage.warning('演示模式，禁用了删除');
+			// await request({url: state.url + '/' + delIds, method: 'delete',});
+			// await treeQuery(state);
 		})
 		.catch(() => ElMessage.info('已取消删除'));
 }
@@ -96,9 +96,9 @@ export const treeItemDelete = async (state: any, id: string) => {
 		type: 'warning',
 	})
 		.then(async () => {
-			// ElMessage.warning('演示模式，禁用了删除');
-			await request({url: state.url + '/' + id, method: 'delete',});
-			await treeQuery(state);
+			ElMessage.warning('演示模式，禁用了删除');
+			// await request({url: state.url + '/' + id, method: 'delete',});
+			// await treeQuery(state);
 		})
 		.catch(() => ElMessage.info('已取消删除'));
 };

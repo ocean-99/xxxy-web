@@ -1,11 +1,15 @@
 <template>
-	<el-dialog v-model='state.show' title='部门编辑' draggable width='1000px'>
+	<el-dialog v-model='state.show' title='群组编辑' draggable width='1000px'>
 		<el-form ref='formRef' :inline='true' class='zform' :model='form' label-width='140px'>
 			<el-tabs type='card' v-model='activeName'>
 				<el-tab-pane label='基本信息' name='tab1' style='min-height: 500px'>
 					<div class='zform-div'>
 						<el-form-item label='群组名称：' prop='name' :rules="[{ required: true, message: '名称不能为空'}]" style='width: 100%'>
 							<el-input v-model='form.name'></el-input>
+						</el-form-item>
+						<el-form-item label='群组分类：' style='width: 100%'>
+							<el-tree-select placeholder='请选择' default-expand-all :props="{value:'id',label:'name'}" v-model='form.catid' :data='state.cates'
+															check-strictly style='width: 100%;' clearable/>
 						</el-form-item>
 						<el-form-item label='排序号：'>
 							<el-input-number v-model='form.ornum' controls-position='right' style='width: 100%' />
@@ -14,7 +18,7 @@
 							<el-switch v-model='form.avtag' />
 						</el-form-item>
 						<el-form-item label='成员列表：' style='width: 100%;'>
-							<el-input type='textarea' :rows='4' v-model='membersName' readonly @click='openOrgsModal' />
+							<el-input type='textarea' :rows='4' placeholder='可维护用户，部门，岗位' v-model='membersName' readonly @click='openOrgsModal' />
 						</el-form-item>
 					</div>
 				</el-tab-pane>
@@ -50,17 +54,25 @@ import OrgModal from '/@/comps/sys/OrgModal.vue';
 import request from '/@/utils/request';
 
 const state = reactive({
-	url: '/sys/org/group', show: false,
+	url: '/sys/org/group', show: false,cates: [] as any,
 	form: { avtag: true} as any,
 });
 
 const { form } = toRefs(state);
 const activeName = ref('tab1');
 
+const catesInit=async ()=>{
+	state.cates = await request({
+		url: '/sys/org/group/cate/treea',
+		method: 'get',
+	});
+}
+
 
 //region -----弹框开启逻辑-----
 const formRef = ref();
 const open = async (data: any) => {
+	await catesInit();
 	if (data && data.id) {
 		state.form = await request({
 			url: state.url + '/one/' + data.id,
@@ -70,6 +82,11 @@ const open = async (data: any) => {
 		state.form = { avtag: true };
 		if (formRef.value) {
 			formRef.value.resetFields();
+		}
+		if (data && data.catid) {
+			form.value.catid = data.catid;
+		}else{
+			form.value.catid = null;
 		}
 	}
 	state.show = true;

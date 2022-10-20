@@ -86,7 +86,7 @@ const handleCommand =async (command: string | number | object) => {
 	}else if('refresh' == command){
     await initTreeData();
   }else if('rootNode' == command){
-    emits('node-click', { id: '', name: '' });
+    emits('node-click', { id: '', name: '',type:'' });
   }
 };
 
@@ -104,7 +104,7 @@ const initTreeData = async () => {
 
 const emits = defineEmits(['node-click']);
 const nodeClick = (node:any) => {
-  emits('node-click', { id: node.id, name: node.name });
+  emits('node-click', { id: node.id, name: node.name,type:node.type });
 };
 
 

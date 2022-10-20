@@ -1,11 +1,11 @@
 <template>
 	<el-card class='box-card' style='height: 100%;' body-style='height: 100%;overflow: auto'>
 		<template #header>
-			<div class='card-header'>
+			<div class='card-header' >
 				<div class='tree-h-flex'>
 					<div class='tree-h-left'>
 						<div>
-							<el-input :prefix-icon='Search' v-model='filterText' placeholder='角色节点 可拖拽可右键' />
+							<el-input :prefix-icon='Search' v-model='filterText' placeholder='群组分类 可拖拽可右键' />
 						</div>
 					</div>
 					<div class='tree-h-right'>
@@ -18,7 +18,7 @@
 								</el-button>
 								<template #dropdown>
 									<el-dropdown-menu>
-										<el-dropdown-item command='addCate'>新增节点</el-dropdown-item>
+										<el-dropdown-item command='addCate'>新增分类</el-dropdown-item>
 										<el-dropdown-item command='expandAll'>全部展开</el-dropdown-item>
 										<el-dropdown-item command='collapseAll'>全部折叠</el-dropdown-item>
 										<el-dropdown-item command='rootNode'>根节点</el-dropdown-item>
@@ -32,15 +32,19 @@
 			</div>
 		</template>
 		<div style="margin-bottom: 88px;font-family: 'Courier New', Helvetica, Arial, sans-serif;">
-			<el-tree highlight-current @node-contextmenu='rightClick' node-key='id' ref='treeRef' class='filter-tree' :data='state.data' :props='defaultProps'
-:filter-node-method='filterNode' @node-click='nodeClick' draggable :allow-drop='allowDrop' :allow-drag='allowDrag' @node-drop='handleDrop' />
+			<el-tree highlight-current @node-contextmenu='rightClick' node-key="id" ref='treeRef' class='filter-tree' :data='state.data'
+				:props='defaultProps' :filter-node-method='filterNode' @node-click='nodeClick'
+				draggable :allow-drop='allowDrop' :allow-drag='allowDrag'
+				@node-drag-start='handleDragStart' @node-drag-enter='handleDragEnter' @node-drag-leave='handleDragLeave'
+				@node-drag-over='handleDragOver' @node-drag-end='handleDragEnd' @node-drop='handleDrop' />
 
-			<div :style="{'z-index': 9999,width:'100px',position: 'fixed',left:state.optionCardX + 'px',top: state.optionCardY + 'px', }" v-show='state.optionCardShow' id='option-button-group'>
-				<el-button class='option-card-button' @click='addChildCate' style='border-bottom: 0'>新增节点</el-button>
-				<el-button class='option-card-button' @click='editCate' style='border-bottom: 0'>修改节点</el-button>
-				<el-button class='option-card-button' @click='deleteCate'>删除节点</el-button>
+			<div :style="{'z-index': 9999,width:'100px',position: 'fixed',left:state.optionCardX + 'px',top: state.optionCardY + 'px', }"
+v-show='state.optionCardShow' id='option-button-group'>
+				<el-button class='option-card-button' @click='addChildCate' style='border-bottom: 0'>新增群组分类</el-button>
+				<el-button class='option-card-button' @click='editCate' style='border-bottom: 0'>修改群组分类</el-button>
+				<el-button class='option-card-button' @click='deleteCate'>删除群组分类</el-button>
 			</div>
-			<NodeEdit ref='nodeRef' @close='cateUpdate' />
+			<CateEdit ref='cateRef' @close='cateUpdate' />
 		</div>
 	</el-card>
 </template>
@@ -48,11 +52,16 @@
 <script lang='ts' setup>
 import { onMounted, reactive, ref, watch } from 'vue';
 import type { ElTree } from 'element-plus';
-import { Search, MoreFilled } from '@element-plus/icons-vue';
+import { Search,MoreFilled } from '@element-plus/icons-vue';
 import request from '/@/utils/request';
-import NodeEdit from './node_medit.vue';
+import CateEdit from './cate_edit.vue';
 import { DragEvents } from 'element-plus/es/components/tree/src/model/useDragNode';
-import { useRoute } from 'vue-router';
+import { DropType } from 'element-plus/es/components/tree/src/tree.type';
+
+const props = defineProps({
+	url: String,
+	maInit: Boolean,
+});
 
 interface Tree {
 	id: number;
@@ -82,7 +91,7 @@ const state = reactive({
 	optionCardX: '', optionCardY: '', optionCardShow: false, optionData: [],
 });
 
-const nodeRef = ref();
+const cateRef = ref();
 
 const handleCommand = async (command: string | number | object) => {
 	if ('expandAll' == command) {
@@ -98,76 +107,76 @@ const handleCommand = async (command: string | number | object) => {
 	} else if ('rootNode' == command) {
 		emits('node-click', { id: '', name: '' });
 	} else if ('addCate' == command) {
-		nodeRef.value.open({});
+		cateRef.value.openModal({});
 	}
 };
 
-const cateUpdate = async (updateNode: any, type: string) => {
-	if (type == 'add') {
-		if (updateNode.pid == null) {
+const cateUpdate = async (updateNode:any,type:string) => {
+	if(type=="add"){
+		if(updateNode.pid==null){
 			state.data.push(updateNode);
-		} else {
+		}else{
 			for (const targetNode of state.data) {
 				// if(targetNode.id==updateNode.pid){
 				// 	targetNode.children.push(updateNode);
 				// 	break;
 				// }
-				let back = recAddUpdate(updateNode, targetNode);
-				if (back) {
+				let back=recAddUpdate(updateNode,targetNode);
+				if(back){
 					break;
 				}
 			}
 		}
-	} else if (type == 'edit') {
+	}else if(type=="edit"){
 		for (const targetNode of state.data) {
 			// if(targetNode.id==updateNode.id){
 			// 	targetNode.children.push(updateNode);
 			// 	break;
 			// }
-			let back = recEditUpdate(updateNode, targetNode);
-			if (back) {
+			let back=recEditUpdate(updateNode,targetNode);
+			if(back){
 				break;
 			}
 		}
-		currNode.name = updateNode.name;
-		currNode.notes = updateNode.notes;
+		currNode.name=updateNode.name;
+		currNode.notes=updateNode.notes;
 	}
 	// await initTreeData();
 
 };
 
-const recAddUpdate = (updateNode: any, targetNode: any) => {
-	if (targetNode.id == updateNode.pid) {
+const recAddUpdate=(updateNode:any,targetNode:any)=>{
+	if(targetNode.id==updateNode.pid){
 		targetNode.children.push(updateNode);
 		return true;
 	}
-	if (targetNode.children) {
+	if(targetNode.children){
 		for (const targetSunNode of targetNode.children) {
-			let back = recAddUpdate(updateNode, targetSunNode);
-			if (back) {
+			let back=recAddUpdate(updateNode,targetSunNode);
+			if(back){
 				return true;
 			}
 		}
 	}
 	return false;
-};
+}
 
-const recEditUpdate = (updateNode: any, targetNode: any) => {
-	if (targetNode.id == updateNode.id) {
-		targetNode.name = updateNode.name;
-		targetNode.notes = updateNode.notes;
+const recEditUpdate=(updateNode:any,targetNode:any)=>{
+	if(targetNode.id==updateNode.id){
+		targetNode.name=updateNode.name;
+		targetNode.notes=updateNode.notes;
 		return true;
 	}
-	if (targetNode.children) {
+	if(targetNode.children){
 		for (const targetSunNode of targetNode.children) {
-			let back = recEditUpdate(updateNode, targetSunNode);
-			if (back) {
+			let back=recEditUpdate(updateNode,targetSunNode);
+			if(back){
 				return true;
 			}
 		}
 	}
 	return false;
-};
+}
 
 let currNode = {} as any;
 const emits = defineEmits(['node-click']);
@@ -198,21 +207,36 @@ onMounted(async () => {
 
 const initTreeData = async () => {
 	state.data = await request({
-		url: '/sys/org/rnode/treea',
-		params:{treid:useRoute().query?.id},
+		url: '/sys/org/group/cate/tree',
 		method: 'get',
 	});
 };
 
 //region -----树拖拽逻辑-----
-const handleDrop = async (draggingNode: any, dropNode: any, dropType: any, ev: DragEvents) => {
+const handleDragStart = (node: any, ev: DragEvents) => {
+	console.log('DragStart')
+};
+const handleDragEnter = (draggingNode: any, dropNode: any, ev: DragEvents) => {
+	console.log("DragEnter");
+};
+const handleDragLeave = (draggingNode: any, dropNode: any, ev: DragEvents,) => {
+	console.log("DragLeave");
+};
+const handleDragOver = (draggingNode: any, dropNode: Node, ev: DragEvents) => {
+	console.log("DragOver");
+};
+const handleDragEnd = async (draggingNode: any, dropNode: any, dropType: DropType, ev: DragEvents) => {
+	console.log("DragEnd");
+};
+const handleDrop = async (draggingNode: any, dropNode: any, dropType: DropType, ev: DragEvents,) => {
 	await request({
-		url: '/sys/org/rnode/move',
-		data: { type: dropType, draid: draggingNode.data.id, droid: dropNode.data.id },
+		url: '/sys/org/group/cate/move',
+		data: { type:dropType,draid: draggingNode.data.id, droid: dropNode.data.id},
 		method: 'post',
 	});
+	console.log("handleDrop");
 };
-const allowDrop = (draggingNode: any, dropNode: any, type: any) => {
+const allowDrop = (draggingNode: any, dropNode: any, type: DropType) => {
 	return true;
 };
 const allowDrag = (draggingNode: any) => {
@@ -222,14 +246,14 @@ const allowDrag = (draggingNode: any) => {
 
 
 const addChildCate = () => {
-	nodeRef.value.open({ pid: currNode.id });
+	cateRef.value.openModal({ pid: currNode.id });
 };
 const editCate = () => {
-	nodeRef.value.open({ id: currNode.id });
+	cateRef.value.openModal({ id: currNode.id });
 };
-const deleteCate = async () => {
+const deleteCate =async () => {
 	await request({
-		url: '/sys/org/rnode/' + currNode.id,
+		url: '/sys/org/group/cate/'+currNode.id,
 		method: 'delete',
 	});
 	treeRef.value!.remove(currNode);

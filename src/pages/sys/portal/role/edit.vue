@@ -29,8 +29,8 @@
 									/>
 								</el-select>
 							</el-form-item>
-							<el-form-item label='指派用户：' style='width: 100%'>
-								<el-input type='textarea' :rows='4' v-model='orgsName' readonly @click='openOrgsModal' />
+							<el-form-item label='指派用户：' prop='orgs' :rules="[{ required: true, message: '用户不能为空'}]" style='width: 100%'>
+								<el-input type='textarea' placeholder='这里可以选择用户，部门，岗位，群组或者外部协同公司与用户。权限都会生效' :rows='4' v-model='orgsName' readonly @click='openOrgsModal' />
 							</el-form-item>
 							<el-form-item label='排序号：'>
 								<el-input-number v-model='form.ornum' controls-position='right' style='width: 100%' />
@@ -77,7 +77,7 @@ export default { name: 'SysPortalRoleEdit' };
 </script>
 <script lang='ts' setup>
 import { computed, getCurrentInstance, onMounted, reactive, ref, toRaw, toRefs } from 'vue';
-import { editInit, tabSave, tabClose } from '/@/comps/page/edit';
+import { tabSave, tabClose } from '/@/comps/page/edit';
 import { useRoute } from 'vue-router';
 import OrgModal from '/@/comps/sys/OrgModal.vue';
 import request from '/@/utils/request';
@@ -157,7 +157,8 @@ const orgModal = ref();
 
 const openOrgsModal = () => {
 	orgModal.value.openModal({
-		orgType: 10,
+		orgType: 31,
+		coopType: 7,
 		selectMode: 2,
 		orgs: toRaw(form.value.orgs),
 	});

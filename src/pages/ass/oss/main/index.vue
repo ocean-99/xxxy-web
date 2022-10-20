@@ -35,7 +35,7 @@
         <el-table-column label='序号' type='index' width='55' align='center'/>
         <el-table-column label='文件名称' prop='id' width='250'>
           <template #default='scope'>
-						<span style='cursor:pointer;color: #3e9ece' @click='editRef.openModal({id:scope.row.id})'>
+						<span style='cursor:pointer;color: #3e9ece' @click='downloadFile(scope.row.id)'>
 							{{ scope.row.name }}
 						</span>
           </template>
@@ -46,9 +46,9 @@
             <el-image
                 v-if="checkFileSuffix(scope.row.type)"
                 style="width: 60px; height: 50px;"
-                :src="scope.row.service==='local'?'http://localhost:5000/ass/oss/main/download?id='+scope.row.id:scope.row.path"
-                :preview-src-list="[scope.row.path]"/>
-            <span v-text="scope.row.name"
+                :src="scope.row.service==='local'?state.localShow+'&id='+scope.row.id:scope.row.path"
+                />
+            <span v-text="'没有预览'"
                   v-if="!checkFileSuffix(scope.row.type)"/>
           </template>
         </el-table-column>
@@ -78,12 +78,15 @@ import {listQuery, listDelete, listSelect} from '/@/comps/page/index';
 import Edit from './edit.vue';
 import GenUpload from '/@/comps/gen/GenUpload.vue';
 import router from '/@/router';
+import request from "../../../../utils/request";
+import {Session} from '/@/utils/storage';
 
 
 const editRef = ref() as any;
 const state = reactive({
   url: '/ass/oss/main', loading: true, ids: [], cates: [] as any, preview: true,
   form: {}, single: true, multiple: true, list: [], total: 0,
+	localShow:import.meta.env.VITE_API_URL+'ass/oss/main/show?token='+Session.get('token'),
 });
 
 onMounted(async () => {
@@ -117,8 +120,13 @@ const openConfig = async () => {
   });
 }
 
+const downloadFile = async (id:string) => {
+  await request({
+    url: '/gen/oss/download',
+    method: 'get',
+    params: { id: id},
+    responseType: 'blob',
+  });
+}
+
 </script>
-
-<style scoped>
-
-</style>

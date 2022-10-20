@@ -63,7 +63,7 @@ import OrgModal from '/@/comps/sys/OrgModal.vue';
 import request from '/@/utils/request';
 
 const state = reactive({
-	url: '/sys/org/dept', show: false,
+	url: '/sys/org/dept', show: false,type:'add',
 	form: {avtag: true, type: 2} as any,
 });
 
@@ -83,8 +83,9 @@ const open = async (data: any) => {
 			state.form.pid = state.form.parent.id;
 			form.value.pname = state.form.parent.name;
 		}
+		state.type='edit';
 	} else {
-		state.form = {avtag: true};
+		state.form = {avtag: true,children:[],type:2};
 		if (formRef.value) {
 			formRef.value.resetFields();
 		}
@@ -93,6 +94,7 @@ const open = async (data: any) => {
 			form.value.pname = data.pname;
 			form.value.pid = data.pid;
 		}
+		state.type='add';
 		// console.log(form.value);
 	}
 	state.show = true;
@@ -110,9 +112,14 @@ const handleConfirm = async () => {
 	} else {
 		form.value.parent = null;
 	}
-	await modalSave({formRef: formRef.value, state});
 
-	emits('close');
+	const backNode={} as any;
+	backNode.id=await modalSave({formRef: formRef.value, state});
+	backNode.name=state.form.name;
+	backNode.notes=state.form.notes;
+	backNode.pid=state.form.pid;
+	backNode.children=state.form.children;
+	emits('close',backNode,state.type);
 };
 //endregion
 

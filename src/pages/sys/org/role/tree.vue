@@ -7,6 +7,7 @@
 						<el-input v-model='state.form.name' placeholder='输入名称回车查询' class='list-search' clearable @keyup.enter='listQuery(state)'/>
 						<el-button type='primary' @click='listQuery(state)' plain>查 询</el-button>
 						<el-button class='more-button' :icon='state.moreParams?ArrowUp:ArrowDown' plain @click='state.moreParams=!state.moreParams'/>
+						<span style='margin-left: 10px;color: red'>角色树主要服务于流程审批线</span>
 					</div>
 					<div>
 						<el-button type='warning'  @click='calc' plain>模拟计算</el-button>

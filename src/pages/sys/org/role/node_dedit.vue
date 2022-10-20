@@ -4,7 +4,7 @@
 
 		<el-drawer v-model='state.show' size='70%'>
 			<template #header>
-				<h4>角色树节点编辑</h4>
+				<h4>角色节点编辑</h4>
 			</template>
 			<template #default>
 				<div style='padding: 20px;'>
@@ -17,7 +17,7 @@
 							</el-col>
 							<el-col :span='12'>
 								<el-form-item label='上一节点：'>
-									<el-input v-model='form.parna' readonly :suffix-icon='Search' @click='openParentModal'></el-input>
+									<el-input v-model='form.pname' readonly :suffix-icon='Search' @click='openParentModal'></el-input>
 									<ParentModal url='/sys/org/rnode/tree' :maInit='true' ref='parentModal' @close='closeParentModal' />
 								</el-form-item>
 							</el-col>
@@ -25,7 +25,7 @@
 						<el-row style='height: 48px'>
 							<el-col :span='12'>
 								<el-form-item label='节点成员：'>
-									<el-input v-model='form.memna' @click='openOrgModal' readonly :suffix-icon='Search' />
+									<el-input v-model='form.memna' @click='openOrgModal' readonly :suffix-icon='Search' placeholder='可维护用户，部门，岗位。部门需要在最低层'/>
 								</el-form-item>
 							</el-col>
 							<el-col :span='6'>
@@ -95,12 +95,14 @@ const { form } = toRefs(state);
 
 //暴露open方法给父组件调用
 const open = async (data: any) => {
+	console.log(data);
 	if (!data.id) {
 		if (data.pid) {
 			state.form = {
 				avtag: true,
 				treid: data.treid,
 				pid: data.pid,
+				pname: data.pname,
 			};
 			state.show = true;
 		} else {
@@ -115,6 +117,9 @@ const open = async (data: any) => {
 		if (state.form.member) {
 			state.form.memid = state.form.member.id;
 			state.form.memna = state.form.member.name;
+		}
+		if (state.form.parent) {
+			state.form.pname = state.form.parent.name;
 		}
 	}
 };
@@ -144,7 +149,7 @@ const openParentModal = () => {
 
 const closeParentModal = (node: any) => {
 	form.value.pid = node.id;
-	form.value.parna = node.name;
+	form.value.pname = node.name;
 	form.value.parent = node;
 };
 //endregion

@@ -86,6 +86,7 @@ const open = async (data:any) => {
 		form.value.pname = form.value.parent.name;
 	}
 	if(!data.id){
+		form.value.type = 2;
 		form.value.pname = data.pname;
 		form.value.pid = data.pid;
 		form.value.parent = {id:data.pid,name:data.pname};

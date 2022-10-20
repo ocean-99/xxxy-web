@@ -107,7 +107,6 @@ export const pageSave = async (data:IpageSave) => {
             isSuccess=false;
         });
     }
-
     if(isSuccess){
         ElMessage({
             showClose: true,
@@ -218,8 +217,9 @@ export const modalSave = async (data:ImodalSave) => {
     if(!data.iouField){
         data.iouField = "id";
     }
+    let back;
     if (!data.state.form[data.iouField]) {
-        await request({
+        back=await request({
             url: data.state.url,
             method: 'post',
             data: data.state.form,
@@ -227,7 +227,7 @@ export const modalSave = async (data:ImodalSave) => {
             isSuccess=false;
         });
     } else {
-        await request({
+        back=await request({
             url: data.state.url,
             method: 'put',
             data: data.state.form,
@@ -239,6 +239,7 @@ export const modalSave = async (data:ImodalSave) => {
     if(isSuccess){
         data.state.show = false;
     }
+    return back;
 };
 
 

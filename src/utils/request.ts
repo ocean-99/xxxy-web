@@ -48,7 +48,7 @@ service.interceptors.response.use(
                 ElMessage.error('服务器内部错误:' + res.msg);
             } else if (res.code === 222) {
                 return response.data;
-            } else if (res.code === 202) {
+            } else if (res.code === 202) { //202一个不在用了，待删除
                 ElMessage({
                     type: "warning",
                     message: res.msg,

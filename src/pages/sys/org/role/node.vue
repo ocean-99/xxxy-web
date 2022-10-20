@@ -8,23 +8,23 @@
 				<template #header>
 					<div class='zjustify'>
 						<div>
-							<el-input v-model='state.form.name' placeholder='输入名称回车查询' clearable class='list-search'
+							<el-input v-model='form.name' placeholder='输入名称回车查询' clearable class='list-search'
 												@keyup.enter='listQuery(state)' />
 							<el-button type='primary' @click='listQuery(state)' :icon='Search' plain>查询</el-button>
 							<el-button class='more-button' :icon='state.moreParams?ArrowUp:ArrowDown' plain @click='state.moreParams=!state.moreParams' />
 						</div>
 						<div>
-							<el-button type='success' :icon='Plus' @click='drawer.open({pid:state.pid,treid:state.form.treid})' plain>新增</el-button>
+							<el-button type='success' :icon='Plus' @click='drawer.open({pid:form.pid,pname:form.pname,treid:form.treid})' plain>新增</el-button>
 							<el-button type='danger' :icon='Delete' :disabled='state.multiple' @click='listDelete(state)' plain>删除</el-button>
 						</div>
 					</div>
 					<div v-show='state.moreParams' class='more-params'>
 						<el-form :inline='true' label-width='100px'>
 							<el-form-item label='更多参数1'>
-								<el-input v-model='state.form.notes' placeholder='更多参数1' />
+								<el-input v-model='form.notes' placeholder='更多参数1' />
 							</el-form-item>
 							<el-form-item label='更多参数2'>
-								<el-input v-model='state.form.xx' placeholder='更多参数2' />
+								<el-input v-model='form.xx' placeholder='更多参数2' />
 							</el-form-item>
 							<el-form-item />
 						</el-form>
@@ -35,9 +35,9 @@
 									border stripe @selection-change='listSelect($event,state)'>
 					<el-table-column type='selection' width='55' align='center' />
 					<el-table-column label='序号' type='index' width='55' align='center' />
-					<el-table-column label='角色树节点名称' width='180'>
+					<el-table-column label='角色节点名称' width='180'>
 						<template #default='scope'>
-							<span style='cursor:pointer;color: #3e9ece' @click='drawer.open({id:scope.row.id,pid:state.pid,treid:state.form.treid})'>{{ scope.row.name }}</span>
+							<span style='cursor:pointer;color: #3e9ece' @click='drawer.open({id:scope.row.id})'>{{ scope.row.name }}</span>
 						</template>
 					</el-table-column>
 					<el-table-column label='备注' prop='notes' />
@@ -53,7 +53,7 @@
 				/>
 			</el-card>
 		</div>
-		<NodeEdit ref='drawer' @nodeRefresh='nodeRefresh' />
+		<NodeDrawerEdit ref='drawer' @nodeRefresh='nodeRefresh' />
 	</Wrap>
 </template>
 <script lang='ts'>
@@ -61,11 +61,11 @@ export default { name: 'SysOrgTierNode' };
 </script>
 <script lang='ts' setup>
 import { Search, Plus, Delete, ArrowDown, ArrowUp } from '@element-plus/icons-vue';
-import { onMounted, reactive, ref } from 'vue';
+import { onMounted, reactive, ref, toRefs } from 'vue';
 import { listQuery, listDelete, listSelect } from '/@/comps/page/index';
 import Wrap from '/@/comps/page/Wrap.vue';
 import NodeTree from './node_tree.vue';
-import NodeEdit from './node_edit.vue';
+import NodeDrawerEdit from './node_dedit.vue';
 import { useRoute } from 'vue-router';
 
 const route = useRoute();
@@ -73,6 +73,7 @@ const state = reactive({
 	url: '/sys/org/rnode', loading: true, ids: [], moreParams: false,
 	form: {treid:''} as any, single: true, multiple: true, list: [], total: 0,
 });
+const { form } = toRefs(state);
 
 onMounted(() => {
 

@@ -54,10 +54,9 @@ onMounted(() => {
 const pageView=(link:string)=>{
   // console.log(import.meta.env.VITE_UI_URL+import.meta.env.VITE_PUBLIC_PATH+link)
   // console.log(link)
-  // window.open(import.meta.env.VITE_PUBLIC_PATH+link);
-  window.open(import.meta.env.VITE_PUBLIC_PATH+link.substring(1));
+	// window.open(import.meta.env.VITE_PUBLIC_PATH+link);
+	window.open(import.meta.env.VITE_PUBLIC_PATH+link.substring(1));
 }
-
 
 </script>
 
