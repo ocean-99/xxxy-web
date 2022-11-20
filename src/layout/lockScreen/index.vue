@@ -28,7 +28,7 @@
 				<div v-show="isShowLoockLogin" class="layout-lock-screen-login">
 					<div class="layout-lock-screen-login-box">
 						<div class="layout-lock-screen-login-box-img">
-							<img src="https://zsvg.gitee.io/vboot-vue/public/xiaoyoutai.png" />
+							<img src="https://img2.baidu.com/it/u=1978192862,2048448374&fm=253&fmt=auto&app=138&f=JPEG?w=504&h=500" />
 						</div>
 						<div class="layout-lock-screen-login-box-name">Administrator</div>
 						<div class="layout-lock-screen-login-box-value">
@@ -60,7 +60,7 @@
 </template>
 
 <script lang="ts">
-import { nextTick, onMounted, reactive, toRefs, ref, onUnmounted, getCurrentInstance, defineComponent } from 'vue';
+import { nextTick, onMounted, reactive, toRefs, ref, onUnmounted, defineComponent } from 'vue';
 import { formatDate } from '/@/utils/formatTime';
 import { Local } from '/@/utils/storage';
 import { storeToRefs } from 'pinia';
@@ -88,7 +88,7 @@ interface LockScreenState {
 export default defineComponent({
 	name: 'layoutLockScreen',
 	setup() {
-		const { proxy } = <any>getCurrentInstance();
+		const layoutLockScreenDateRef = ref();
 		const layoutLockScreenInputRef = ref();
 		const storesThemeConfig = useThemeConfig();
 		const { themeConfig } = storeToRefs(storesThemeConfig);
@@ -150,7 +150,7 @@ export default defineComponent({
 		// 获取要拖拽的初始元素
 		const initGetElement = () => {
 			nextTick(() => {
-				state.querySelectorEl = proxy.$refs.layoutLockScreenDateRef;
+				state.querySelectorEl = layoutLockScreenDateRef.value;
 			});
 		};
 		// 时间初始化
@@ -204,6 +204,7 @@ export default defineComponent({
 			window.clearInterval(state.isShowLockScreenIntervalTime);
 		});
 		return {
+			layoutLockScreenDateRef,
 			layoutLockScreenInputRef,
 			onDown,
 			onMove,
@@ -359,11 +360,11 @@ export default defineComponent({
 		}
 	}
 }
-::v-deep(.el-input-group__append) {
+:deep(.el-input-group__append) {
 	background: var(--el-color-white);
 	padding: 0px 15px;
 }
-::v-deep(.el-input__inner) {
+:deep(.el-input__inner) {
 	border-right-color: var(--el-border-color-extra-light);
 	&:hover {
 		border-color: var(--el-border-color-extra-light);

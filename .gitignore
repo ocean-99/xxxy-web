@@ -21,12 +21,3 @@ pnpm-debug.log*
 *.njsproj
 *.sln
 *.sw?
-
-#.env
-#.env.development
-#.env.production
-
-#/src/pages/bi/
-#/src/pages/sa/
-#/src/pages/te/
-#/src/router/saRoute.ts

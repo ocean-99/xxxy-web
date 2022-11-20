@@ -1,5 +1,5 @@
 <template>
-	<el-dialog v-model='state.show' title='外部用户编辑' draggable width='1000px'>
+	<el-dialog v-model='state.show' title='用户编辑' draggable width='1000px'>
 		<el-form ref='formRef' :inline='true' class='zform' :model='form' label-width='140px'>
 			<el-tabs type='card' v-model='activeName'>
 				<el-tab-pane label='基本信息' name='tab1' style='min-height: 500px'>

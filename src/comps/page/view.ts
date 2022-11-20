@@ -1,6 +1,7 @@
 import request from '/@/utils/request';
 import router from '/@/router';
 import {ElMessage, ElLoading} from "element-plus";
+import mittBus from '/@/utils/mitt';
 
 // import { ArrowDown } from '@element-plus/icons-vue';
 // import {NextLoading} from "/@/utils/loading";
@@ -52,7 +53,7 @@ interface IviewTabClose {
 }
 
 export const tabClose = (data: IviewTabClose) => {
-    data.proxy.mittBus.emit('onCurrentContextmenuClick', Object.assign({}, {contextMenuClickId: 1, ...data.route}));
+    mittBus.emit('onCurrentContextmenuClick', Object.assign({}, {contextMenuClickId: 1, ...data.route}));
 };
 
 

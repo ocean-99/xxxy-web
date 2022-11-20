@@ -51,10 +51,10 @@ export function setTagsViewNameI18n(item: any) {
 	let tagsViewName: any = '';
 	const { query, params, meta } = item;
 	if (query?.tagsViewName || params?.tagsViewName) {
-		if (/zh-cn|en|zh-tw/.test(query?.tagsViewName) || /zh-cn|en|zh-tw/.test(params?.tagsViewName)) {
+		if (/\/zh-cn|en|zh-tw\//.test(query?.tagsViewName) || /\/zh-cn|en|zh-tw\//.test(params?.tagsViewName)) {
 			// 国际化
 			const urlTagsParams = (query?.tagsViewName && JSON.parse(query?.tagsViewName)) || (params?.tagsViewName && JSON.parse(params?.tagsViewName));
-			tagsViewName = urlTagsParams[i18n.global.locale];
+			tagsViewName = urlTagsParams[i18n.global.locale.value];
 		} else {
 			// 非国际化
 			tagsViewName = query?.tagsViewName || params?.tagsViewName;
@@ -113,7 +113,7 @@ export function deepClone(obj: any) {
 		newObj = {};
 	}
 	for (let attr in obj) {
-		if (typeof obj[attr] === 'object') {
+		if (obj[attr] && typeof obj[attr] === 'object') {
 			newObj[attr] = deepClone(obj[attr]);
 		} else {
 			newObj[attr] = obj[attr];

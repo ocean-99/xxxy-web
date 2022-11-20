@@ -47,7 +47,7 @@
 				<el-pagination
 					@size-change='listQuery(state)' @current-change='listQuery(state)'
 					class='mt8' :pager-count='5' :page-sizes='[10, 20, 30]' background
-					:total='state.total' v-model:current-page='state.form.pageIndex' v-model:page-size='state.form.pageSize'
+					:total='state.total' v-model:current-page='state.form.page' v-model:page-size='state.form.pageSize'
 					layout='total, sizes, prev, pager, next, jumper'
 				/>
 			</el-card>
@@ -77,7 +77,6 @@ onMounted(() => {
 });
 
 const flush = async () => {
-	console.log(111);
 	await listQuery(state);
 };
 

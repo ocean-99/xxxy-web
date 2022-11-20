@@ -1,18 +1,18 @@
 <template>
-	<div class="workflow-container">
+	<div class="workflow-container layout-padding">
 		<div class="workflow-mask" v-if="isShow"></div>
-		<div class="layout-view-bg-white flex" :style="{ height: `calc(100vh - ${setViewHeight}` }">
+		<div class="layout-padding-auto layout-padding-view workflow-warp">
 			<div class="workflow">
 				<!-- 顶部工具栏 -->
 				<Tool @tool="onToolClick" />
 
 				<!-- 左侧导航区 -->
 				<div class="workflow-content">
-					<div id="workflow-left">
+					<div class="workflow-left">
 						<el-scrollbar>
 							<div
-								:id="`left${key}`"
-								v-for="(val, key) in leftNavList"
+								ref="leftNavRefs"
+								v-for="val in leftNavList"
 								:key="val.id"
 								:style="{ height: val.isOpen ? 'auto' : '50px', overflow: 'hidden' }"
 								class="workflow-left-id"
@@ -32,11 +32,12 @@
 					</div>
 
 					<!-- 右侧绘画区 -->
-					<div id="workflow-right">
+					<div class="workflow-right" ref="workflowRightRef">
 						<div
 							v-for="(v, k) in jsplumbData.nodeList"
 							:key="v.nodeId"
 							:id="v.nodeId"
+							:data-node-id="v.nodeId"
 							:class="v.class"
 							:style="{ left: v.left, top: v.top }"
 							@click="onItemCloneClick(k)"
@@ -67,17 +68,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, toRefs, reactive, computed, onMounted, onUnmounted, nextTick, ref } from 'vue';
+import { defineAsyncComponent, defineComponent, toRefs, reactive, computed, onMounted, onUnmounted, nextTick, ref } from 'vue';
 import { ElMessage, ElMessageBox } from 'element-plus';
 import { jsPlumb } from 'jsplumb';
 import Sortable from 'sortablejs';
 import { storeToRefs } from 'pinia';
 import { useThemeConfig } from '/@/stores/themeConfig';
 import { useTagsViewRoutes } from '/@/stores/tagsViewRoutes';
-import Tool from './component/tool/index.vue';
-import Help from './component/tool/help.vue';
-import Contextmenu from './component/contextmenu/index.vue';
-import Drawer from './component/drawer/index.vue';
 import commonFunction from '/@/utils/commonFunction';
 import { leftNavList } from './js/mock';
 import { jsplumbDefaults, jsplumbMakeSource, jsplumbMakeTarget, jsplumbConnect } from './js/config';
@@ -102,6 +99,8 @@ interface XyState {
 	y: string | number;
 }
 interface WorkflowState {
+	workflowRightRef: HTMLDivElement | null;
+	leftNavRefs: any[];
 	leftNavList: any[];
 	dropdownNode: XyState;
 	dropdownLine: XyState;
@@ -120,7 +119,12 @@ interface WorkflowState {
 
 export default defineComponent({
 	name: 'pagesWorkflow',
-	components: { Tool, Contextmenu, Drawer, Help },
+	components: {
+		Tool: defineAsyncComponent(() => import('./component/tool/index.vue')),
+		Contextmenu: defineAsyncComponent(() => import('./component/contextmenu/index.vue')),
+		Drawer: defineAsyncComponent(() => import('./component/drawer/index.vue')),
+		Help: defineAsyncComponent(() => import('./component/tool/help.vue')),
+	},
 	setup() {
 		const contextmenuNodeRef = ref();
 		const contextmenuLineRef = ref();
@@ -132,6 +136,8 @@ export default defineComponent({
 		const { isTagsViewCurrenFull } = storeToRefs(stores);
 		const { copyText } = commonFunction();
 		const state = reactive<WorkflowState>({
+			workflowRightRef: null as HTMLDivElement | null,
+			leftNavRefs: [],
 			leftNavList: [],
 			dropdownNode: { x: '', y: '' },
 			dropdownLine: { x: '', y: '' },
@@ -195,8 +201,8 @@ export default defineComponent({
 		};
 		// 左侧导航-初始化拖动
 		const initSortable = () => {
-			state.leftNavList.forEach((v, k) => {
-				Sortable.create(document.getElementById(`left${k}`) as HTMLElement, {
+			state.leftNavRefs.forEach((v) => {
+				Sortable.create(v as HTMLDivElement, {
 					group: {
 						name: 'vue-next-admin-1',
 						pull: 'clone',
@@ -209,7 +215,7 @@ export default defineComponent({
 					onEnd: function (evt: any) {
 						const { name, icon, id } = evt.clone.dataset;
 						const { layerX, layerY, clientX, clientY } = evt.originalEvent;
-						const el = document.querySelector('#workflow-right') as HTMLElement;
+						const el = state.workflowRightRef!;
 						const { x, y, width, height } = el.getBoundingClientRect();
 						if (clientX < x || clientX > width + x || clientY < y || y > y + height) {
 							ElMessage.warning('请把节点拖入到画布中');
@@ -538,19 +544,25 @@ export default defineComponent({
 <style scoped lang="scss">
 .workflow-container {
 	position: relative;
+	.workflow-warp {
+		position: relative;
+	}
 	.workflow {
 		display: flex;
 		height: 100%;
 		width: 100%;
 		flex-direction: column;
+		position: absolute;
+		top: 0;
+		left: 0;
 		.workflow-content {
 			display: flex;
 			height: calc(100% - 35px);
-			#workflow-left {
+			.workflow-left {
 				width: 220px;
 				height: 100%;
 				border-right: 1px solid var(--el-border-color-light, #ebeef5);
-				::v-deep(.el-collapse-item__content) {
+				:deep(.el-collapse-item__content) {
 					padding-bottom: 0;
 				}
 				.workflow-left-title {
@@ -607,7 +619,7 @@ export default defineComponent({
 					}
 				}
 			}
-			#workflow-right {
+			.workflow-right {
 				flex: 1;
 				position: relative;
 				overflow: hidden;
@@ -649,7 +661,7 @@ export default defineComponent({
 						color: var(--el-color-primary);
 					}
 				}
-				::v-deep(.jtk-overlay):not(.aLabel) {
+				:deep(.jtk-overlay):not(.aLabel) {
 					padding: 4px 10px;
 					border: 1px solid var(--el-border-color-light, #ebeef5) !important;
 					color: var(--el-text-color-secondary) !important;
@@ -657,7 +669,7 @@ export default defineComponent({
 					border-radius: 3px;
 					font-size: 10px;
 				}
-				::v-deep(.jtk-overlay.workflow-right-empty-label) {
+				:deep(.jtk-overlay.workflow-right-empty-label) {
 					display: none;
 				}
 			}

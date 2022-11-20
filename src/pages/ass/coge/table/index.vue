@@ -68,7 +68,7 @@
 export default { name: 'AssCogeTable' };
 </script>
 <script lang='ts' setup>
-import { Plus, Delete, ArrowDown, ArrowUp,Download,View} from '@element-plus/icons-vue';
+import { Plus, Delete, ArrowDown, ArrowUp,Upload,Download,View} from '@element-plus/icons-vue';
 import {onMounted, reactive, ref} from 'vue';
 import { listQuery, listDelete, tabAdd, tabEdit, listSelect,toFinish} from '/@/comps/page/index';
 import request from "/@/utils/request";

@@ -1,5 +1,5 @@
 <template>
-	<div class="svg-demo-container">
+	<div class="svg-demo-container layout-pd">
 		<el-card shadow="hover" header="svgIcon：演示（支持本地svg）">
 			<SvgIcon name="iconfont icon-shuju1" color="red" :size="30" />
 			<SvgIcon name="ele-Trophy" color="var(--el-color-primary)" :size="30" />
@@ -20,7 +20,8 @@
 
 <script lang="ts">
 import { toRefs, reactive, defineComponent } from 'vue';
-import logoMini from '/@/assets/logo-mini.svg';
+// import logoMini from '/@/assets/logo-mini.svg';
+import logoMini from '/@/assets/vboot.png';
 
 export default defineComponent({
 	name: 'makeSvgDemo',

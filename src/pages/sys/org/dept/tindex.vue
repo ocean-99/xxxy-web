@@ -48,13 +48,14 @@ export default { name: 'SysOrgDeptTindex' };
 </script>
 <script lang='ts' setup>
 import { Delete, Edit, CirclePlus, Plus, Search, SortDown, SortUp, Operation } from '@element-plus/icons-vue';
-import { onMounted, reactive, ref, getCurrentInstance } from 'vue';
+import { onMounted, reactive, ref } from 'vue';
 import { VxeTableInstance } from 'vxe-table';
 import { vTreeQuery, vTreeFetch, vTreeDelete } from '/@/comps/vxe';
 import XEUtils from 'xe-utils';
 import { useRoute } from 'vue-router';
 import router from '/@/router';
 import Medit from './medit.vue';
+import mittBus from '/@/utils/mitt';
 
 const state = reactive({
 	url: '/sys/org/dept', form: {},
@@ -72,10 +73,9 @@ onMounted(async () => {
 	await vTreeFetch(state, tableRef.value);
 });
 
-const { proxy } = getCurrentInstance() as any;
 const route = useRoute();
 const changeIndex = async () => {
-	proxy.mittBus.emit('onCurrentContextmenuClick', Object.assign({}, { contextMenuClickId: 1, ...route }));
+	mittBus.emit('onCurrentContextmenuClick', Object.assign({}, { contextMenuClickId: 1, ...route }));
 	await router.push({
 		path: state.url,
 	});

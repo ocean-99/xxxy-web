@@ -12,9 +12,7 @@ import 'element-plus/dist/index.css';
 import 'vform3-builds/dist/designer.style.css'
 import 'vxe-table/lib/style.css';
 import '/@/theme/index.scss';
-import mitt from 'mitt';
 import VueGridLayout from 'vue-grid-layout';
-import './iconfont.js';
 import { setupVxe } from '/@/comps/vxe/vxe';
 
 const app = createApp(App);
@@ -26,4 +24,3 @@ setupVxe(app);
 
 app.use(pinia).use(router).use(ElementPlus, { i18n: i18n.global.t }).use(VForm3).use(i18n).use(VueGridLayout).mount('#app');
 
-app.config.globalProperties.mittBus = mitt();

@@ -37,7 +37,7 @@
 								</el-select>
 							</el-form-item>
 							<el-form-item label='经办人：' style='width: 50%'>
-								<el-input v-model='cdata.opmen' @click='opmanModal' readonly></el-input>
+								<el-input v-model='cdata.opman' @click='opmanModal' readonly></el-input>
 							</el-form-item>
 							<el-form-item label='DEMO明细行：' style='width: 100%'>
 								<el-table size='small' border :data='form.items' :row-style="{height: '36px'}" style='width: 100%'>
@@ -102,6 +102,13 @@
 									<el-button type='primary'>上传附件</el-button>
 								</el-upload>
 							</el-form-item>
+              <el-form-item label='更新人：' style='width: 50%'>
+                <div class='zinput'> {{ form.upman ? form.upman.name : '' }}</div>
+              </el-form-item>
+              <el-form-item label='更新时间：' style='width: 50%'>
+                <div class='zinput'> {{ form.uptim }}</div>
+              </el-form-item>
+<!--              <el-form-item />-->
 						</div>
 					</el-tab-pane>
 					<el-tab-pane label='权限信息' name='tab9'>
@@ -117,16 +124,16 @@
 								<el-input type='textarea' :rows='4' v-model='cdata.edmen' readonly @click='edmenModal'>
 								</el-input>
 							</el-form-item>
-							<el-form-item label='创建人：' style='width: 25%'>
+							<el-form-item label='创建人：' style='width: 50%'>
 								<div class='zinput'>{{ form.crman ? form.crman.name : '' }}</div>
 							</el-form-item>
-							<el-form-item label='创建时间：' style='width: 25%'>
+							<el-form-item label='创建时间：' style='width: 50%'>
 								<div class='zinput'> {{ form.crtim }}</div>
 							</el-form-item>
-							<el-form-item label='更新人：' style='width: 25%'>
+							<el-form-item label='更新人：' style='width: 50%'>
 								<div class='zinput'> {{ form.upman ? form.upman.name : '' }}</div>
 							</el-form-item>
-							<el-form-item label='更新时间：' style='width: 25%'>
+							<el-form-item label='更新时间：' style='width: 50%'>
 								<div class='zinput'> {{ form.uptim }}</div>
 							</el-form-item>
 						</div>

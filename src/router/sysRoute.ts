@@ -479,7 +479,7 @@ export const sysRoutes: Array<RouteRecordRaw> = [
 			isAffix: false,
 			isIframe: false,
 			roles: ['admin'],
-			icon: 'ele-Odometer',
+			icon: 'ele-DataLine',
 		},
 		children: [
 			{
@@ -1126,5 +1126,6 @@ export const sysRoutes: Array<RouteRecordRaw> = [
 			},
 		],
 	},
+
 ];
 

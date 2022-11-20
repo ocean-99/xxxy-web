@@ -27,7 +27,7 @@
 				</div>
 			</template>
 			<FlowModal ref='flowModalRef' @close='closeFlowModal' />
-			<TempModal url='oa/flow/tmpl/tree' ref='tmplModal' />
+			<TmplModal url='oa/flow/tmpl/tree' ref='tmplModal' />
 
 			<el-table height='400' :cell-style="{padding:'2px'}" :row-style="{height: '36px'}" v-loading='state.loading' :data='state.list'
 								border stripe @selection-change='listSelect($event,state)'>

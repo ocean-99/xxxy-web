@@ -42,6 +42,7 @@
         </el-table-column>
         <!--				<el-table-column label='名称' prop='name' width='180' />-->
         <el-table-column label='所属公司' prop='corna' />
+        <el-table-column label='账号类型' prop='type' />
         <el-table-column label='备注' prop='notes' />
         <el-table-column label='创建时间' prop='crtim' width='160' />
         <el-table-column label='更新时间' prop='uptim' width='160' />
@@ -64,7 +65,7 @@ export default { name: 'SysCoopUser' };
 </script>
 
 <script lang='ts' setup>
-import { Plus, Delete, ArrowDown, ArrowUp } from '@element-plus/icons-vue';
+import {Search, Plus, Delete, ArrowDown, ArrowUp } from '@element-plus/icons-vue';
 import { onMounted, reactive, ref } from 'vue';
 import { listQuery, listDelete, listSelect } from '/@/comps/page';
 import Medit from './medit.vue';

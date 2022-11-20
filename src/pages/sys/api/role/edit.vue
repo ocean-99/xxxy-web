@@ -115,7 +115,9 @@ const save = async () => {
 	const nodes = treeRef.value.getCheckedNodes();
 	const apis = [];
 	for (const node of nodes) {
-		apis.push({ id: node.id, name: node.name });
+		if(node.type){
+			apis.push({ id: node.id, name: node.name });
+		}
 	}
 	form.value.apis = apis;
 	await tabSave({ formRef: formRef.value, state, proxy, route,flush:state.url });

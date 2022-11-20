@@ -1,40 +1,24 @@
 <template>
-	<div :style="{ height: `calc(100vh - ${initTagViewHeight}` }">
-		<div class="layout-view-bg-white">
-			<div id="echartsMap" style="height: 100%"></div>
+	<div class="layout-padding">
+		<div class="layout-padding-auto layout-padding-view">
+			<div ref="echartsMap" style="height: 100%"></div>
 		</div>
 	</div>
 </template>
 
 <script lang="ts">
-import { toRefs, reactive, computed, onMounted, defineComponent } from 'vue';
+import { toRefs, reactive, onMounted, defineComponent } from 'vue';
 import * as echarts from 'echarts';
 import 'echarts/extension/bmap/bmap';
-import { storeToRefs } from 'pinia';
-import { useThemeConfig } from '/@/stores/themeConfig';
-import { useTagsViewRoutes } from '/@/stores/tagsViewRoutes';
 import { echartsMapList, echartsMapData } from './mock';
 
 export default defineComponent({
 	name: 'funEchartsMap',
 	setup() {
-		const storesThemeConfig = useThemeConfig();
-		const storesTagsViewRoutes = useTagsViewRoutes();
-		const { themeConfig } = storeToRefs(storesThemeConfig);
-		const { isTagsViewCurrenFull } = storeToRefs(storesTagsViewRoutes);
 		const state: any = reactive({
+			echartsMap: null,
 			echartsMapList,
 			echartsMapData,
-		});
-		// 设置主内容的高度
-		const initTagViewHeight = computed(() => {
-			let { isTagsview } = themeConfig.value;
-			if (isTagsViewCurrenFull.value) {
-				return `30px`;
-			} else {
-				if (isTagsview) return `114px`;
-				else return `80px`;
-			}
 		});
 		// echartsMap 将坐标信息和对应物理量的值合在一起
 		const convertData = (data: any) => {
@@ -52,7 +36,7 @@ export default defineComponent({
 		};
 		// 初始化 echartsMap
 		const initEchartsMap = () => {
-			const myChart = echarts.init(<HTMLElement>document.getElementById('echartsMap'));
+			const myChart = echarts.init(<HTMLElement>state.echartsMap);
 			const option = {
 				tooltip: {
 					trigger: 'item',
@@ -132,7 +116,6 @@ export default defineComponent({
 			initEchartsMap();
 		});
 		return {
-			initTagViewHeight,
 			...toRefs(state),
 		};
 	},

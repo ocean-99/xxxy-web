@@ -59,7 +59,7 @@
 						<el-tag v-show="scope.row.state==='30'" type='success' size='small'>结束</el-tag>
 						<el-tag v-show="scope.row.state==='20'" type='warning' size='small'>待审</el-tag>
 						<el-tag v-show="scope.row.state==='11'" type='danger' size='small'>驳回</el-tag>
-						<el-tag v-show="scope.row.state==='10'" type='primary' size='small'>草稿</el-tag>
+						<el-tag v-show="scope.row.state==='10'" size='small'>草稿</el-tag>
 						<el-tag v-show="scope.row.state==='00'" type='info' size='small'>废弃</el-tag>
 					</template>
 				</el-table-column>

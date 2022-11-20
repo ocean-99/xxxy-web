@@ -7,17 +7,20 @@
 			<div style='padding: 20px;'>
 				<el-form ref='formRef' :model='form' :inline='true' class='xform' label-width='160px'>
 					<div class='zform-div'>
+						<el-form-item label='分类编码：' prop='id' :rules="[{ required: true, message: '编码不能为空'}]">
+							<el-input v-model='form.id' :disabled="form.crtim"/>
+						</el-form-item>
 						<el-form-item label='分类名称：' prop='name' :rules="[{ required: true, message: '名称不能为空'}]">
-							<el-input v-model='form.name'></el-input>
+							<el-input v-model='form.name'/>
 						</el-form-item>
 						<el-form-item label='上级分类：'>
 							<el-input v-model='form.pname' readonly :suffix-icon='Search' @click='openParentModal'></el-input>
 							<ParentModal url='/sys/coop/cate/tree' :maInit='true' ref='parentModal' @close='closeParentModal' />
 						</el-form-item>
-						<el-form-item label='排序号：'>
+						<el-form-item label='排序号：' style='width:25%'>
 							<el-input-number v-model='form.ornum' controls-position='right' style='width: 100%' />
 						</el-form-item>
-						<el-form-item label='是否启用：'>
+						<el-form-item label='是否启用：' style='width:25%'>
 							<el-switch v-model='form.avtag' />
 						</el-form-item>
 						<el-form-item label='创建人：' v-show='form.crtim'>
@@ -102,7 +105,7 @@ defineExpose({ open });
 //取得父组件listQuery方法的调用权
 const emits = defineEmits(['treeQuery']);
 const confirm = async () => {
-	await drawerSave({ formRef: formRef.value, state });
+	await drawerSave({ formRef: formRef.value, state,iouField:"crtim"});
 	emits('treeQuery');
 };
 
@@ -122,9 +125,16 @@ const openParentModal = () => {
 };
 
 const closeParentModal = (node: any) => {
-	form.value.pid = node.id;
-	form.value.pname = node.name;
-	form.value.parent = {id:node.id,name:node.name};
+	if(node){
+		form.value.pid = node.id;
+		form.value.pname = node.name;
+		form.value.parent = {id:node.id,name:node.name};
+	}else{
+		form.value.pid = null;
+		form.value.pname = null;
+		form.value.parent = null;
+	}
+
 };
 //endregion
 

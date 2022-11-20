@@ -19,6 +19,7 @@ export const useUserInfo = defineStore('userInfo', {
 	}),
 	actions: {
 		async setUserInfos() {
+			let photo=import.meta.env.VITE_API_URL+'ass/oss/main/show?token='+Session.get('token')+'&id='+Cookies.get('avimg');
 			// 模拟数据，请求接口时，记得删除多余代码及对应依赖的引入
 			const userName = Cookies.get('userName');
 			// 模拟数据
@@ -47,8 +48,8 @@ export const useUserInfo = defineStore('userInfo', {
 				dePortal:'',
 				photo:
 					userName === 'admin'
-						? 'https://zsvg.gitee.io/vboot-vue/public/xiaoyoutai.png'
-						: 'https://zsvg.gitee.io/vboot-vue/public/xiaoyoutai.png',
+						? photo
+						: photo,
 				time: new Date().getTime(),
 				roles: defaultRoles,
 				authBtnList: defaultAuthBtnList,
@@ -63,6 +64,7 @@ export const useUserInfo = defineStore('userInfo', {
 			}
 		},
 		async setUserInfos2(portals:any) {
+			let photo=import.meta.env.VITE_API_URL+'ass/oss/main/show?token='+Session.get('token')+'&id='+Cookies.get('avimg');
 			// 模拟数据，请求接口时，记得删除多余代码及对应依赖的引入
 			const userName = Cookies.get('userName');
 			// 模拟数据
@@ -91,8 +93,8 @@ export const useUserInfo = defineStore('userInfo', {
 				dePortal:portals[0].id,
 				photo:
 					userName === 'admin'
-						? 'https://zsvg.gitee.io/vboot-vue/public/xiaoyoutai.png'
-						: 'https://zsvg.gitee.io/vboot-vue/public/xiaoyoutai.png',
+						? photo
+						: photo,
 				time: new Date().getTime(),
 				roles: defaultRoles,
 				authBtnList: defaultAuthBtnList,

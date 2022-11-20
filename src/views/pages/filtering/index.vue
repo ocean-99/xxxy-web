@@ -1,5 +1,5 @@
 <template>
-	<div class="filtering">
+	<div class="filtering layout-pd">
 		<el-card
 			shadow="hover"
 			class="filtering-list br-top-no"
@@ -328,7 +328,7 @@ export default defineComponent({
 				}
 			}
 		}
-		::v-deep(.el-card__body) {
+		:deep(.el-card__body) {
 			height: 100%;
 			.filtering-no-data {
 				display: flex;

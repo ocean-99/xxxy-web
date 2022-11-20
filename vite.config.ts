@@ -42,9 +42,9 @@ const viteConfig = defineConfig((mode: ConfigEnv) => {
 			chunkSizeWarningLimit: 1500,
 			rollupOptions: {
 				output: {
-					entryFileNames: `assets/[name].${new Date().getTime()}.js`,
-					chunkFileNames: `assets/[name].${new Date().getTime()}.js`,
-					assetFileNames: `assets/[name].${new Date().getTime()}.[ext]`,
+					entryFileNames: `assets/[name].[hash].js`,
+					chunkFileNames: `assets/[name].[hash].js`,
+					assetFileNames: `assets/[name].[hash].[ext]`,
 					compact: true,
 					manualChunks: {
 						vue: ['vue', 'vue-router', 'pinia'],
@@ -53,22 +53,7 @@ const viteConfig = defineConfig((mode: ConfigEnv) => {
 				},
 			},
 		},
-		css: {
-			postcss: {
-				plugins: [
-					{
-						postcssPlugin: 'internal:charset-removal',
-						AtRule: {
-							charset: (atRule) => {
-								if (atRule.name === 'charset') {
-									atRule.remove();
-								}
-							},
-						},
-					},
-				],
-			},
-		},
+		css: { preprocessorOptions: { css: { charset: false } } },
 		define: {
 			__VUE_I18N_LEGACY_API__: JSON.stringify(false),
 			__VUE_I18N_FULL_INSTALL__: JSON.stringify(false),

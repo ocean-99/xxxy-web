@@ -10,18 +10,6 @@
         />
       </el-select>
     </div>
-<!--		<el-dropdown :show-timeout="70" :hide-timeout="50" trigger="click" @command="onComponentSizeChange">-->
-<!--			<div class="layout-navbars-breadcrumb-user-icon">-->
-<!--				<i class="iconfont icon-ziti" :title="$t('message.user.title0')"></i>-->
-<!--			</div>-->
-<!--			<template #dropdown>-->
-<!--				<el-dropdown-menu>-->
-<!--					<el-dropdown-item command="large" :disabled="disabledSize === 'large'">{{ $t('message.user.dropdownLarge') }}</el-dropdown-item>-->
-<!--					<el-dropdown-item command="default" :disabled="disabledSize === 'default'">{{ $t('message.user.dropdownDefault') }}</el-dropdown-item>-->
-<!--					<el-dropdown-item command="small" :disabled="disabledSize === 'small'">{{ $t('message.user.dropdownSmall') }}</el-dropdown-item>-->
-<!--				</el-dropdown-menu>-->
-<!--			</template>-->
-<!--		</el-dropdown>-->
 		<el-dropdown :show-timeout="70" :hide-timeout="50" trigger="click" @command="onLanguageChange">
 			<div class="layout-navbars-breadcrumb-user-icon">
 				<i class="iconfont" :class="disabledI18n === 'en' ? 'icon-fuhao-yingwen' : 'icon-fuhao-zhongwen'" :title="$t('message.user.title1')"></i>
@@ -81,7 +69,6 @@
 		</el-dropdown>
 		<Search ref="searchRef" />
     <div class="layout-navbars-breadcrumb-user-icon" style="width: 42px" @click="onLayoutSetingClick">
-<!--      <i class="icon-skin iconfont" :title="$t('message.user.title3')"></i>-->
       <el-icon class="el-icon--right">
         <ele-Setting />
       </el-icon>
@@ -90,7 +77,7 @@
 </template>
 
 <script lang="ts">
-import { ref, getCurrentInstance, computed, reactive, toRefs, onMounted, defineComponent } from 'vue';
+import { defineAsyncComponent, ref, computed, reactive, toRefs, onMounted, defineComponent } from 'vue';
 import {useRoute, useRouter} from 'vue-router';
 import { ElMessageBox, ElMessage } from 'element-plus';
 import screenfull from 'screenfull';
@@ -99,20 +86,21 @@ import { storeToRefs } from 'pinia';
 import { useUserInfo } from '/@/stores/userInfo';
 import { useThemeConfig } from '/@/stores/themeConfig';
 import other from '/@/utils/other';
+import mittBus from '/@/utils/mitt';
 import { Session, Local } from '/@/utils/storage';
-import UserNews from '/@/layout/navBars/breadcrumb/userNews.vue';
-import Search from '/@/layout/navBars/breadcrumb/search.vue';
-import {initBackEndControlRoutesByPortal} from "/@/router/backEnd";
 import request from "/@/utils/request";
+import {initBackEndControlRoutesByPortal} from "/@/router/backEnd";
 
 export default defineComponent({
 	name: 'layoutBreadcrumbUser',
-	components: { UserNews, Search },
+	components: {
+		UserNews: defineAsyncComponent(() => import('/@/layout/navBars/breadcrumb/userNews.vue')),
+		Search: defineAsyncComponent(() => import('/@/layout/navBars/breadcrumb/search.vue')),
+	},
 	setup() {
-		const { t } = useI18n();
-		const { proxy } = <any>getCurrentInstance();
+		const { locale, t } = useI18n();
 		const router = useRouter();
-    const route = useRoute();
+		const route = useRoute();
 		const stores = useUserInfo();
 		const storesThemeConfig = useThemeConfig();
 		const { userInfos } = storeToRefs(stores);
@@ -146,7 +134,7 @@ export default defineComponent({
 		};
 		// 布局配置 icon 点击时
 		const onLayoutSetingClick = () => {
-			proxy.mittBus.emit('openSetingsDrawer');
+			mittBus.emit('openSetingsDrawer');
 		};
 		// 下拉菜单点击时
 		const onHandleCommandClick = (path: string) => {
@@ -176,7 +164,8 @@ export default defineComponent({
 					},
 				})
 					.then(async () => {
-						Session.clear(); // 清除缓存/token等
+						// 清除缓存/token等
+						Session.clear();
 						// 使用 reload 时，不需要调用 resetRoute() 重置路由
 						window.location.reload();
 					})
@@ -196,7 +185,7 @@ export default defineComponent({
 			Local.remove('themeConfig');
 			themeConfig.value.globalComponentSize = size;
 			Local.set('themeConfig', themeConfig.value);
-			initComponentSize();
+			initI18nOrSize('globalComponentSize', 'disabledSize');
 			window.location.reload();
 		};
 		// 语言切换
@@ -204,71 +193,40 @@ export default defineComponent({
 			Local.remove('themeConfig');
 			themeConfig.value.globalI18n = lang;
 			Local.set('themeConfig', themeConfig.value);
-			proxy.$i18n.locale = lang;
-			initI18n();
+			locale.value = lang;
 			other.useTitle();
+			initI18nOrSize('globalI18n', 'disabledI18n');
 		};
-		// 设置 element plus 组件的国际化
-		const setI18nConfig = (locale: string) => {
-			proxy.mittBus.emit('getI18nConfig', proxy.$i18n.messages[locale]);
-		};
-		// 初始化言语国际化
-		const initI18n = () => {
-			switch (Local.get('themeConfig').globalI18n) {
-				case 'zh-cn':
-					state.disabledI18n = 'zh-cn';
-					setI18nConfig('zh-cn');
-					break;
-				case 'en':
-					state.disabledI18n = 'en';
-					setI18nConfig('en');
-					break;
-				case 'zh-tw':
-					state.disabledI18n = 'zh-tw';
-					setI18nConfig('zh-tw');
-					break;
-			}
-		};
-		// 初始化全局组件大小
-		const initComponentSize = () => {
-			switch (Local.get('themeConfig').globalComponentSize) {
-				case 'large':
-					state.disabledSize = 'large';
-					break;
-				case 'default':
-					state.disabledSize = 'default';
-					break;
-				case 'small':
-					state.disabledSize = 'small';
-					break;
-			}
+		// 初始化组件大小/i18n
+		const initI18nOrSize = (value: string, attr: string) => {
+			(<any>state)[attr] = Local.get('themeConfig')[value];
 		};
 		// 页面加载时
 		onMounted(() => {
 			if (Local.get('themeConfig')) {
-				initI18n();
-				initComponentSize();
+				initI18nOrSize('globalComponentSize', 'disabledSize');
+				initI18nOrSize('globalI18n', 'disabledI18n');
 			}
 		});
     const portalChange=async (porid:any)=>{
-     const res= await request({
+      const res= await request({
         url: 'getMenuList',
         method: 'get',
         params:{porid:porid}
       }) as any;
       await initBackEndControlRoutesByPortal(res);
-      proxy.mittBus.emit('onCurrentContextmenuClick', Object.assign({}, { contextMenuClickId: 3, ...route }));
+      mittBus.emit('onCurrentContextmenuClick', Object.assign({}, { contextMenuClickId: 3, ...route }));
       location.href='#/home';
     }
 		return {
 			userInfos,
+      portalChange,
 			onLayoutSetingClick,
 			onHandleCommandClick,
 			onScreenfullClick,
 			onSearchClick,
 			onComponentSizeChange,
 			onLanguageChange,
-      portalChange,
 			searchRef,
 			layoutUserFlexNum,
 			...toRefs(state),
@@ -310,16 +268,16 @@ export default defineComponent({
 			}
 		}
 	}
-	::v-deep(.el-dropdown) {
+	:deep(.el-dropdown) {
 		color: var(--next-bg-topBarColor);
 	}
-	::v-deep(.el-badge) {
+	:deep(.el-badge) {
 		height: 40px;
 		line-height: 40px;
 		display: flex;
 		align-items: center;
 	}
-	::v-deep(.el-badge__content.is-fixed) {
+	:deep(.el-badge__content.is-fixed) {
 		top: 12px;
 	}
 }

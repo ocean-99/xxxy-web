@@ -78,6 +78,7 @@ const formRef = ref<FormInstance>();
 const {proxy} = getCurrentInstance() as any;
 const activeName = ref('tab1');
 
+
 const state = reactive({
   url: '/sys/org/dept',
   params: {path: '', query: {} as any},

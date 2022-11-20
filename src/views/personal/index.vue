@@ -1,5 +1,5 @@
 <template>
-	<div class="personal">
+	<div class="personal layout-pd">
 		<el-row>
 			<!-- 个人信息 -->
 			<el-col :xs="24" :sm="16">
@@ -7,7 +7,7 @@
 					<div class="personal-user">
 						<div class="personal-user-left">
 							<el-upload class="h100 personal-user-left-upload" action="https://jsonplaceholder.typicode.com/posts/" multiple :limit="1">
-								<img src="https://zsvg.gitee.io/vboot-vue/public/xiaoyoutai.png" />
+								<img src="https://img2.baidu.com/it/u=1978192862,2048448374&fm=253&fmt=auto&app=138&f=JPEG?w=504&h=500" />
 							</el-upload>
 						</div>
 						<div class="personal-user-right">
@@ -210,6 +210,7 @@ export default defineComponent({
 				sex: '',
 			},
 		});
+
 		// 当前时间提示语
 		const currentTime = computed(() => {
 			return formatAxis(new Date());
@@ -233,7 +234,7 @@ export default defineComponent({
 			width: 100px;
 			height: 130px;
 			border-radius: 3px;
-			::v-deep(.el-upload) {
+			:deep(.el-upload) {
 				height: 100%;
 			}
 			.personal-user-left-upload {

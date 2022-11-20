@@ -55,10 +55,10 @@ export default defineComponent({
 	animation: logoAnimation 0.3s ease-in-out;
 	span {
 		white-space: nowrap;
+		display: inline-block;
     font-size: 16px;
     font-weight: bolder;
     color: white;
-		display: inline-block;
 	}
 	&:hover {
 		span {

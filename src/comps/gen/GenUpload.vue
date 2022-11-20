@@ -6,6 +6,7 @@
         :headers="state.headers"
         :action="state.uploadUrl"
         :auto-upload="false"
+				:on-success='uploadSuccess'
     >
       <el-icon class="el-icon--upload">
         <upload-filled/>
@@ -72,17 +73,16 @@ const emits = defineEmits(['close']);
 const handleConfirm =async () => {
   // ElMessage.warning("演示模式不支持导入")
   await upload.value!.submit();
-  emits('close', { uptag: true });
-  dialogVisible.value = false;
 };
+
+const uploadSuccess=()=>{
+	dialogVisible.value = false;
+	emits('close', { uptag: true });
+}
 
 // const clearAndcloseModal = () => {
 //   emits('close', null);
 //   dialogVisible.value = false;
 // };
-
-
 </script>
-<style scoped>
 
-</style>

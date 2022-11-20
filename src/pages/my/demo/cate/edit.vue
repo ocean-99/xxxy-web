@@ -360,6 +360,7 @@ const editInitx = async () => {
 		let pname = state.params.query?.pname;
 		if (pname) {
 			form.value.parent = { id: state.params.query?.pid, name: pname };
+			form.value.pid=state.params.query?.pid;
 		}
 		state.form.avtag = true;
 		state.xtab = 'tab1';
@@ -451,6 +452,7 @@ const openCateModal = () => {
 };
 const cateChoose = (node: any) => {
 	form.value.parent = { id: node.id, name: node.name };
+	form.value.pid = node.id;
 };
 
 

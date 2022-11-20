@@ -17,9 +17,9 @@
 					</template>
 				</vxe-column>
 				<vxe-column field='notes' title='备注' />
-				<vxe-column field='crman.name' title='创建人' width='66' />
+				<vxe-column field='crman' title='创建人' width='66' />
 				<vxe-column field='crtim' title='创建时间' width='148' />
-				<vxe-column field='upman.name' title='更新人' width='66' />
+				<vxe-column field='upman' title='更新人' width='66' />
 				<vxe-column field='uptim' title='更新时间' width='148' />
 				<vxe-column title='操作' width='100' show-overflow header-align='center' align='right'>
 					<template #default='{ row }'>

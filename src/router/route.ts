@@ -46,6 +46,21 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 					icon: 'ele-House',
 				},
 			},
+			{
+				path: '/personal',
+				name: 'personal',
+				component: () => import('/@/pages/home/personal.vue'),
+				meta: {
+					title: 'message.router.personal',
+					isLink: '',
+					isHide: true,
+					isKeepAlive: true,
+					isAffix: false,
+					isIframe: false,
+					roles: ['admin', 'common'],
+					icon: 'iconfont icon-gerenzhongxin',
+				},
+			},
 		],
 	},
 ];

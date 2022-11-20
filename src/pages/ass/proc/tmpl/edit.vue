@@ -50,7 +50,7 @@
 
 					<el-tab-pane label='流程配置' name='tab3'>
 						<div style='width: 100%;height: 720px'>
-							<BpmTmplEdit ref="bpmTmplEditRef" v-if='state.bpmShowTag' :prxml='form.prxml'/>
+							<BpmTmplEdit ref="bpmTmplEditRef" v-if='state.bpmShowTag' :prxml='form.orxml'/>
 						</div>
 					</el-tab-pane>
 
@@ -78,7 +78,7 @@ const { proxy } = getCurrentInstance() as any;
 const state = reactive({
 	url: '/bpm/proc/tmpl',bpmShowTag:false,
 	params: { path: '', query: {} as any},
-	form: { avtag: true,prxml:'',type:''} as any,
+	form: { avtag: true,orxml:'',type:''} as any,
 });
 
 const { form } = toRefs(state);
@@ -104,7 +104,7 @@ onMounted(async () => {
 const bpmTmplEditRef=ref();
 
 async function save(state: any) {
-	form.value.prxml =await bpmTmplEditRef.value.getXml();
+	form.value.orxml =await bpmTmplEditRef.value.getXml();
 	await tabSave({ formRef: formRef.value, state, proxy, route });
 }
 </script>

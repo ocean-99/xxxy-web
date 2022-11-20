@@ -1,7 +1,7 @@
 <template>
 	<div class="visualizing-demo1">
 		<!-- 地图 -->
-		<div id="visualizingDemo1" style="height: 100%"></div>
+		<div ref="visualizingDemo1" style="height: 100%"></div>
 		<div class="visualizing-container">
 			<!-- 头部 -->
 			<div class="visualizing-container-head">
@@ -89,7 +89,7 @@
 </template>
 
 <script lang="ts">
-import { toRefs, reactive, onMounted, onUnmounted, getCurrentInstance, defineComponent } from 'vue';
+import { toRefs, reactive, onMounted, onUnmounted, defineComponent, ref } from 'vue';
 import * as echarts from 'echarts';
 import 'echarts/extension/bmap/bmap';
 import { formatDate } from '/@/utils/formatTime';
@@ -108,7 +108,13 @@ interface Demo1State {
 export default defineComponent({
 	name: 'visualizingLinkDemo1',
 	setup() {
-		const { proxy } = <any>getCurrentInstance();
+		const visualizingDemo1 = ref();
+		const visualizingContentLeftTop = ref();
+		const visualizingContentLeftBottom = ref();
+		const visualizingContentCenterTop = ref();
+		const visualizingContentCenterBottom = ref();
+		const visualizingContentRightTop = ref();
+		const visualizingContentRightBottom = ref();
 		const state = reactive<Demo1State>({
 			echartsMapList,
 			echartsMapData,
@@ -142,7 +148,7 @@ export default defineComponent({
 		};
 		// 初始化 echartsMap（地图上的点）
 		const initEchartsMap = () => {
-			const myChart = echarts.init(<HTMLElement>document.getElementById('visualizingDemo1'));
+			const myChart = echarts.init(<HTMLElement>visualizingDemo1.value);
 			const option = {
 				tooltip: {
 					trigger: 'item',
@@ -289,7 +295,7 @@ export default defineComponent({
 		};
 		// 产业概况
 		const initVisualizingContentLeftTop = () => {
-			const myChart = echarts.init(proxy.$refs.visualizingContentLeftTop);
+			const myChart = echarts.init(visualizingContentLeftTop.value);
 			const option = {
 				grid: {
 					top: 50,
@@ -369,7 +375,7 @@ export default defineComponent({
 		};
 		// A级风景区对比
 		const initVisualizingContentLeftBottom = () => {
-			const myChart = echarts.init(proxy.$refs.visualizingContentLeftBottom);
+			const myChart = echarts.init(visualizingContentLeftBottom.value);
 			const option = {
 				grid: {
 					top: 50,
@@ -485,7 +491,7 @@ export default defineComponent({
 		};
 		// 游客过夜情况
 		const initVisualizingContentCenterTop = () => {
-			const myChart = echarts.init(proxy.$refs.visualizingContentCenterTop);
+			const myChart = echarts.init(visualizingContentCenterTop.value);
 			const min = 100;
 			const max = 1000;
 			const option = {
@@ -613,7 +619,7 @@ export default defineComponent({
 		};
 		// 游客驻留时长
 		const initVisualizingContentCenterBottom = () => {
-			const myChart = echarts.init(proxy.$refs.visualizingContentCenterBottom);
+			const myChart = echarts.init(visualizingContentCenterBottom.value);
 			const option = {
 				tooltip: {
 					trigger: 'axis',
@@ -710,7 +716,7 @@ export default defineComponent({
 		};
 		// 当日游客趋势分析
 		const initVisualizingContentRightTop = () => {
-			const myChart = echarts.init(proxy.$refs.visualizingContentRightTop);
+			const myChart = echarts.init(visualizingContentRightTop.value);
 			const option = {
 				grid: {
 					top: 50,
@@ -845,7 +851,7 @@ export default defineComponent({
 		};
 		// 当月游客趋势分析
 		const initVisualizingContentRightBottom = () => {
-			const myChart = echarts.init(proxy.$refs.visualizingContentRightBottom);
+			const myChart = echarts.init(visualizingContentRightBottom.value);
 			const option = {
 				grid: {
 					top: 50,
@@ -951,6 +957,13 @@ export default defineComponent({
 			window.clearInterval(state.time.fun);
 		});
 		return {
+			visualizingDemo1,
+			visualizingContentLeftTop,
+			visualizingContentLeftBottom,
+			visualizingContentCenterTop,
+			visualizingContentCenterBottom,
+			visualizingContentRightTop,
+			visualizingContentRightBottom,
 			...toRefs(state),
 		};
 	},
@@ -968,10 +981,10 @@ $titleWidth: 240px;
 	height: 100%;
 	width: 100%;
 	position: relative;
-	::v-deep(.BMap_cpyCtrl) {
+	:deep(.BMap_cpyCtrl) {
 		display: none;
 	}
-	::v-deep(.anchorBL) {
+	:deep(.anchorBL) {
 		display: none;
 	}
 	.visualizing-container {

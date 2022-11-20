@@ -4,24 +4,27 @@
       <el-tabs type='card' v-model='activeName'>
         <el-tab-pane label='基本信息' name='tab1' style='min-height: 500px'>
           <div class='zform-div'>
-            <el-form-item label='姓名：' prop='name' :rules="[{ required: true, message: '名称不能为空'}]">
+            <el-form-item label='账户名称：' prop='name' :rules="[{ required: true, message: '名称不能为空'}]">
               <el-input v-model='form.name'/>
-            </el-form-item>
-            <el-form-item label='昵称：'>
-              <el-input v-model='form.ninam'/>
             </el-form-item>
             <el-form-item label='登录名：' prop='usnam' :rules="[{ required: true, message: '登录名不能为空'}]">
               <el-input v-model='form.usnam'/>
             </el-form-item>
-            <el-form-item label='密码：' prop='pacod' :rules="[{ required: !form.id, message: '密码不能为空'}]">
-              <el-input type='password' v-model='form.pacod' show-password v-if='!form.id'/>
-              <el-input v-model='state.pacod' v-if='form.id' style='width: 135px;margin-right: 10px'/>
-              <el-button type='success' @click='randomPassword' v-if='form.id'>随机设置</el-button>
-              <el-button type='warning' @click='resetPassword' v-if='form.id'>重置密码</el-button>
-            </el-form-item>
             <el-form-item label='所属公司：' prop='corna' :rules="[{ required: true, message: '所属公司不能为空'}]" style='width: 50%'>
               <el-input v-model='form.corna' @click='openCorpModal' readonly :suffix-icon='Search'/>
             </el-form-item>
+						<el-form-item label='密码：' prop='pacod' :rules="[{ required: !form.id, message: '密码不能为空'}]">
+							<el-input type='password' v-model='form.pacod' show-password v-if='!form.id'/>
+							<el-input v-model='state.pacod' v-if='form.id' style='width: 135px;margin-right: 10px'/>
+							<el-button type='success' @click='randomPassword' v-if='form.id'>随机设置</el-button>
+							<el-button type='warning' @click='resetPassword' v-if='form.id'>重置密码</el-button>
+						</el-form-item>
+						<el-form-item label='账号类型：'>
+							<el-select v-model='form.type' style='width: 100%'>
+								<el-option label='主账号' value='1'/>
+								<el-option label='普通账号' value='0'/>
+							</el-select>
+						</el-form-item>
             <el-form-item label='排序号：'>
               <el-input-number v-model='form.ornum' controls-position='right' style='width: 100%'/>
             </el-form-item>
@@ -34,7 +37,7 @@
             <el-form-item label='手机号：'>
               <el-input v-model='form.monum'/>
             </el-form-item>
-            <el-form-item label='email：'>
+            <el-form-item label='邮箱：'>
               <el-input v-model='form.email'/>
             </el-form-item>
           </div>
@@ -130,7 +133,7 @@ const openCorpModal = () => {
 
 const closeCorpModal = async (node: any) => {
   if (node) {
-    if (!node.pid) {
+    if (node.type!="corp") {
       ElMessage.warning("请选择公司，而非分类")
     } else {
       form.value.corp = {id: node.id, name: node.name};
@@ -173,4 +176,5 @@ const resetPassword = async () => {
   });
   ElMessage.success("重置密码成功");
 }
+
 </script>

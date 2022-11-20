@@ -41,7 +41,7 @@ export async function initBackEndControlRoutes() {
 	// 无 token 停止执行下一步
 	if (!Session.get('token')) return false;
 	// 触发初始化用户信息 pinia
-	useUserInfo().setUserInfos();
+	// useUserInfo().setUserInfos();
 	// 获取路由菜单数据
 	const res = await getBackEndControlRoutes() as any;
 	if(res===409){
@@ -54,6 +54,8 @@ export async function initBackEndControlRoutes() {
 	// useRequestOldRoutes().setRequestOldRoutes(JSON.parse(JSON.stringify(res.menus)));//vboot
 	if(res.portals&&res.portals.length>0){
 		useUserInfo().setUserInfos2(res.portals);
+	}else{
+		useUserInfo().setUserInfos();
 	}
 	useRequestOldRoutes().setRequestOldRoutes(res.menus);//vboot
 	// 处理路由（component），替换 dynamicRoutes（/@/router/route）第一个顶级 children 的路由

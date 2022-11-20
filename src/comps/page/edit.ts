@@ -1,6 +1,7 @@
 import request from '/@/utils/request';
 import {ElLoading, ElMessage} from "element-plus";
 import { getPage } from '/@/comps/page/store';
+import mittBus from '/@/utils/mitt';
 
 interface IeditInit {
     state: any;
@@ -63,7 +64,7 @@ interface ItabClose {
     route:any;
 }
 export const tabClose = (data:ItabClose) => {
-    data.proxy.mittBus.emit('onCurrentContextmenuClick', Object.assign({}, {contextMenuClickId: 1, ...data.route}));
+    mittBus.emit('onCurrentContextmenuClick', Object.assign({}, {contextMenuClickId: 1, ...data.route}));
 };
 
 

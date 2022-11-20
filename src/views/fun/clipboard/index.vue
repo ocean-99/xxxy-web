@@ -1,5 +1,5 @@
 <template>
-	<div id="printRref">
+	<div class="layout-pd">
 		<el-card shadow="hover" header="复制剪切演示">
 			<el-alert
 				title="感谢优秀的 `vue-clipboard3`，项目地址：https://github.com/JamieCurnow/vue-clipboard3`"

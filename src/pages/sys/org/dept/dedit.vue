@@ -63,6 +63,7 @@
 </template>
 
 <script lang='ts' setup>
+import { Search } from '@element-plus/icons-vue';
 import {reactive, ref, toRefs} from 'vue';
 import {drawerOpen, drawerSave} from '/@/comps/page/edit';
 import {FormInstance} from "element-plus";
