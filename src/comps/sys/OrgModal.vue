@@ -13,7 +13,7 @@
 								<ul class='z-org-search' id='zOrgSearch' style='padding: 2px'>
 									<li v-for='item in receItems' :key='item.id' class='f-user' @click='receItemClick(item)'>
 										<el-checkbox v-model='item.checked' />
-										<img src='https://zsvg.gitee.io/vboot-vue/public/xiaoyoutai.png'>
+										<img :src='avatar'>
 										<span class='layui-elip f-user-name'>{{ item.name }}</span>
 										<span class='layui-elip f-user-dept'>{{ item.dept }}</span>
 									</li>
@@ -32,7 +32,7 @@
 										<ul class='z-org-tree'>
 											<li v-for='item in tierItems' :key='item.id' class='f-user' title=' ' @click='tierItemClick(item)'>
 												<el-checkbox v-model='item.checked' />
-												<img src='https://zsvg.gitee.io/vboot-vue/public/xiaoyoutai.png'>
+												<img :src='avatar'>
 												<span class='layui-elip f-user-name'>{{ item.name }}</span>
 												<span class='layui-elip f-user-dept'>{{ item.dept }}</span>
 											</li>
@@ -53,7 +53,7 @@
 										<ul class='z-org-tree'>
 											<li v-for='item in groupItems' :key='item.id' class='f-user' title=' ' @click='groupItemClick(item)'>
 												<el-checkbox v-model='item.checked' />
-												<img src='https://zsvg.gitee.io/vboot-vue/public/xiaoyoutai.png'>
+												<img :src='avatar'>
 												<span class='layui-elip f-user-name'>{{ item.name }}</span>
 											</li>
 										</ul>
@@ -73,7 +73,7 @@
 										<ul class='z-org-tree'>
 											<li v-for='item in roleItems' :key='item.id' class='f-user' title=' ' @click='roleItemClick(item)'>
 												<el-checkbox v-model='item.checked' />
-												<img src='https://zsvg.gitee.io/vboot-vue/public/xiaoyoutai.png'>
+												<img :src='avatar'>
 												<span class='layui-elip f-user-name'>{{ item.name }}</span>
 											</li>
 										</ul>
@@ -93,7 +93,7 @@
 										<ul class='z-org-tree'>
 											<li v-for='item in coopItems' :key='item.id' class='f-user' title=' ' @click='coopItemClick(item)'>
 												<el-checkbox v-model='item.checked' />
-												<img src='https://zsvg.gitee.io/vboot-vue/public/xiaoyoutai.png'>
+												<img :src='avatar'>
 												<span class='layui-elip f-user-name'>{{ item.name }}</span>
 											</li>
 										</ul>
@@ -115,7 +115,7 @@
 									<el-icon @click='selectedItemClick(item)'>
 										<circle-close />
 									</el-icon>
-									<img src='https://zsvg.gitee.io/vboot-vue/public/xiaoyoutai.png'>
+									<img :src='avatar'>
 									<span class='layui-elip f-user-name2'>{{ item.name }}</span>
 								</li>
 							</ul>
@@ -142,6 +142,7 @@ import RoleTree from '/@/comps/gen/GenTree.vue';
 import GroupTree from '/@/comps/gen/GenTree.vue';
 import CoopTree from '/@/comps/gen/GenTree.vue';
 import request from '/@/utils/request';
+import avatar from '/@/assets/avatar.png';
 
 let p_tab_key = 'k1';
 let p_select_mode = 1;//1单选，2多选
@@ -755,6 +756,10 @@ const clearAndcloseModal = () => {
 	background-color: #f7efec;
 }
 
+.dark .z-org-search li:hover {
+	background-color: #1f1f1f;
+}
+
 /*!*组织架构树*!*/
 .z-org-tree li {
 	margin: 3px;
@@ -767,6 +772,10 @@ const clearAndcloseModal = () => {
 	background-color: #f7efec;
 }
 
+.dark .z-org-tree li:hover {
+	background-color: #1f1f1f;
+}
+
 /*已选的*/
 .z-org-selected li {
 	margin: 3px;
@@ -777,6 +786,10 @@ const clearAndcloseModal = () => {
 
 .z-org-selected li:hover {
 	background-color: #f7efec;
+}
+
+.dark .z-org-selected li:hover {
+	background-color: #1f1f1f;
 }
 
 .z-org-selected .f-user .el-icon {

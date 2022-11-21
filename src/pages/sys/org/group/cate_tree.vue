@@ -38,7 +38,7 @@
 				@node-drag-start='handleDragStart' @node-drag-enter='handleDragEnter' @node-drag-leave='handleDragLeave'
 				@node-drag-over='handleDragOver' @node-drag-end='handleDragEnd' @node-drop='handleDrop' />
 
-			<div :style="{'z-index': 9999,width:'100px',position: 'fixed',left:state.optionCardX + 'px',top: state.optionCardY + 'px', }"
+			<div class='op-group' :style="{'z-index': 9999,width:'100px',position: 'fixed',left:state.optionCardX + 'px',top: state.optionCardY + 'px', }"
 v-show='state.optionCardShow' id='option-button-group'>
 				<el-button class='option-card-button' @click='addChildCate' style='border-bottom: 0'>新增群组分类</el-button>
 				<el-button class='option-card-button' @click='editCate' style='border-bottom: 0'>修改群组分类</el-button>
@@ -280,5 +280,9 @@ const deleteCate =async () => {
 	margin-left: 0;
 	font-size: 10px;
 	border-radius: 0;
+}
+
+.op-group{
+	background-color: #1f1f1f;
 }
 </style>

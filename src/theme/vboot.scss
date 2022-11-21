@@ -106,7 +106,7 @@
 
 .more-button {
   border: 1px dashed #409EFF;
-  background-color: #ecf5ff !important;
+  //background-color: #ecf5ff !important;
   color: #409eff;
   width: 38px;
   padding-left: 20px;
@@ -183,6 +183,11 @@
   border-right: 1px solid #d2d2d2
 }
 
+.dark .zform .zform-div{
+  border-top: 0;
+  border-right: 0;
+}
+
 .zform .el-form-item--default {
   margin: 0;
   padding: 0;
@@ -190,9 +195,19 @@
   border-bottom: 1px solid #d2d2d2;
 }
 
+.dark .zform .el-form-item--default {
+  border-left: 0;
+  border-bottom: 0;
+}
+
 .zform .zform-item{
   border-left: 1px solid #d2d2d2;
   border-bottom: 1px solid #d2d2d2;
+}
+
+.dark .zform .zform-item{
+  border-left: 0;
+  border-bottom: 0;
 }
 
 .zform .el-form-item--default .el-form-item__label {
@@ -202,10 +217,19 @@
   padding: 0 2px 0 6px;
 }
 
+.dark .zform .el-form-item--default .el-form-item__label {
+  background-color: #1d1e1f;
+}
+
 .zform .el-form-item--default .el-form-item__content {
   padding: 4px;
   background-color: white;
   border-left: 1px solid #d2d2d2;
+}
+
+.dark .zform .el-form-item--default .el-form-item__content {
+  background-color: #1d1e1f;
+  border-left: 0;
 }
 
 .zform .el-form-item__content .zinput{
@@ -235,6 +259,8 @@
 .zform100 .zform-div .el-form-item{
   width: 100%;
 }
+
+
 
 //以下为xform样式,没有边框
 .xform .el-form-item--default {
@@ -433,3 +459,37 @@
   background-image: url('https://hexo-blog-1256114407.cos.ap-shenzhen-fsi.myqcloud.com/rules.png');
 }
 
+
+
+//暗黑颜色匹配
+.default-theme .splitpanes__splitter {
+  background-color: #f8f8f8 !important;
+}
+
+//[data-theme='dark'] .default-theme .splitpanes__pane {
+//  background-color: #2a2a2a !important;
+//}
+//
+//[data-theme='dark'] .default-theme .splitpanes__splitter {
+//  background-color: #1f1f1f !important;
+//  margin-left: 0 !important;
+//  border: 0!important;
+//}
+//
+//[data-theme='dark'] .splitpanes.default-theme .splitpanes__splitter:before,[data-theme='dark'] .splitpanes.default-theme .splitpanes__splitter:after{
+//  background-color: #605858 !important;
+//}
+
+.dark .default-theme .splitpanes__pane {
+  background-color: #2a2a2a !important;
+}
+
+.dark .default-theme .splitpanes__splitter {
+  background-color: #1f1f1f !important;
+  margin-left: 0 !important;
+  border: 0!important;
+}
+
+.dark .splitpanes.default-theme .splitpanes__splitter:before,.dark .splitpanes.default-theme .splitpanes__splitter:after{
+  background-color: #605858 !important;
+}

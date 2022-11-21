@@ -11,8 +11,8 @@
 							<div>
 								<el-input v-model='state.form.name' placeholder='输入名称回车查询' clearable class='list-search'
 													@keyup.enter='listQuery(state)' />
-								<el-button type='primary' @click='listQuery(state)' :icon='Search' plain>查询</el-button>
-								<el-button class='more-button' :icon='state.moreParams?ArrowUp:ArrowDown' plain @click='state.moreParams=!state.moreParams' />
+								<el-button type='primary' @click='listQuery(state)' plain :icon='Search'>查询</el-button>
+								<el-button class='more-button' :icon='state.moreParams?ArrowUp:ArrowDown' @click='state.moreParams=!state.moreParams' />
 								<el-button type='warning' :icon='Operation' @click='changeIndex()' plain>切换维护方式</el-button>
 							</div>
 							<div>

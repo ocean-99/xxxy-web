@@ -49,7 +49,7 @@
       </div>
     </div>
 
-    <div style="min-width:76px;width:76px;text-align: right;background-color: white">
+    <div style="" class='icon_div'>
       <div style="padding: 0;">
         <span class="icon-span" @click="toRefreshPage">
            <el-icon class="el-input__icon" style="font-size: 18px;margin-top: 8px;margin-bottom: 8px;margin-right: 4px">
@@ -680,11 +680,27 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
+.icon_div{
+	min-width:76px;width:76px;text-align: right;
+	background-color: white;
+}
+
+.dark .icon_div{
+	background-color: #191919;
+}
+
 .icon-span{
-  border-left: 1px solid #d9d9d9;display: inline-block;padding-left: 7px;padding-right: 7px;cursor: pointer;color: #8c8c8c;
+  border-left: 1px solid #d9d9d9;
+	border-bottom: 1px solid #f1f2f3;
+	display: inline-block;padding-left: 7px;padding-right: 7px;cursor: pointer;color: #8c8c8c;
 }
 .icon-span:hover{
   color: #262626;
+}
+
+.dark .icon-span{
+	border-left: 1px solid #444444;
+	border-bottom: 1px solid #333333;
 }
 
 .rotate-go{
@@ -694,6 +710,7 @@ export default defineComponent({
   transform: rotate(90deg);
   //transition: all 1s;
 }
+
 
 .layout-navbars-tagsview {
   background-color: var(--el-color-white);

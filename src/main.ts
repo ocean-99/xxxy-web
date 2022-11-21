@@ -9,6 +9,7 @@ import other from '/@/utils/other';
 import ElementPlus from 'element-plus';
 import VForm3 from 'vform3-builds';
 import 'element-plus/dist/index.css';
+import 'element-plus/theme-chalk/dark/css-vars.css'
 import 'vform3-builds/dist/designer.style.css'
 import 'vxe-table/lib/style.css';
 import '/@/theme/index.scss';

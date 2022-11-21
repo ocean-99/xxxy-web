@@ -80,7 +80,7 @@
 				<el-checkbox v-model='state.chtag' @change='toggleFlowChart'>流程图</el-checkbox>
 			</div>
 			<div class='zform-item' v-show='state.chtag'>
-				<div style='height:1000px'>
+				<div style='height:1000px;'>
 					<Modeler2 />
 				</div>
 			</div>

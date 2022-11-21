@@ -26,7 +26,7 @@
 						<el-menu
 							style='width: 246px'
 							default-active="1-1"
-							background-color="white"
+							background-color='white'
 							active-text-color="blue"
 							text-color="black"
 						>
@@ -233,6 +233,9 @@ const activeName = ref('tab1');
 	background-color: white !important;
 }
 
+.dark .my-personal .el-menu .el-menu-item.is-active{
+	background-color: #383434 !important;
+}
 
 
 .my-personal .el-menu .el-menu-item:hover {
@@ -242,5 +245,14 @@ const activeName = ref('tab1');
 
 .my-personal .el-menu .el-sub-menu .el-sub-menu__title:hover {
 	background-color: #eee !important;
+}
+
+
+.dark .my-personal .el-menu .el-menu-item:hover {
+	background-color: #333 !important;
+}
+
+.dark .my-personal .el-menu .el-sub-menu .el-sub-menu__title:hover {
+	background-color: #333 !important;
 }
  </style>

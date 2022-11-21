@@ -12,7 +12,7 @@
 						<ul class='z-flow-search' style='padding: 2px'>
 							<li v-for='item in receItems' :key='item.id' class='f-flow' @click='receItemClick(item)'>
 								<el-checkbox v-model='item.checked' />
-								<img src='https://zsvg.gitee.io/vboot-vue/public/vboot.png'>
+								<img :src='vbootPng'>
 								<span class='layui-elip f-flow-name'>{{ item.name }}</span>
 								<span class='layui-elip f-flow-cate'>{{ item.catna }}</span>
 							</li>
@@ -31,7 +31,7 @@
 								<ul class='z-cate-tree'>
 									<li v-for='item in tierItems' :key='item.id' class='f-flow' title='444444444' @click='tierItemClick(item)'>
 										<el-checkbox v-model='item.checked' />
-										<img src='https://zsvg.gitee.io/vboot-vue/public/vboot.png'>
+										<img :src='vbootPng'>
 										<span class='layui-elip f-flow-name'>{{ item.name }}</span>
 										<span class='layui-elip f-flow-cate'>{{ item.catna }}</span>
 									</li>
@@ -58,6 +58,7 @@ import { defineExpose, reactive, ref, toRaw, toRefs } from 'vue';
 import request from '/@/utils/request';
 import CateTree from '/@/comps/gen/GenTree.vue';
 import { ElMessage } from 'element-plus';
+import vbootPng from '/@/assets/vboot.png';
 
 let p_flow_type = -1;//
 let p_tab_key = 'k1';
@@ -273,6 +274,11 @@ const clearAndcloseModal = () => {
 	background-color: #f7efec;
 }
 
+.dark .z-flow-search li:hover {
+	background-color: #1f1f1f;
+}
+
+
 /*流程分类树*/
 .z-cate-tree li {
 	margin: 3px;
@@ -283,5 +289,9 @@ const clearAndcloseModal = () => {
 
 .z-cate-tree li:hover {
 	background-color: #f7efec;
+}
+
+.z-cate-tree .z-flow-search li:hover {
+	background-color: #1f1f1f;
 }
 </style>
