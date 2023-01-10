@@ -19,7 +19,8 @@
 				<span class="login-right-warp-two"></span>
 				<div class="login-right-warp-mian">
 					<div class="login-right-warp-main-title">{{ getThemeConfig.globalTitle }} 欢迎您！</div>
-					<div class="login-right-warp-main-form">
+          <div class="login-right-warp-main-form">
+            <span style='color: green'>流程测试：张三账号z3,李四账号l4,王五账号w5,赵六账号z6,孙七账号s7,赵八账号z8。密码都是1</span>
 						<div v-if="!isScan">
 							<el-tabs v-model="tabsActiveName">
 								<el-tab-pane :label="$t('message.label.one1')" name="account">
