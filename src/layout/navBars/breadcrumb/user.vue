@@ -50,7 +50,7 @@
 		</div>
 		<el-dropdown :show-timeout="70" :hide-timeout="50" @command="onHandleCommandClick">
 			<span class="layout-navbars-breadcrumb-user-link">
-				<img :src="userInfos.photo" class="layout-navbars-breadcrumb-user-link-photo mr5" />
+				<img :src="avatar" class="layout-navbars-breadcrumb-user-link-photo mr5" />
 				{{ userInfos.userName === '' ? 'common' : userInfos.userName }}
 				<el-icon class="el-icon--right">
 					<ele-ArrowDown />
@@ -90,6 +90,7 @@ import mittBus from '/@/utils/mitt';
 import { Session, Local } from '/@/utils/storage';
 import request from "/@/utils/request";
 import {initBackEndControlRoutesByPortal} from "/@/router/backEnd";
+import avatar from '/@/assets/avatar.png';
 
 export default defineComponent({
 	name: 'layoutBreadcrumbUser',
@@ -220,6 +221,7 @@ export default defineComponent({
     }
 		return {
 			userInfos,
+      avatar,
       portalChange,
 			onLayoutSetingClick,
 			onHandleCommandClick,
