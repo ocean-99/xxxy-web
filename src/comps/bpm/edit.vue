@@ -18,9 +18,13 @@
           <el-input v-model='form.opnot' type='textarea' :rows='5' placeholder=' '/>
       </el-form-item>
       <el-form-item label='附件'>
-          <el-upload class='upload-demo' action='https://jsonplaceholder.typicode.com/posts/' v-model:file-list='fileList'>
-            <el-button type='primary'>上 传</el-button>
-          </el-upload>
+				<el-upload
+					:action='state.uploadUrl' :headers='state.headers'
+					:on-preview='handlePreview' style='width:800px' :on-success='handleSuccess'
+					:on-remove='handleRemove'
+					multiple :limit='10' :on-exceed='handleExceed' v-model:file-list='form.atts'>
+					<el-button type='primary'>上传附件</el-button>
+				</el-upload>
       </el-form-item>
       <div class="zform-item" style="padding-left: 6px">
         <el-checkbox v-model='state.chtag' @change='toggleFlowChart'>流程图</el-checkbox>
@@ -40,6 +44,8 @@ import {useRoute} from 'vue-router';
 import request from "/@/utils/request";
 import Modeler2 from '/@/comps/Activiti/modeler2/index';
 import {BpmnStore} from "/@/bpmn/store";
+import { Session } from '/@/utils/storage';
+import { ElMessage, ElMessageBox, UploadProps } from 'element-plus';
 
 const route = useRoute();
 
@@ -53,6 +59,7 @@ const state = reactive({
   toExmen: '',
   tarno:'',
   xml: null as any,
+	uploadUrl: '', headers: {} as any,
 });
 
 const {
@@ -61,6 +68,8 @@ const {
 
 
 onMounted(async () => {
+	state.uploadUrl = `${import.meta.env.VITE_API_URL}gen/oss/upload`;
+	state.headers = { 'Authorization': Session.get('token') };
   state.params = <any>route;
   if (params.value.query?.id) {
 
@@ -70,7 +79,18 @@ onMounted(async () => {
 
 
 const getOperateInfo = () => {
-  return toRaw(form.value);
+	const formInfo=toRaw(form.value);
+	let atids="";
+	if(formInfo.atts){
+		for (const att of formInfo.atts) {
+			atids+=att.id+",";
+		}
+		if(atids){
+			atids=atids.substring(0,atids.length-1);
+		}
+	}
+	formInfo.atids=atids;
+  return formInfo;
 };
 
 
@@ -134,6 +154,54 @@ const toggleFlowChart = async () => {
   }
 };
 
+//region -----附件逻辑-----
+const handleRemove: UploadProps['onRemove'] = (file, uploadFiles) => {
+	console.log(file, uploadFiles);
+};
+
+const handlePreview: UploadProps['onPreview'] = (uploadFile) => {
+	console.log(uploadFile);
+	ElMessageBox.confirm('请选择对应的附件操作', '附件操作',
+		{
+			confirmButtonText: '下载',
+			cancelButtonText: '预览',
+			type: 'info',
+		},
+	).then(async () => {
+		await request({
+			url: '/gen/oss/download',
+			method: 'get',
+			// params: { name: uploadFile.name, path: uploadFile.addre + '/' + uploadFile.id + '.' + uploadFile.sname },
+			params: { table: 'bpm_audit_att', id: uploadFile.id },
+			responseType: 'blob',
+		});
+	}).catch(() => {
+
+	});
+};
+
+const handleSuccess = (a: any, b: any, c: any) => {
+	// c[c.length - 1] = { ...a };
+	c[c.length - 1].id = a.id;
+	// c[c.length - 1].name = a.name+" ["+a.size+"]";
+	c[c.length - 1].name = a.name;
+	c[c.length - 1].filid = a.filid;
+	c[c.length - 1].filna = a.filna;
+	c[c.length - 1].path = a.path;
+	c[c.length - 1].ornum = c.length;
+	if (form.value.id) {
+		c[c.length - 1].audid = form.value.id;
+	}
+};
+
+const handleExceed: UploadProps['onExceed'] = (files, uploadFiles) => {
+	ElMessage.warning(
+		`The limit is 3, you selected ${files.length} files this time, add up to ${
+			files.length + uploadFiles.length
+		} totally`,
+	);
+};
+//endregion
 
 // const fileList = ref<UploadUserFile[]>([
 // 	{

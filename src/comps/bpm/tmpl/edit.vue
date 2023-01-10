@@ -159,6 +159,7 @@ const addEventBusListener = () => {
 			// }
 
 			console.log('双击了shape');
+			console.log(shape);
 			nodeModalRef.value.open(shape);
 			currNode = shape;
 

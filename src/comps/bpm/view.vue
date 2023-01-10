@@ -14,7 +14,28 @@
 					<el-table-column prop='facna' label='节点名称' width='200' />
 					<el-table-column prop='haman' label='操作者' width='90' />
 					<el-table-column prop='opinf' label='操作' width='300' />
-					<el-table-column prop='opnot' label='处理意见' />
+					<el-table-column prop='opnot' label='处理意见' >
+						<template #default='scope'>
+							{{scope.row.opnot}}
+<!--							<table style="margin-bottom: 0;">-->
+<!--								<thead style="display: none">-->
+<!--								<tr><th style="width: 200px">文件名</th><th style="width: 60px">大小</th><th style="width: 50px">操作</th></tr>-->
+<!--								</thead>-->
+<!--								<tbody>-->
+<!--								<tr v-for='item in scope.row.atts' :key='item.id'>-->
+<!--									<td>{{ item.name }}</td>-->
+<!--									<td>{{ item.zsize }}</td>-->
+<!--									<td></td>-->
+<!--								</tr>-->
+<!--								</tbody>-->
+<!--							</table>-->
+							<div v-for='item in scope.row.atts' :key='item.id' style='color: #57a7da;'>
+<!--								<el-icon style='cursor: pointer;'><ele-Download /></el-icon>-->
+								<img :src="vdownload" style='top: 3px;cursor: pointer;position: relative' @click='downloadAtt(item.id)'/>
+								<span style='cursor: pointer;margin-left: 5px'>{{ item.name }}</span>
+							</div>
+						</template>
+					</el-table-column>
 				</el-table>
 			</div>
 			<div v-if='state.cutag'>
@@ -49,6 +70,11 @@
 					<el-input v-model='cdata.comen' readonly @click='comenModal' style='width:300px;margin-right: 8px' />
 					<el-checkbox v-model='form.cotag'>是否隐藏意见</el-checkbox>
 				</el-form-item>
+				<el-form-item label='取消沟通人员' v-if="form.opkey=='cacommunicate'">
+					<el-checkbox-group v-model="cdata.ccarr">
+						<el-checkbox v-for='item in state.ccmen' :key='item.tasid' :label="item.tasid" name="type" >{{item.name}}</el-checkbox>
+					</el-checkbox-group>
+				</el-form-item>
 				<el-form-item label='即将流向' v-if="form.opkey=='pass'">
 					{{ state.toExmen }}
 				</el-form-item>
@@ -65,8 +91,12 @@
 					</div>
 				</el-form-item>
 				<el-form-item label='附件'>
-					<el-upload class='upload-demo' action='https://jsonplaceholder.typicode.com/posts/' v-model:file-list='fileList'>
-						<el-button type='primary'>上 传</el-button>
+					<el-upload
+						:action='state.uploadUrl' :headers='state.headers'
+						:on-preview='handlePreview' style='width:800px' :on-success='handleSuccess'
+						:on-remove='handleRemove'
+						multiple :limit='10' :on-exceed='handleExceed' v-model:file-list='form.atts'>
+						<el-button type='primary'>上传附件</el-button>
 					</el-upload>
 				</el-form-item>
 			</div>
@@ -97,11 +127,13 @@ import request from '/@/utils/request';
 // const route = useRoute();
 import Modeler2 from '/@/comps/Activiti/modeler2/index';
 import { BpmnStore } from '/@/bpmn/store';
-import { ElMessage } from 'element-plus';
+import { ElMessage, ElMessageBox, UploadProps } from 'element-plus';
 // import Viewer from 'bpmn-js/lib/NavigatedViewer';
 // import Viewer from 'bpmn-js/lib/Modeler';
 // import Viewer from 'bpmn-js/lib/Viewer';
 import OrgModal from '/@/comps/sys/OrgModal.vue';
+import vdownload from '/@/assets/v-download.png';
+import { Session } from '/@/utils/storage';
 
 
 const state = reactive({
@@ -109,7 +141,7 @@ const state = reactive({
 		items: [],
 		retag: true,
 		tutag: false,
-		cotag: false,
+		cotag: false
 	} as any,
 	params: {
 		path: '',
@@ -125,9 +157,12 @@ const state = reactive({
 	hiHamen: '',
 	cuExmen: '',
 	toExmen: '',
+	// ccmen:[{id:'11',name:'张三'},{id:'22',name:'李四'}],
+	ccmen:[],
 	nodeList: [],
 	lineList: [],
 	toNode:'',
+	uploadUrl: '', headers: {} as any,
 });
 
 const {
@@ -148,6 +183,8 @@ const props = defineProps({
 
 
 onMounted(async () => {
+	state.uploadUrl = `${import.meta.env.VITE_API_URL}gen/oss/upload`;
+	state.headers = { 'Authorization': Session.get('token') };
 	await bpmInit();
 	await toggleFlowChart();
 	// state.params = <any>route;
@@ -199,13 +236,17 @@ const bpmInit = async () => {
 				{ id: 'communicate', name: '沟通' },
 				{ id: 'abandon', name: '废弃' },
 			];
+		}else if(result.zbpm.tasty === 'to_communicate'){
+			state.opways = [
+				{ id: 'communicate', name: '沟通' },
+				{ id: 'cacommunicate', name: '取消沟通' },
+			];
 		}else if(result.zbpm.tasty === 'communicate'){
 			state.opways = [
 				{ id: 'bacommunicate', name: '回复沟通' },
 			];
 			form.value.opkey = 'bacommunicate';
 		}
-
 	}
 
 
@@ -225,7 +266,16 @@ const bpmInit = async () => {
 const emit = defineEmits(['submit']);
 
 const bpmSubmit = async () => {
-
+	let atids="";
+	if(form.value.atts){
+		for (const att of form.value.atts) {
+			atids+=att.id+",";
+		}
+		if(atids){
+			atids=atids.substring(0,atids.length-1);
+		}
+	}
+	form.value.atids=atids;
 	if (form.value.opkey == 'pass') {
 		emit('submit', form.value);
 		// await request({
@@ -273,6 +323,15 @@ const bpmSubmit = async () => {
 			emit('submit', form.value);
 		}else{
 			ElMessage.warning('请填写回复沟通的处理意见');
+		}
+	}else if (form.value.opkey == 'cacommunicate') {
+		const info = toRaw(form.value);
+		if (cdata.ccarr&&cdata.ccarr.length>0) {
+			console.log(cdata.ccarr);
+			info.ccids=cdata.ccarr.toString();
+			emit('submit', form.value);
+		} else {
+			ElMessage.warning('请选择要取消的人员');
 		}
 	}
 };
@@ -370,7 +429,7 @@ const opChange = async (key: any) => {
 			params: { proid: props.proid, facno: form.value.facno },
 		});
 		state.form.refno = state.refNodes[0].id;
-    refChange(state.form.refno);
+		refChange(state.form.refno);
 
 		// 驳回时要不要上色
 		// const elementRegistry = BpmnStore.getModeler().get('elementRegistry');
@@ -390,9 +449,13 @@ const opChange = async (key: any) => {
 		//   { id: 'N6', name: 'xxx', exman: 'w5' },
 		// ];
 	}
-	// else if(){
-	//
-	// }
+	else if(key == 'cacommunicate'){
+		state.ccmen = await request({
+			url: '/bpm/proc/main/ccmen',
+			method: 'get',
+			params: { proid: props.proid, facno: form.value.facno },
+		});
+	}
 };
 
 
@@ -457,6 +520,65 @@ cdata.comen = computed(() => {
 	}
 	return names;
 });
+//endregion
+
+//region -----附件逻辑-----
+const handleRemove: UploadProps['onRemove'] = (file, uploadFiles) => {
+	console.log(file, uploadFiles);
+};
+
+const handlePreview: UploadProps['onPreview'] = (uploadFile) => {
+	console.log(uploadFile);
+	ElMessageBox.confirm('请选择对应的附件操作', '附件操作',
+		{
+			confirmButtonText: '下载',
+			cancelButtonText: '预览',
+			type: 'info',
+		},
+	).then(async () => {
+		await request({
+			url: '/gen/oss/download',
+			method: 'get',
+			// params: { name: uploadFile.name, path: uploadFile.addre + '/' + uploadFile.id + '.' + uploadFile.sname },
+			params: { table: 'bpm_audit_att', id: uploadFile.id },
+			responseType: 'blob',
+		});
+	}).catch(() => {
+
+	});
+};
+
+const handleSuccess = (a: any, b: any, c: any) => {
+	// c[c.length - 1] = { ...a };
+	c[c.length - 1].id = a.id;
+	// c[c.length - 1].name = a.name+" ["+a.size+"]";
+	c[c.length - 1].name = a.name;
+	c[c.length - 1].filid = a.filid;
+	c[c.length - 1].filna = a.filna;
+	c[c.length - 1].path = a.path;
+	c[c.length - 1].ornum = c.length;
+	if (form.value.id) {
+		c[c.length - 1].audid = form.value.id;
+	}
+};
+
+const handleExceed: UploadProps['onExceed'] = (files, uploadFiles) => {
+	ElMessage.warning(
+		`The limit is 3, you selected ${files.length} files this time, add up to ${
+			files.length + uploadFiles.length
+		} totally`,
+	);
+};
+
+const downloadAtt=async (id:string)=>{
+	await request({
+		url: '/gen/oss/download',
+		method: 'get',
+		// params: { name: uploadFile.name, path: uploadFile.addre + '/' + uploadFile.id + '.' + uploadFile.sname },
+		params: { table: 'bpm_audit_att', id: id},
+		responseType: 'blob',
+	});
+}
 //endregion
 
 </script>
