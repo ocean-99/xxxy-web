@@ -2,7 +2,14 @@
 	<el-form class='zform zform100' :inline='true' :model='form' label-width='160px' label-position='left'>
 		<div class='zform-div'>
 			<el-form-item label='流程说明'>
-				这是一个测试的流程，目前功能还不完善
+				<div class='zjustify' style='width: 100%'>
+					<div>
+						这是一个测试的流程，目前功能还不完善
+					</div>
+					<div>
+						<el-button type='success' @click='pmanage()' plain>特权人处理</el-button>
+					</div>
+				</div>
 			</el-form-item>
 			<div class='zform-item' style='padding-left: 6px'>
 				<el-checkbox v-model='state.autag'>显示审批记录</el-checkbox>
@@ -115,6 +122,7 @@
 				</div>
 			</div>
 			<OrgModal ref='orgModal' @close='closeOrgModal' />
+			<Pmodal ref='pmodal' @close='closePmodal' />
 		</div>
 	</el-form>
 </template>
@@ -132,6 +140,7 @@ import { ElMessage, ElMessageBox, UploadProps } from 'element-plus';
 // import Viewer from 'bpmn-js/lib/Modeler';
 // import Viewer from 'bpmn-js/lib/Viewer';
 import OrgModal from '/@/comps/sys/OrgModal.vue';
+import Pmodal from './pmodal.vue';
 import vdownload from '/@/assets/v-download.png';
 import { Session } from '/@/utils/storage';
 
@@ -229,13 +238,22 @@ const bpmInit = async () => {
 		form.value.opurg = 'a';
 
 		if (result.zbpm.tasty === 'review') {
-			state.opways = [
-				{ id: 'pass', name: '通过' },
-				{ id: 'refuse', name: '驳回' },
-				{ id: 'turn', name: '转办' },
-				{ id: 'communicate', name: '沟通' },
-				{ id: 'abandon', name: '废弃' },
-			];
+			if(form.value.facno=="N1"){
+				state.opways = [
+					{ id: 'pass', name: '通过' },
+					{ id: 'turn', name: '转办' },
+					{ id: 'communicate', name: '沟通' },
+					{ id: 'abandon', name: '废弃' },
+				];
+			}else{
+				state.opways = [
+					{ id: 'pass', name: '通过' },
+					{ id: 'refuse', name: '驳回' },
+					{ id: 'turn', name: '转办' },
+					{ id: 'communicate', name: '沟通' },
+					{ id: 'abandon', name: '废弃' },
+				];
+			}
 		}else if(result.zbpm.tasty === 'to_communicate'){
 			state.opways = [
 				{ id: 'communicate', name: '沟通' },
@@ -580,6 +598,17 @@ const downloadAtt=async (id:string)=>{
 	});
 }
 //endregion
+
+
+
+const pmodal = ref();
+const pmanage= ()=>{
+	pmodal.value.open();
+}
+
+const closePmodal = (data: any) => {
+	alert(data);
+};
 
 </script>
 

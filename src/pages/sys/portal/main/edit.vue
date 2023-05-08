@@ -19,35 +19,36 @@
               <el-form-item label='门户名称：' prop='name' :rules="[{ required: true, message: '名称不能为空'}]" style="width: 100%">
                   <el-input v-model='form.name'/>
               </el-form-item>
-              <el-form-item label='是否可用：'>
-                  <el-switch v-model='form.avtag'/>
-              </el-form-item>
+
               <el-form-item label='排序号：'>
                   <el-input-number v-model='form.ornum' controls-position='right' style='width: 100%'/>
               </el-form-item>
+							<el-form-item label='是否可用：'>
+								<el-switch v-model='form.avtag'/>
+							</el-form-item>
 <!--              <el-form-item label='可使用者：' style="width: 100%">-->
 <!--                  <el-input type='textarea' :rows='4' v-model='viewersName' readonly @click='openOrgsModal'/>-->
 <!--              </el-form-item>-->
             </div>
           </el-tab-pane>
           <el-tab-pane label='其他信息' name='tab9'>
-            <div class="zform-div">
-              <el-form-item label='备注：' style="width: 100%">
-                <el-input type='textarea' :rows='4' v-model='form.notes'/>
-              </el-form-item>
-              <el-form-item label='创建人：' style="width: 25%">
-								<div class='zinput'>{{ form.crman ? form.crman.name : '' }}</div>
-              </el-form-item>
-              <el-form-item label='创建时间：' style="width: 25%">
-                <div class='zinput'> {{ form.crtim }}</div>
-              </el-form-item>
-              <el-form-item label='更新人：' style="width: 25%">
-								<div class='zinput'> {{ form.upman ? form.upman.name : '' }}</div>
-              </el-form-item>
-              <el-form-item label='更新时间：' style="width: 25%">
-                <div class='zinput'> {{ form.uptim }}</div>
-              </el-form-item>
-            </div>
+<!--            <div class="zform-div">-->
+<!--              <el-form-item label='备注：' style="width: 100%">-->
+<!--                <el-input type='textarea' :rows='4' v-model='form.notes'/>-->
+<!--              </el-form-item>-->
+<!--              <el-form-item label='创建人：' style="width: 25%">-->
+<!--								<div class='zinput'>{{ form.crman ? form.crman.name : '' }}</div>-->
+<!--              </el-form-item>-->
+<!--              <el-form-item label='创建时间：' style="width: 25%">-->
+<!--                <div class='zinput'> {{ form.crtim }}</div>-->
+<!--              </el-form-item>-->
+<!--              <el-form-item label='更新人：' style="width: 25%">-->
+<!--								<div class='zinput'> {{ form.upman ? form.upman.name : '' }}</div>-->
+<!--              </el-form-item>-->
+<!--              <el-form-item label='更新时间：' style="width: 25%">-->
+<!--                <div class='zinput'> {{ form.uptim }}</div>-->
+<!--              </el-form-item>-->
+<!--            </div>-->
           </el-tab-pane>
         </el-tabs>
       </el-form>

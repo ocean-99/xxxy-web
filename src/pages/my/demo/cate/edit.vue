@@ -268,7 +268,7 @@
 
 					<el-tab-pane label='流程配置' name='tab4' v-if='form.prtag'>
 						<div style='width: 100%;height: 720px'>
-							<BpmTmplEdit ref="bpmTmplEditRef" v-if='state.bpmShowTag' :prxml='form.prxml'/>
+							<BpmTempEdit ref="bpmTempEditRef" v-if='state.bpmShowTag' :prxml='form.prxml'/>
 						</div>
 					</el-tab-pane>
 
@@ -294,7 +294,7 @@ import { ElMessage, FormInstance } from 'element-plus';
 import { uuid } from '/@/utils/xutil';
 import TabEdit from './tab.vue';
 import { VxeTableInstance } from 'vxe-table';
-import BpmTmplEdit from '/@/comps/bpm/tmpl/edit.vue';
+import BpmTempEdit from '/@/comps/bpm/temp/edit.vue';
 
 
 const route = useRoute();
@@ -342,7 +342,7 @@ onMounted(async () => {
 	state.bpmShowTag=true;
 });
 
-const bpmTmplEditRef=ref();
+const bpmTempEditRef=ref();
 
 const editInitx = async () => {
 	state.params = <any>route;
@@ -650,7 +650,7 @@ const save = async () => {
 	form.value.ljson = JSON.stringify(form.value.links);
 
 	if (form.value.prtag) {
-		form.value.prxml =await bpmTmplEditRef.value.getXml();
+		form.value.prxml =await bpmTempEditRef.value.getXml();
 	}
 
 	await tabSave({ formRef: formRef.value, state, proxy, route });

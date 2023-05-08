@@ -1,8 +1,8 @@
 import { createApp } from 'vue';
 import pinia from '/@/stores/index';
-import App from './App.vue';
-import router from './router';
-import { directive } from '/@/utils/directive';
+import App from '/@/App.vue';
+import router from '/@/router';
+import { directive } from '/@/directive/index';
 import { i18n } from '/@/i18n/index';
 import other from '/@/utils/other';
 
@@ -23,5 +23,4 @@ other.elSvg(app);
 
 setupVxe(app);
 
-app.use(pinia).use(router).use(ElementPlus, { i18n: i18n.global.t }).use(VForm3).use(i18n).use(VueGridLayout).mount('#app');
-
+app.use(pinia).use(router).use(ElementPlus).use(VForm3).use(i18n).use(VueGridLayout).mount('#app');

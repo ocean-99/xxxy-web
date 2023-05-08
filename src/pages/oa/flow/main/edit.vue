@@ -31,7 +31,7 @@
 							<div style='color: green'>注：此页面内容通过在线表单设计器渲染</div>
 						</el-tab-pane>
 						<el-tab-pane label='流程处理' name='tab3'>
-							<BpmEdit v-if='form.protd' :tmpid='form.protd' ref='bpmRef' />
+							<BpmEdit v-if='form.protd' :temid='form.protd' ref='bpmRef' />
 						</el-tab-pane>
 						<el-tab-pane label='权限信息' name='tab4'>
 							<!--						<img :src='qx' style='width:100%' />-->
@@ -83,13 +83,13 @@ const editInitx = async (state: any, route: any) => {
 			method: 'get',
 		});
 	} else {
-		let tmpid = state.params.query?.tmpid;
+		let temid = state.params.query?.temid;
 		const data: any = await request({
-			url: '/oa/flow/tmpl/one/' + tmpid,
+			url: '/oa/flow/temp/one/' + temid,
 			method: 'get',
 		});
 		form.value.protd = data.protd;
-		form.value.tmpid = tmpid;
+		form.value.temid = temid;
 		form.value.avtag = true;
 		formJson.value = JSON.parse(data.vform);
 		formData.value = {};

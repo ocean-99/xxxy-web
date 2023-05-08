@@ -36,9 +36,9 @@
 								<BpmView @submit='submit' :proid='form.id' modty="oaFlow"/>
 							</template>
 						</el-tab-pane>
-						<el-tab-pane label='权限信息' name='tab4'>
-							<img :src='qx' style='width:100%' />
-						</el-tab-pane>
+<!--						<el-tab-pane label='权限信息' name='tab4'>-->
+<!--							<img :src='qx' style='width:100%' />-->
+<!--						</el-tab-pane>-->
 					</el-tabs>
 				</el-form>
 			</div>
@@ -88,7 +88,7 @@ const viewInitx = async (state: any, route: any) => {
 		});
 
 		const data: any = await request({
-			url: '/oa/flow/tmpl/one/' + state.form.tmpid,
+			url: '/oa/flow/temp/one/' + state.form.temid,
 			method: 'get',
 		});
 		formJson.value = JSON.parse(data.vform);

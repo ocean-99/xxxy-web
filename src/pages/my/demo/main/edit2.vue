@@ -111,7 +111,7 @@
 						</div>
 					</el-tab-pane>
 					<el-tab-pane label='流程信息' name='tab11' v-if='state.flowShow&&form.protd'>
-						<BpmEdit :tmpid='form.protd' ref='bpmRef' />
+						<BpmEdit :temid='form.protd' ref='bpmRef' />
 					</el-tab-pane>
 				</el-tabs>
 			</el-form>

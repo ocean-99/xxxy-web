@@ -1,5 +1,4 @@
 import { defineStore } from 'pinia';
-import { ThemeConfigStates, ThemeConfigState } from './interface';
 
 /**
  * 布局配置
@@ -10,7 +9,7 @@ import { ThemeConfigStates, ThemeConfigState } from './interface';
  * 2、或者点击布局配置最底部 `一键恢复默认` 按钮即可看到效果
  */
 export const useThemeConfig = defineStore('themeConfig', {
-	state: (): ThemeConfigStates => ({
+	state: (): ThemeConfigState => ({
 		themeConfig: {
 			// 是否开启布局配置抽屉
 			isDrawer: false,
@@ -24,10 +23,7 @@ export const useThemeConfig = defineStore('themeConfig', {
 			isIsDark: false,
 
 			/**
-			 * 菜单 / 顶栏
-			 * 注意：v1.0.17 版本去除设置布局切换，重置主题样式（initSetLayoutChange），
-			 * 切换布局需手动设置样式，设置的样式自动同步各布局，
-			 * 代码位置：/@/layout/navBars/breadcrumb/setings.vue
+			 * 顶栏设置
 			 */
 			// 默认顶栏导航背景颜色
 			topBar: '#ffffff',
@@ -35,12 +31,22 @@ export const useThemeConfig = defineStore('themeConfig', {
 			topBarColor: '#606266',
 			// 是否开启顶栏背景颜色渐变
 			isTopBarColorGradual: false,
+
+			/**
+			 * 菜单设置
+			 */
 			// 默认菜单导航背景颜色
 			menuBar: '#001529',//vboot
 			// 默认菜单导航字体颜色
 			menuBarColor: '#eaeaea',
+			// 默认菜单高亮背景色
+			menuBarActiveColor: 'rgba(0, 0, 0, 0.2)',
 			// 是否开启菜单背景颜色渐变
 			isMenuBarColorGradual: false,
+
+			/**
+			 * 分栏设置
+			 */
 			// 默认分栏菜单背景颜色
 			columnsMenuBar: '#545c64',
 			// 默认分栏菜单字体颜色
@@ -58,7 +64,7 @@ export const useThemeConfig = defineStore('themeConfig', {
 			// 是否开启菜单手风琴效果
 			isUniqueOpened: true,
 			// 是否开启固定 Header
-			isFixedHeader: true,
+			isFixedHeader: false,
 			// 初始化变量，用于更新菜单 el-scrollbar 的高度，请勿删除
 			isFixedHeaderChange: false,
 			// 是否开启经典布局分割菜单（仅经典布局生效）
@@ -90,7 +96,7 @@ export const useThemeConfig = defineStore('themeConfig', {
 			// 是否开启 TagsView 共用
 			isShareTagsView: false,
 			// 是否开启 Footer 底部版权信息
-			isFooter: false,//vboot
+			isFooter: false,
 			// 是否开启灰色模式
 			isGrayscale: false,
 			// 是否开启色弱模式
@@ -115,7 +121,7 @@ export const useThemeConfig = defineStore('themeConfig', {
 
 			/**
 			 * 布局切换
-			 * 注意：为了演示，切换布局时，颜色会被还原成默认，代码位置：/@/layout/navBars/breadcrumb/setings.vue
+			 * 注意：为了演示，切换布局时，颜色会被还原成默认，代码位置：/@/layout/navBars/topBar/setings.vue
 			 * 中的 `initSetLayoutChange(设置布局切换，重置主题样式)` 方法
 			 */
 			// 布局切换：可选值"<defaults|classic|transverse|columns>"，默认 defaults
@@ -125,8 +131,8 @@ export const useThemeConfig = defineStore('themeConfig', {
 			 * 后端控制路由
 			 */
 			// 是否开启后端控制路由
-			isRequestRoutes: true,
-			// isRequestRoutes: false,
+			// isRequestRoutes: true,
+			isRequestRoutes: false,
 
 			/**
 			 * 全局网站标题 / 副标题
@@ -140,12 +146,12 @@ export const useThemeConfig = defineStore('themeConfig', {
 			// 默认初始语言，可选值"<zh-cn|en|zh-tw>"，默认 zh-cn
 			globalI18n: 'zh-cn',
 			// 默认全局组件大小，可选值"<large|'default'|small>"，默认 'large'
-			globalComponentSize: 'default',//vboot
+			globalComponentSize: 'default',
 		},
 	}),
 	actions: {
 		setThemeConfig(data: ThemeConfigState) {
-			this.themeConfig = data;
+			this.themeConfig = data.themeConfig;
 		},
 	},
 });

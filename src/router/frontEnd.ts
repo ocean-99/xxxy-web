@@ -9,10 +9,21 @@ import { useTagsViewRoutes } from '/@/stores/tagsViewRoutes';
 import { useRoutesList } from '/@/stores/routesList';
 import { NextLoading } from '/@/utils/loading';
 import {sysRoutes} from '/@/router/sysRoute';
+// import {saRoutes} from '/@/router/saRoute';
+// import {teRoutes} from '/@/router/teRoute';
+
+// for (const saRoute of saRoutes) {
+// 	dynamicRoutes[0].children?.push(saRoute);
+// }
+//
+// for (const teRoute of teRoutes) {
+// 	dynamicRoutes[0].children?.push(teRoute);
+// }
 
 for (const sysRoute of sysRoutes) {
 	dynamicRoutes[0].children?.push(sysRoute);
 }
+
 
 
 // 前端控制路由
@@ -22,7 +33,7 @@ for (const sysRoute of sysRoutes) {
  * @method  NextLoading 界面 loading 动画开始执行
  * @method useUserInfo(pinia).setUserInfos() 触发初始化用户信息 pinia
  * @method setAddRoute 添加动态路由
- * @method setFilterMenuAndCacheTagsViewRoutes 设置递归过滤有权限的路由到 vuex routesList 中（已处理成多级嵌套路由）及缓存多级嵌套数组处理后的一维数组
+ * @method setFilterMenuAndCacheTagsViewRoutes 设置递归过滤有权限的路由到 pinia routesList 中（已处理成多级嵌套路由）及缓存多级嵌套数组处理后的一维数组
  */
 export async function initFrontEndControlRoutes() {
 	// 界面 loading 动画开始执行
@@ -32,10 +43,13 @@ export async function initFrontEndControlRoutes() {
 	// 触发初始化用户信息 pinia
 	// https://gitee.com/lyt-top/vue-next-admin/issues/I5F1HP
 	await useUserInfo(pinia).setUserInfos();
+	// 无登录权限时，添加判断
+	// https://gitee.com/lyt-top/vue-next-admin/issues/I64HVO
+	if (useUserInfo().userInfos.roles.length <= 0) return Promise.resolve(true);
 	// 添加动态路由
 	await setAddRoute();
-	// 设置递归过滤有权限的路由到 vuex routesList 中（已处理成多级嵌套路由）及缓存多级嵌套数组处理后的一维数组
-	await setFilterMenuAndCacheTagsViewRoutes();
+	// 设置递归过滤有权限的路由到 pinia routesList 中（已处理成多级嵌套路由）及缓存多级嵌套数组处理后的一维数组
+	setFilterMenuAndCacheTagsViewRoutes();
 }
 
 /**
@@ -114,7 +128,7 @@ export function setCacheTagsViewRoutes() {
 }
 
 /**
- * 设置递归过滤有权限的路由到 vuex routesList 中（已处理成多级嵌套路由）及缓存多级嵌套数组处理后的一维数组
+ * 设置递归过滤有权限的路由到 pinia routesList 中（已处理成多级嵌套路由）及缓存多级嵌套数组处理后的一维数组
  * @description 用于左侧菜单、横向菜单的显示
  * @description 用于 tagsView、菜单搜索中：未过滤隐藏的(isHide)
  */

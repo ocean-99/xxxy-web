@@ -27,7 +27,7 @@
 				</div>
 			</template>
 			<FlowModal ref='flowModalRef' @close='closeFlowModal' />
-			<TmplModal url='oa/flow/tmpl/tree' ref='tmplModal' />
+			<TempModal url='oa/flow/temp/tree' ref='tempModal' />
 
 			<el-table height='400' :cell-style="{padding:'2px'}" :row-style="{height: '36px'}" v-loading='state.loading' :data='state.list'
 								border stripe @selection-change='listSelect($event,state)'>
@@ -76,7 +76,7 @@
 import { Search, Plus, Delete, ArrowDown, ArrowUp } from '@element-plus/icons-vue';
 import { onMounted, reactive, ref } from 'vue';
 import { listQuery, listDelete, listSelect, pageView } from '/@/comps/page/index';
-import TmplModal from '/@/comps/gen/GenTreeModal.vue';
+import TempModal from '/@/comps/gen/GenTreeModal.vue';
 import FlowModal from './FlowModal.vue';
 
 const state = reactive({
@@ -90,13 +90,13 @@ onMounted(() => {
 
 
 //分类弹框逻辑
-// const tmplModal = ref();
-// const openTmplModal = () => {
-// 	tmplModal.value.openModal();
+// const tempModal = ref();
+// const openTempModal = () => {
+// 	tempModal.value.openModal();
 // };
-// const tmplModalClose=(node:any)=>{
-//   if(node.type=="tmpl"){
-//     window.open("#/page/ofme?tmpid="+node.id);
+// const tempModalClose=(node:any)=>{
+//   if(node.type=="temp"){
+//     window.open("#/page/ofme?temid="+node.id);
 //   }else if(node.type=="cate"){
 //     ElMessage.info("当前选择的是流程分类，请选择最下级的流程模板节点，比如请假申请");
 //   }
@@ -110,7 +110,7 @@ const openFlowModal = () => {
 const closeFlowModal = (node: any) => {
 	setTimeout(() => {
 		if (node && node.id) {
-			window.open('#/page/ofme?tmpid=' + node.id);
+			window.open('#/page/ofme?temid=' + node.id);
 		}
 	}, 50);
 };
