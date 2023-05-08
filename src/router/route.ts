@@ -176,29 +176,5 @@ export const staticRoutes: Array<RouteRecordRaw> = [
 		meta: {
 			title: '流程实例查看',
 		},
-	},
-	{
-		path: '/page/tpme',
-		name: 'pageTpme',
-		component: () => import('/@/pages/te/prod/main/edit.vue'),
-		meta: {
-			title: '产品配置',
-		},
-	},
-	{
-		path: '/page/sdme',
-		name: 'pageSdme',
-		component: () => import('/@/pages/sa/draw/main/edit.vue'),
-		meta: {
-			title: '土建图申请E',
-		},
-	},
-	{
-		path: '/page/sdmv',
-		name: 'pageSdmv',
-		component: () => import('/@/pages/sa/draw/main/view.vue'),
-		meta: {
-			title: '土建图申请V',
-		},
-	},
+	}
 ];
