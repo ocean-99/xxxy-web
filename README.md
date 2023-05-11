@@ -2,8 +2,8 @@
 <div align="center"><h3 align="center">一个开箱即用的快速开发平台vue前端</h3></div>
 
 # 🍿 相关地址
-* 体验地址1：[https://zsvg.gitee.io/vue](https://zsvg.gitee.io/vue) （基于Element-Plus）
-* 体验地址2：[https://zsvg.gitee.io/vben](https://zsvg.gitee.io/vben) （基于Ant-Design-Vue）
+* 体验地址1：[http://zsvg.gitee.io/vue](http://zsvg.gitee.io/vue) （基于Element-Plus）
+* 体验地址2：[http://zsvg.gitee.io/vben](http://zsvg.gitee.io/vben) （基于Ant-Design-Vue）
 * 文档地址 ：[http://zsvg.gitee.io/vn](http://zsvg.gitee.io/vn)
 * QQ交流群：[795417789](https://jq.qq.com/?_wv=1027&k=yoKKIlIG) （唯一交流群）
 
