@@ -5,7 +5,8 @@
 * 体验地址1：[http://zsvg.gitee.io/vue](http://zsvg.gitee.io/vue) （基于Element-Plus）
 * 体验地址2：[http://zsvg.gitee.io/vben](http://zsvg.gitee.io/vben) （基于Ant-Design-Vue）
 * 文档地址 ：[http://zsvg.gitee.io/vn](http://zsvg.gitee.io/vn)
-* QQ交流群：[795417789](https://jq.qq.com/?_wv=1027&k=yoKKIlIG) （唯一交流群）
+* QQ交流群：[759521037](http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=ntWCeVyWVN6cw5EhIhaEaPAFm13F9ZMO&authKey=2TIHtcBp3hrgwUUOgI%2BXFJYx5g%2FLdr35C%2FpMXUQ34Z0lIQfOphK6%2FzzBheRkyW0E&noverify=0&group_code=759521037) （欢迎大家一起交流）
+
 
 ### 🍟 概述
 * 基于JAVA/.NET实现的快速开发平台。模块化插件式开发，前后端分离，开箱即用。
