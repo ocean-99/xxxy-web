@@ -78,7 +78,7 @@ import {listQuery, listDelete, listSelect} from '/@/comps/page/index';
 import Edit from './edit.vue';
 import GenUpload from '/@/comps/gen/GenUpload.vue';
 import router from '/@/router';
-import request from "../../../../utils/request";
+import {get} from "/@/utils/req";
 import {Session} from '/@/utils/storage';
 
 
@@ -121,9 +121,8 @@ const openConfig = async () => {
 }
 
 const downloadFile = async (id:string) => {
-  await request({
+  await get({
     url: '/gen/oss/download',
-    method: 'get',
     params: { id: id},
     responseType: 'blob',
   });

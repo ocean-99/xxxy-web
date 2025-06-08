@@ -33,13 +33,14 @@
                 border stripe @selection-change='listSelect($event,state)'>
         <el-table-column type='selection' width='55' align='center'/>
         <el-table-column label='序号' type='index' width='55' align='center'/>
-        <el-table-column label='角色树名称' width='160'>
+        <el-table-column label='角色树名称' width='300'>
           <template #default='scope'>
 						<span style='cursor:pointer;color: #3e9ece' @click='editNode(scope.row.id)'>
 							{{ scope.row.name }}
 						</span>
           </template>
         </el-table-column>
+        <el-table-column label='排序号' prop='ornum' width="60"/>
         <el-table-column label='备注' prop='notes'/>
         <el-table-column label='创建时间' prop='crtim' width='160'/>
         <el-table-column label='更新时间' prop='uptim' width='160'/>

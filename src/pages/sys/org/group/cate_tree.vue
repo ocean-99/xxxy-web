@@ -53,7 +53,7 @@ v-show='state.optionCardShow' id='option-button-group'>
 import { onMounted, reactive, ref, watch } from 'vue';
 import type { ElTree } from 'element-plus';
 import { Search,MoreFilled } from '@element-plus/icons-vue';
-import request from '/@/utils/request';
+import req from '/@/utils/req';
 import CateEdit from './cate_edit.vue';
 import { DragEvents } from 'element-plus/es/components/tree/src/model/useDragNode';
 import { DropType } from 'element-plus/es/components/tree/src/tree.type';
@@ -206,9 +206,8 @@ onMounted(async () => {
 
 
 const initTreeData = async () => {
-	state.data = await request({
-		url: '/sys/org/group/cate/tree',
-		method: 'get',
+	state.data = await req.get({
+		url: '/sys/org/group/cate/tree'
 	});
 };
 
@@ -229,10 +228,9 @@ const handleDragEnd = async (draggingNode: any, dropNode: any, dropType: DropTyp
 	console.log("DragEnd");
 };
 const handleDrop = async (draggingNode: any, dropNode: any, dropType: DropType, ev: DragEvents,) => {
-	await request({
+	await req.post({
 		url: '/sys/org/group/cate/move',
 		data: { type:dropType,draid: draggingNode.data.id, droid: dropNode.data.id},
-		method: 'post',
 	});
 	console.log("handleDrop");
 };
@@ -252,9 +250,8 @@ const editCate = () => {
 	cateRef.value.openModal({ id: currNode.id });
 };
 const deleteCate =async () => {
-	await request({
-		url: '/sys/org/group/cate/'+currNode.id,
-		method: 'delete',
+	await req.dele({
+		url: '/sys/org/group/cate/'+currNode.id
 	});
 	treeRef.value!.remove(currNode);
 };

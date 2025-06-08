@@ -12,7 +12,7 @@
 						<ul class='z-flow-search' style='padding: 2px'>
 							<li v-for='item in receItems' :key='item.id' class='f-flow' @click='receItemClick(item)'>
 								<el-checkbox v-model='item.checked' />
-								<img :src='vbootPng'>
+								<img :src='vbenPng'>
 								<span class='layui-elip f-flow-name'>{{ item.name }}</span>
 								<span class='layui-elip f-flow-cate'>{{ item.catna }}</span>
 							</li>
@@ -31,7 +31,7 @@
 								<ul class='z-cate-tree'>
 									<li v-for='item in tierItems' :key='item.id' class='f-flow' title='444444444' @click='tierItemClick(item)'>
 										<el-checkbox v-model='item.checked' />
-										<img :src='vbootPng'>
+										<img :src='vbenPng'>
 										<span class='layui-elip f-flow-name'>{{ item.name }}</span>
 										<span class='layui-elip f-flow-cate'>{{ item.catna }}</span>
 									</li>
@@ -55,10 +55,10 @@
 
 <script lang='ts' setup>
 import { defineExpose, reactive, ref, toRaw, toRefs } from 'vue';
-import request from '/@/utils/request';
+import req from '/@/utils/req';
 import CateTree from '/@/comps/gen/GenTree.vue';
 import { ElMessage } from 'element-plus';
-import vbootPng from '/@/assets/vboot.png';
+import vbenPng from '/@/assets/vben.png';
 
 let p_flow_type = -1;//
 let p_tab_key = 'k1';
@@ -95,9 +95,8 @@ async function tabChange(tab: any) {
 //region x.1 最近使用
 
 async function onSearch() {
-	receItems.value = await request({
+	receItems.value = await req.get({
 		url: '/oa/flow/temp/list?type=' + p_flow_type,
-		method: 'get',
 		params: { name: state.receSearch },
 	});
 	for (const rItem of receItems.value) {
@@ -109,9 +108,8 @@ async function onSearch() {
 }
 
 const receInit = async () => {
-	receItems.value = await request({
+	receItems.value = await req.get({
 		url: '/oa/flow/rece/list?type=' + p_flow_type,
-		method: 'get',
 	});
 };
 
@@ -136,9 +134,8 @@ function receItemClick(item: any) {
 
 async function nodeClick(node: any) {
 	if (node && node.id) {
-		tierItems.value = await request({
+		tierItems.value = await req.get({
 			url: '/oa/flow/temp/list?type=' + p_flow_type,
-			method: 'get',
 			params: { catid: node.id },
 		});
 	}
@@ -187,9 +184,8 @@ const closeModal = () => {
 	const rawSeldItem = toRaw(seldItem.value) as any;
 	if (rawSeldItem && rawSeldItem.id) {
 		//更新后台数据库最近使用的TEMPS
-		request({
+		req.post({
 			url: '/oa/flow/rece',
-			method: 'post',
 			data: [rawSeldItem],
 		});
 	}

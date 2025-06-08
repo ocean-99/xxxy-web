@@ -126,7 +126,7 @@ import { NextLoading } from '/@/utils/loading';
 import CateModal from '/@/comps/gen/GenTreeModal.vue';
 import MyBpmn from '/@/comps/bpmn/MyBpmn.vue';
 import { FormInstance } from 'element-plus';
-import request from '/@/utils/request';
+import {get} from '/@/utils/req';
 
 const route = useRoute();
 const formRef = ref<FormInstance>();
@@ -146,9 +146,8 @@ onMounted(async () => {
 	state.params = <any>route;
 	let id = state.params.query?.id;
 	if (id) {
-		state.form = await request({
+		state.form = await get({
 			url: state.url + '/one/' + id,
-			method: 'get',
 		});
 	} else {
 		let catid = state.params.query?.catid;

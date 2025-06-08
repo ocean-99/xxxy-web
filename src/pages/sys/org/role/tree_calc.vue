@@ -33,7 +33,7 @@
 import { computed, defineExpose, reactive, ref, toRaw, toRefs } from 'vue';
 import {modalSave} from '/@/comps/page/edit';
 import OrgModal from '/@/comps/sys/OrgModal.vue';
-import request from '/@/utils/request';
+import {get} from '/@/utils/req';
 
 const state = reactive({
 	url: '/sys/org/rtree', show: false,trees:[] as any,roles:[] as any,
@@ -85,25 +85,22 @@ cdata.reman = computed(() => {
 //endregion
 
 const treesInit = async () => {
-	trees.value = await request({
+	trees.value = await get({
 		url: '/sys/org/rtree/tlist',
-		method: 'get',
 	});
 };
 
 const rolesInit = async () => {
-	roles.value = await request({
+	roles.value = await get({
 		url: '/sys/org/rtree/rlist',
-		method: 'get',
 		params:{treid:form.value.treid}
 	});
 };
 
 
 const calc = async () => {
-	form.value.reman= await request({
+	form.value.reman= await get({
 		url: '/sys/org/rtree/calc',
-		method: 'get',
 		params:{useid:form.value.loman.id,rolid:form.value.rolid}
 	});
 };

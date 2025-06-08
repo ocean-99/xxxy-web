@@ -53,7 +53,7 @@ import { Plus, Delete } from '@element-plus/icons-vue';
 import { onMounted, reactive, ref } from 'vue';
 import { listQuery, listDelete, listSelect } from '/@/comps/page/index';
 import Edit from './edit.vue';
-import request from '/@/utils/request';
+import {get} from '/@/utils/req';
 import { useRoute } from 'vue-router';
 
 const route = useRoute();
@@ -73,10 +73,7 @@ onMounted(() => {
 
 
 const dictsInit = async () => {
-	state.dicts = await request({
-		url: '/ass/dict/main/list',
-		method: 'get',
-	});
+	state.dicts = await get({url: '/ass/dict/main/list'});
 };
 
 

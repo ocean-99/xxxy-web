@@ -38,7 +38,7 @@
 <script lang='ts' setup>
 import { defineExpose, reactive, ref, toRefs } from 'vue';
 import {modalSave} from '/@/comps/page/edit';
-import request from "/@/utils/request";
+import {get} from "/@/utils/req";
 import { ElMessage } from 'element-plus';
 import OrgModal from '/@/comps/sys/OrgModal.vue';
 import { useRoute } from 'vue-router';
@@ -54,10 +54,7 @@ const {form} = toRefs(state);
 const formRef = ref();
 const open = async (data: any) => {
 	if (data && data.id) {
-		state.form = await request({
-			url: state.url + '/one/' + data.id,
-			method: 'get',
-		});
+		state.form = await get({url: state.url + '/one/' + data.id});
 		if (state.form.member) {
 			state.form.memid = state.form.member.id;
 			state.form.memna = state.form.member.name;

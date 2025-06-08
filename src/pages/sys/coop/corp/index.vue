@@ -52,7 +52,7 @@ import { Plus, Delete } from '@element-plus/icons-vue';
 import { onMounted, reactive, ref } from 'vue';
 import { listQuery, listDelete, listSelect } from '/@/comps/page/index';
 import DrawerEdit from './edit.vue';
-import request from '/@/utils/request';
+import {get} from '/@/utils/req';
 
 const drawer = ref();
 
@@ -68,9 +68,8 @@ onMounted(() => {
 
 
 const catesInit = async () => {
-	state.cates = await request({
+	state.cates = await get({
 		url: '/sys/coop/cate/treea',
-		method: 'get',
 	});
 };
 

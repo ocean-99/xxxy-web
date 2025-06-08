@@ -50,7 +50,7 @@ export default { name: 'MonLogLogin' };
 import { Search, Football } from '@element-plus/icons-vue';
 import { onMounted, reactive } from 'vue';
 import { listSelect } from '/@/comps/page';
-import request from '/@/utils/request';
+import req from '/@/utils/req';
 import { ElMessageBox } from 'element-plus';
 
 
@@ -64,9 +64,8 @@ onMounted(() => {
 });
 
 async function listQuery() {
-	state.totalList = await request({
+	state.totalList = await req.get({
 		url: state.url + '/list',
-		method: 'get',
 		params: state.form,
 	});
 	state.total = state.totalList.length;
@@ -90,9 +89,8 @@ const kickOut = async (onkey: string) => {
 		cancelButtonText: '取消',
 		type: 'info',
 	}).then(async () => {
-		await request({
+		await req.post({
 			url: state.url + '/close',
-			method: 'post',
 			params: { onkey: onkey },
 		});
 		await listQuery();

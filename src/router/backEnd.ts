@@ -49,13 +49,13 @@ export async function initBackEndControlRoutes() {
 	}
 	// 存储接口原始路由（未处理component），根据需求选择使用
 	// console.log(res);
-	// useRequestOldRoutes().setRequestOldRoutes(JSON.parse(JSON.stringify(res.menus)));//vboot
+	// useRequestOldRoutes().setRequestOldRoutes(JSON.parse(JSON.stringify(res.menus)));//vben
 	if(res.portals&&res.portals.length>0){
 		useUserInfo().setUserInfos2(res.portals);
 	}else{
 		useUserInfo().setUserInfos();
 	}
-	useRequestOldRoutes().setRequestOldRoutes(res.menus);//vboot
+	useRequestOldRoutes().setRequestOldRoutes(res.menus);//vben
 	// 处理路由（component），替换 dynamicRoutes（/@/router/route）第一个顶级 children 的路由
 	dynamicRoutes[0].children = await backEndComponent(res.menus);
 	// 添加动态路由
@@ -74,7 +74,7 @@ export async function initBackEndControlRoutesByLogin(res:any){
 	}
 	// 获取路由菜单数据
 	// 存储接口原始路由（未处理component），根据需求选择使用
-	useRequestOldRoutes().setRequestOldRoutes(res.menus);//vboot
+	useRequestOldRoutes().setRequestOldRoutes(res.menus);//vben
 	// 处理路由（component），替换 dynamicRoutes（/@/router/route）第一个顶级 children 的路由
 	dynamicRoutes[0].children = await backEndComponent(res.menus);
 	// 添加动态路由
@@ -86,7 +86,7 @@ export async function initBackEndControlRoutesByLogin(res:any){
 export async function initBackEndControlRoutesByPortal(res:any){
 	// 获取路由菜单数据
 	// 存储接口原始路由（未处理component），根据需求选择使用
-	useRequestOldRoutes().setRequestOldRoutes(res.menus);//vboot
+	useRequestOldRoutes().setRequestOldRoutes(res.menus);//vben
 	// 处理路由（component），替换 dynamicRoutes（/@/router/route）第一个顶级 children 的路由
 	dynamicRoutes[0].children = await backEndComponent(res.menus);
 	// 添加动态路由

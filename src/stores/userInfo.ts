@@ -67,7 +67,10 @@ export const useUserInfo = defineStore('userInfo', {
 		},
 
 		async setUserInfos2(portals:any) {
-			let photo=import.meta.env.VITE_API_URL+'ass/oss/main/show?token='+Session.get('token')+'&id='+Cookies.get('avimg');
+			let photo=touxiang;
+			if(Cookies.get('avimg')!="null"){
+				photo=import.meta.env.VITE_API_URL+'ass/oss/main/show?token='+Session.get('token')+'&id='+Cookies.get('avimg');
+			}
 			// 模拟数据，请求接口时，记得删除多余代码及对应依赖的引入
 			const userName = Cookies.get('userName');
 			// 模拟数据

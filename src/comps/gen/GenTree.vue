@@ -36,7 +36,7 @@
 import { defineExpose, onMounted, reactive, ref, watch } from 'vue';
 import type { ElTree } from 'element-plus';
 import { Search, MoreFilled } from '@element-plus/icons-vue';
-import request from '/@/utils/request';
+import {get} from '/@/utils/req';
 
 const props = defineProps({
 	url: String,
@@ -93,9 +93,8 @@ const handleCommand =async (command: string | number | object) => {
 
 // // 初始化表格数据
 const initTreeData = async () => {
-	state.data = await request({
+	state.data = await get({
 		url: props.url,
-		method: 'get',
 	});
 	// for (let i = 0; i < treeRef.value!.store._getAllNodes().length; i++) {
 	// 	treeRef.value!.store._getAllNodes()[i].expanded = true;

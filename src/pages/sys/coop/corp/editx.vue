@@ -86,7 +86,7 @@
 <script lang='ts' setup>
 import { onMounted, reactive, ref, toRefs } from 'vue';
 import { drawerOpen, drawerSave } from '/@/comps/page/edit';
-import request from '/@/utils/request';
+import {get} from '/@/utils/req';
 import BranchModal from '/@/comps/gen/GenTreeModal.vue';
 
 const state = reactive({
@@ -101,10 +101,7 @@ const formRef = ref();
 const open = async (data: any) => {
 	if (data.id) {
 		await drawerOpen({ state, id: data.id });
-		const branch = await request({
-			url: '/sa/org/branch/one/'+state.form.braid,
-			method: 'get',
-		}) as any;
+		const branch = await get({url: '/sa/org/branch/one/'+state.form.braid}) as any;
 		state.form.brana = branch.name;
 	} else {
 		await drawerOpen({ state, id: '' });
@@ -122,10 +119,7 @@ const confirm = async () => {
 };
 
 const catesInit = async () => {
-	cates.value = await request({
-		url: '/sys/coop/cate/treea',
-		method: 'get',
-	});
+	cates.value = await get({url: '/sys/coop/cate/treea'});
 };
 onMounted(() => {
 	catesInit();

@@ -36,7 +36,7 @@ export const useThemeConfig = defineStore('themeConfig', {
 			 * 菜单设置
 			 */
 			// 默认菜单导航背景颜色
-			menuBar: '#001529',//vboot
+			menuBar: '#001529',//vben
 			// 默认菜单导航字体颜色
 			menuBarColor: '#eaeaea',
 			// 默认菜单高亮背景色
@@ -64,7 +64,7 @@ export const useThemeConfig = defineStore('themeConfig', {
 			// 是否开启菜单手风琴效果
 			isUniqueOpened: true,
 			// 是否开启固定 Header
-			isFixedHeader: false,
+			isFixedHeader: true,//vben
 			// 初始化变量，用于更新菜单 el-scrollbar 的高度，请勿删除
 			isFixedHeaderChange: false,
 			// 是否开启经典布局分割菜单（仅经典布局生效）
@@ -78,7 +78,7 @@ export const useThemeConfig = defineStore('themeConfig', {
 			 * 界面显示
 			 */
 			// 是否开启侧边栏 Logo
-			isShowLogo: true,//vboot
+			isShowLogo: true,//vben
 			// 初始化变量，用于 el-scrollbar 的高度更新，请勿删除
 			isShowLogoChange: false,
 			// 是否开启 Breadcrumb，强制经典、横向布局不显示
@@ -102,7 +102,7 @@ export const useThemeConfig = defineStore('themeConfig', {
 			// 是否开启色弱模式
 			isInvert: false,
 			// 是否开启水印
-			isWartermark: false,//vboot
+			isWartermark: false,//vben
 			// 水印文案
 			wartermarkText: 'vue-next-admin',
 
@@ -111,7 +111,8 @@ export const useThemeConfig = defineStore('themeConfig', {
 			 */
 			// Tagsview 风格：可选值"<tags-style-one|tags-style-four|tags-style-five>"，默认 tags-style-five
 			// 定义的值与 `/src/layout/navBars/tagsView/tagsView.vue` 中的 class 同名
-			tagsStyle: 'tags-style-five',
+			// tagsStyle: 'tags-style-five',
+			tagsStyle: 'tags-style-one',//vben
 			// 主页面切换动画：可选值"<slide-right|slide-left|opacitys>"，默认 slide-right
 			animation: 'slide-right',
 			// 分栏高亮风格：可选值"<columns-round|columns-card>"，默认 columns-round
@@ -131,16 +132,16 @@ export const useThemeConfig = defineStore('themeConfig', {
 			 * 后端控制路由
 			 */
 			// 是否开启后端控制路由
+			// isRequestRoutes: true,
 			isRequestRoutes: true,
-			// isRequestRoutes: false,
 
 			/**
 			 * 全局网站标题 / 副标题
 			 */
 			// 网站主标题（菜单导航、浏览器当前网页标题）
-			globalTitle: 'vboot 开发平台',
+			globalTitle: 'vben 开发平台',
 			// 网站副标题（登录页顶部文字）
-			globalViceTitle: 'vboot',
+			globalViceTitle: 'vben',
 			// 网站副标题（登录页顶部文字）
 			globalViceTitleMsg: '专注、免费、开源、维护、解疑',
 			// 默认初始语言，可选值"<zh-cn|en|zh-tw>"，默认 zh-cn

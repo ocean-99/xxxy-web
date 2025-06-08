@@ -36,7 +36,7 @@
 import { defineExpose, onMounted, reactive, ref, watch } from 'vue';
 import type { ElTree } from 'element-plus';
 import { Search, MoreFilled } from '@element-plus/icons-vue';
-import request from '/@/utils/request';
+import {get} from '/@/utils/req';
 
 
 interface Tree {
@@ -96,9 +96,8 @@ const handleCommand =async (command: string | number | object) => {
 
 // // 初始化表格数据
 const initTreeData = async () => {
-	state.data = await request({
+	state.data = await get({
 		url: '/gen/org/dept/tree',
-		method: 'get',
 	});
 
 };

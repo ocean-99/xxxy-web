@@ -63,7 +63,7 @@ import { Search,Plus, Delete, VideoPlay,Operation } from '@element-plus/icons-vu
 import { onMounted, reactive } from 'vue';
 import { listQuery, listDelete, tabAdd, tabEdit, listSelect } from '/@/comps/page';
 import { ElMessage, ElMessageBox } from 'element-plus';
-import request from '/@/utils/request';
+import {post} from '/@/utils/req';
 import router from "/@/router";
 
 const state = reactive({
@@ -88,10 +88,7 @@ async function startEvent(state: any) {
 		type: 'info',
 	})
 		.then(async () => {
-			await request({
-				url: state.url + '/start?ids=' + selIds,
-				method: 'post',
-			});
+			await post({url: state.url + '/start?ids=' + selIds});
 			await listQuery(state);
 		})
 		.catch(() => ElMessage.info('已取消启动'));
@@ -110,10 +107,7 @@ async function stopEvent(state: any) {
 		type: 'info',
 	})
 		.then(async () => {
-			await request({
-				url: state.url + '/stop?ids=' + selIds,
-				method: 'post',
-			});
+			await post({url: state.url + '/stop?ids=' + selIds});
 			await listQuery(state);
 		})
 		.catch(() => ElMessage.info('已取消关闭'));
@@ -126,9 +120,8 @@ const doOnce = async (id: string) => {
 		cancelButtonText: '取消',
 		type: 'info',
 	}).then(async () => {
-		await request({
+		await post({
 			url: state.url + '/once',
-			method: 'post',
       params:{id:id}
 		});
 	});

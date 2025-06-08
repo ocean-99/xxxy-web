@@ -7,7 +7,7 @@
 					<div class="personal-user">
 						<div class="personal-user-left">
 							<el-upload class="h100 personal-user-left-upload" action="https://jsonplaceholder.typicode.com/posts/" multiple :limit="1">
-								<img src="https://zsvg.gitee.io/vboot-vue/public/xiaoyoutai.png" />
+								<img src="https://zsvg.gitee.io/vben-vue/public/xiaoyoutai.png" />
 							</el-upload>
 						</div>
 						<div class="personal-user-right">

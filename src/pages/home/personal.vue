@@ -1,7 +1,7 @@
 <template>
 	<Wrap>
 		<div class='p-left'>
-			<div class="croppers-container" style='height: 100%;background-color: white'>
+			<div class="croppers-container" style='height: 100%;'>
 				<el-card shadow="hover" :body-style="{padding:'0'}" style='height: 100%'>
 					<div class="cropper-img-warp">
 						<div class="mb10 mt10">
@@ -26,9 +26,9 @@
 						<el-menu
 							style='width: 246px'
 							default-active="1-1"
-							background-color='white'
+							:background-color='isIsDark?"#1D1E20":"white"'
 							active-text-color="blue"
-							text-color="black"
+							:text-color='isIsDark?"white":"#1D1E20"'
 						>
 							<el-sub-menu index="1">
 								<template #title>
@@ -136,16 +136,23 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, reactive, ref, toRefs } from 'vue';
+import {computed, onMounted, reactive, ref, toRefs} from 'vue';
 import 'splitpanes/dist/splitpanes.css';
 import CropperDialog from '/@/components/cropper/index.vue';
 import Wrap from '/@/comps/page/Wrap.vue';
 import avatar from '/@/assets/avatar.png';
 import GenUpload from '/@/comps/gen/GenUpload.vue';
 import { Session } from '/@/utils/storage';
-import request from '/@/utils/request';
+import {get} from '/@/utils/req';
+import {useThemeConfig} from "/@/stores/themeConfig";
+import {storeToRefs} from "pinia";
+const storesThemeConfig = useThemeConfig();
+const { themeConfig } = storeToRefs(storesThemeConfig);
 
-
+const isIsDark = computed(() => {
+  return themeConfig.value.isIsDark;
+});
+// let {isIsDark} = getThemeConfig.value;
 
 const cropperDialogRef = ref();
 const state = reactive({
@@ -161,10 +168,7 @@ onMounted(async () => {
 });
 
 const userInfoQuery=async ()=>{
-	state.userInfo = await request({
-		url: '/gen/user/info',
-		method: 'get',
-	});
+	state.userInfo = await get({url: '/gen/user/info'});
 	state.avatar=state.localShow+'&id='+state.userInfo.avsrc;
 	state.cropperImg=state.localShow+'&id='+state.userInfo.avimg;
 }
@@ -187,7 +191,7 @@ const onCropperDialogOpen = () => {
 
 const uploadModal = ref();
 const uploadAvatar=()=>{
-	uploadModal.value.openModal('gen/user/upload');
+	uploadModal.value.openModal('/gen/user/upload');
 }
 
 const uploadFinish=async (data:any)=>{
@@ -227,11 +231,15 @@ const activeName = ref('tab1');
 	width: 248px !important;
 }
 
+.dark .my-personal .el-menu .el-menu-item {
+  color: white !important;
+}
+
 .my-personal .el-menu .el-menu-item.is-active{
 	color: #3690f1 !important;
 	width: 248px !important;
-	//background-color: #ecf4ff !important;
-	background-color: white !important;
+	background-color: #ecf4ff !important;
+	//background-color: white !important;
 }
 
 .dark .my-personal .el-menu .el-menu-item.is-active{

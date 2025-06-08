@@ -51,7 +51,7 @@
 import { defineExpose, reactive, ref, toRefs, toRaw, computed } from 'vue';
 import { modalSave } from '/@/comps/page/edit';
 import OrgModal from '/@/comps/sys/OrgModal.vue';
-import request from '/@/utils/request';
+import {get} from '/@/utils/req';
 
 const state = reactive({
 	url: '/sys/org/group', show: false,cates: [] as any,
@@ -62,9 +62,8 @@ const { form } = toRefs(state);
 const activeName = ref('tab1');
 
 const catesInit=async ()=>{
-	state.cates = await request({
+	state.cates = await get({
 		url: '/sys/org/group/cate/treea',
-		method: 'get',
 	});
 }
 
@@ -74,9 +73,8 @@ const formRef = ref();
 const open = async (data: any) => {
 	await catesInit();
 	if (data && data.id) {
-		state.form = await request({
+		state.form = await get({
 			url: state.url + '/one/' + data.id,
-			method: 'get',
 		});
 	} else {
 		state.form = { avtag: true };

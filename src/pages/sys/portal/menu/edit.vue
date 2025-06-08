@@ -27,14 +27,15 @@
 							<el-switch v-model='form.avtag' />
 						</el-form-item>
 						<el-form-item label='菜单代码：' prop='code' :rules="[{ required: true, message: '代码不能为空'}]"  v-show="form.type === 'M'||form.type === 'D'">
-							<el-input v-model='form.code'></el-input>
+							<el-input v-model='form.code' @keyup="codeChange"></el-input>
 						</el-form-item>
 						<el-form-item label='路由地址：' v-show="form.type === 'M'||form.type === 'D'" prop='path'
 													:rules="[{ required: form.type === 'M'||form.type === 'D', message: '路由地址不能为空'}]">
 							<el-input v-model='form.path'></el-input>
 						</el-form-item>
 						<el-form-item label='图标：' v-show="form.type === 'M'||form.type === 'D'">
-							<IconSelector placeholder='请输入菜单图标' v-model='form.icon' type='all' style='width: 100%' />
+							<IconSelector placeholder='请输入菜单图标' v-model='form.icon'  type='all' style='width: 100%' />
+<!--              <IconSelector placeholder='请输入菜单图标' modelValue='form.icon' type='all' style='width: 100%' />-->
 						</el-form-item>
 						<el-form-item label='是否显示：' v-show="form.type === 'M'||form.type === 'D'">
 							<el-switch v-model='form.shtag' />
@@ -93,6 +94,7 @@ const formRef = ref<FormInstance>();
 const state = reactive({
 	url: '/sys/portal/menu', show: false, apis: [] as any,
 	form: {
+    icon:'ele-Tickets',
 		avtag: true,
 		catag: true,
 		shtag: true,
@@ -111,6 +113,7 @@ const open = async (data: any) => {
 				pname: data.pname,
 				pid: data.pid,
 				porid: data.porid,
+        icon:'ele-Tickets',
 				type: 'M',
 			};
 			state.show = true;
@@ -160,6 +163,11 @@ const closeParentModal = (node: any) => {
 	}
 };
 //endregion
+
+const codeChange=()=>{
+   form.value.path=form.value.code.replace(/([A-Z])/g,"/$1").toLowerCase();
+   form.value.comp=form.value.path;
+}
 
 
 </script>

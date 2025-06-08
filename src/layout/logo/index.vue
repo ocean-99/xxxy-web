@@ -1,35 +1,43 @@
 <template>
 	<div class="layout-logo" v-if="setShowLogo" @click="onThemeConfigChange">
-		<img :src="logoMini" class="layout-logo-medium-img" />
-		<span>{{ themeConfig.globalTitle }}</span>
+		<img :src="logoMini" class="layout-logo-medium-img" style="width: 26px;height: 26px"/>
+		<span>Vben快速开发平台</span>
 	</div>
 	<div class="layout-logo-size" v-else @click="onThemeConfigChange">
-		<img :src="logoMini" class="layout-logo-size-img" />
+		<img :src="logoMini" class="layout-logo-size-img" style="width: 26px;height: 26px"/>
 	</div>
 </template>
 
-<script setup lang="ts" name="layoutLogo">
-import { computed } from 'vue';
+<script lang="ts">
+import { computed, defineComponent } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useThemeConfig } from '/@/stores/themeConfig';
-// import logoMini from '/@/assets/logo-mini.svg';
-import logoMini from '/@/assets/vboot.png';
 
+import logoMini from '/@/assets/vben.png';
 
-// 定义变量内容
-const storesThemeConfig = useThemeConfig();
-const { themeConfig } = storeToRefs(storesThemeConfig);
-
-// 设置 logo 的显示。classic 经典布局默认显示 logo
-const setShowLogo = computed(() => {
-	let { isCollapse, layout } = themeConfig.value;
-	return !isCollapse || layout === 'classic' || document.body.clientWidth < 1000;
+export default defineComponent({
+	name: 'layoutLogo',
+	setup() {
+		const storesThemeConfig = useThemeConfig();
+		const { themeConfig } = storeToRefs(storesThemeConfig);
+		// 设置 logo 的显示。classic 经典布局默认显示 logo
+		const setShowLogo = computed(() => {
+			let { isCollapse, layout } = themeConfig.value;
+			return !isCollapse || layout === 'classic' || document.body.clientWidth < 1000;
+		});
+		// logo 点击实现菜单展开/收起
+		const onThemeConfigChange = () => {
+			if (themeConfig.value.layout === 'transverse') return false;
+			themeConfig.value.isCollapse = !themeConfig.value.isCollapse;
+		};
+		return {
+			logoMini,
+			setShowLogo,
+			themeConfig,
+			onThemeConfigChange,
+		};
+	},
 });
-// logo 点击实现菜单展开/收起
-const onThemeConfigChange = () => {
-	if (themeConfig.value.layout === 'transverse') return false;
-	themeConfig.value.isCollapse = !themeConfig.value.isCollapse;
-};
 </script>
 
 <style scoped lang="scss">
@@ -46,10 +54,11 @@ const onThemeConfigChange = () => {
 	animation: logoAnimation 0.3s ease-in-out;
 	span {
 		white-space: nowrap;
+    font-size: 16px;
+    font-weight: bolder;
+    color: white;
+    //color: #4079ac;
 		display: inline-block;
-		font-size: 16px;
-		font-weight: bolder;
-		color: white;
 	}
 	&:hover {
 		span {
@@ -57,14 +66,10 @@ const onThemeConfigChange = () => {
 		}
 	}
 	&-medium-img {
-		width: 32px;
+		width: 187px;
 		margin-right: 5px;
 	}
 }
-.layout-navbars-container .layout-logo span{
-	color: #409eff;
-}
-
 .layout-logo-size {
 	width: 100%;
 	height: 50px;

@@ -228,7 +228,7 @@ import { Setting } from '@element-plus/icons-vue';
 import { getCurrentInstance, onMounted, reactive, ref, toRefs } from 'vue';
 import { tabSave, tabClose } from '/@/comps/page/edit';
 import { useRoute } from 'vue-router';
-import request from '/@/utils/request';
+import {get} from '/@/utils/req';
 import { ElMessage, FormInstance } from 'element-plus';
 import { uuid } from '/@/utils/xutil';
 import TabEdit from './tab.vue';
@@ -282,9 +282,8 @@ const editInitx = async () => {
 	state.params = <any>route;
 	let id = state.params.query?.id;
 	if (id) {
-		state.form = await request({
+		state.form = await get({
 			url: state.url + '/one/' + id,
-			method: 'get',
 		});
 		state.form.tabs = JSON.parse(state.form.tjson);
 		state.form.links = JSON.parse(state.form.ljson);

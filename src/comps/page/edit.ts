@@ -1,4 +1,4 @@
-import request from '/@/utils/request';
+import req from '/@/utils/req';
 import {ElLoading, ElMessage} from "element-plus";
 import { getPage } from '/@/comps/page/store';
 import mittBus from '/@/utils/mitt';
@@ -11,9 +11,8 @@ export const editInit = async (data:IeditInit) => {
     data.state.params = <any>data.route;
     let id = data.state.params.query?.id;
     if (id) {
-        data.state.form = await request({
+        data.state.form = await req.get({
             url: data.state.url + '/one/' + id,
-            method: 'get',
         });
     } else {
         data.state.form.avtag = true;
@@ -38,15 +37,13 @@ export const tabSave = async (data:ItabSave) => {
         data.iouField = "id";
     }
     if (!data.state.form[data.iouField]) {
-        await request({
+        await req.post({
             url: data.state.url,
-            method: 'post',
             data: data.state.form,
         });
     } else {
-        await request({
+        await req.put({
             url: data.state.url,
-            method: 'put',
             data: data.state.form,
         });
     }
@@ -92,17 +89,15 @@ export const pageSave = async (data:IpageSave) => {
         data.iouField = "id";
     }
     if (!data.state.form[data.iouField]) {
-        await request({
+        await req.post({
             url: data.state.url,
-            method: 'post',
             data: data.state.form,
         }).catch(() => {
             isSuccess=false;
         });
     } else {
-        await request({
+        await req.put({
             url: data.state.url,
-            method: 'put',
             data: data.state.form,
         }).catch(() => {
             isSuccess=false;
@@ -143,15 +138,13 @@ export const drawerSave = async (data:IdrawerSave) => {
         data.iouField = "id";
     }
     if (!data.state.form[data.iouField]) {
-        await request({
+        await req.post({
             url: data.state.url,
-            method: 'post',
             data: data.state.form,
         });
     } else {
-        await request({
+        await req.put({
             url: data.state.url,
-            method: 'put',
             data: data.state.form,
         });
     }
@@ -166,9 +159,8 @@ interface IdrawerOpen {
 
 export const drawerOpen = async (data:IdrawerOpen) => {
     if (data.id) {
-        data.state.form = await request({
+        data.state.form = await req.get({
             url: data.state.url + '/one/' + data.id,
-            method: 'get',
         });
     } else {
         data.state.form = {avtag: true};
@@ -220,17 +212,15 @@ export const modalSave = async (data:ImodalSave) => {
     }
     let back;
     if (!data.state.form[data.iouField]) {
-        back=await request({
+        back=await req.post({
             url: data.state.url,
-            method: 'post',
             data: data.state.form,
         }).catch(() => {
             isSuccess=false;
         });
     } else {
-        back=await request({
+        back=await req.put({
             url: data.state.url,
-            method: 'put',
             data: data.state.form,
         }).catch(() => {
             isSuccess=false;

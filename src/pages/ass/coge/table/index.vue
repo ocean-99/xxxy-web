@@ -71,7 +71,7 @@ export default { name: 'AssCogeTable' };
 import { Plus, Delete, ArrowDown, ArrowUp,Upload,Download,View} from '@element-plus/icons-vue';
 import {onMounted, reactive, ref} from 'vue';
 import { listQuery, listDelete, tabAdd, tabEdit, listSelect,toFinish} from '/@/comps/page/index';
-import request from "/@/utils/request";
+import {get} from "/@/utils/req";
 import Show from './show.vue';
 
 const state = reactive({
@@ -88,9 +88,8 @@ const flush = async () => {
 };
 
 const genCode=async (id:string)=>{
-  await request({
+  await get({
     url: state.url+"/zip",
-    method: 'get',
     params: {id},
     responseType: "blob",
   });
@@ -108,9 +107,8 @@ const genCode=async (id:string)=>{
 
 const showRef = ref() as any;
 const showCode=async (id:string)=>{
-  const data= await request({
+  const data= await get({
     url: state.url+"/show",
-    method: 'get',
     params: {id},
   });
   showRef.value.openModal(data)

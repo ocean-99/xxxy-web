@@ -1,4 +1,4 @@
-import request from '/@/utils/request';
+import {get} from '/@/utils/req';
 
 /**
  * 以下为模拟接口地址，gitee 的不通，就换自己的真实接口地址
@@ -13,18 +13,16 @@ import request from '/@/utils/request';
 export function useMenuApi() {
 	return {
 		getAdminMenu: (params?: object) => {
-			return request({
+			return get({
 				// url: '/gitee/lyt-top/vue-next-admin-images/raw/master/menu/adminMenu.json',
 				url: 'getMenuList',
-				method: 'get',
 				params,
 			});
 		},
 		getTestMenu: (params?: object) => {
-			return request({
+			return get({
 				// url: '/gitee/lyt-top/vue-next-admin-images/raw/master/menu/testMenu.json',
 				url: 'getMenuList',
-				method: 'get',
 				params,
 			});
 		},

@@ -10,6 +10,15 @@ import { useRoutesList } from '/@/stores/routesList';
 import { NextLoading } from '/@/utils/loading';
 import {sysRoutes} from '/@/router/sysRoute';
 
+
+// for (const saRoute of saRoutes) {
+// 	dynamicRoutes[0].children?.push(saRoute);
+// }
+//
+// for (const teRoute of teRoutes) {
+// 	dynamicRoutes[0].children?.push(teRoute);
+// }
+
 for (const sysRoute of sysRoutes) {
 	dynamicRoutes[0].children?.push(sysRoute);
 }

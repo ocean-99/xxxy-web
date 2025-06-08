@@ -198,7 +198,7 @@
 
 <script lang='ts' setup>
 import { onMounted, reactive, ref } from 'vue';
-import request from '/@/utils/request';
+import {get} from '/@/utils/req';
 import { ElLoading } from 'element-plus';
 
 
@@ -220,9 +220,8 @@ onMounted(async () => {
 		text: '正在获取服务器监控数据，请稍等',
 		background: 'rgba(0, 0, 0, 0.5)',
 	});
-	server.value = await request({
-		url: state.url,
-		method: 'get',
+	server.value = await get({
+		url: state.url
 	}).catch(() => {
 		loading.close();
 	});

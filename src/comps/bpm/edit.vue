@@ -41,7 +41,7 @@
 <script lang='ts' setup>
 import {defineExpose, onMounted, reactive, toRaw, toRefs} from 'vue';
 import {useRoute} from 'vue-router';
-import request from "/@/utils/request";
+import {get} from "/@/utils/req";
 import Modeler2 from '/@/comps/Activiti/modeler2/index';
 import {BpmnStore} from "/@/bpmn/store";
 import { Session } from '/@/utils/storage';
@@ -104,9 +104,8 @@ const props = defineProps({
 
 const toggleFlowChart = async () => {
 	if (!state.xml) {
-		const map= await request({
+		const map= await get({
 			url: '/bpm/proc/main/texml',
-			method: 'get',
 			params:{temid:props.temid}
 		}) as any;
 		form.value.tarno = map.tarno;
@@ -168,9 +167,8 @@ const handlePreview: UploadProps['onPreview'] = (uploadFile) => {
 			type: 'info',
 		},
 	).then(async () => {
-		await request({
+		await get({
 			url: '/gen/oss/download',
-			method: 'get',
 			// params: { name: uploadFile.name, path: uploadFile.addre + '/' + uploadFile.id + '.' + uploadFile.sname },
 			params: { table: 'bpm_audit_att', id: uploadFile.id },
 			responseType: 'blob',

@@ -44,7 +44,7 @@ import { Search, Delete } from '@element-plus/icons-vue';
 import { onMounted, reactive, ref } from 'vue';
 import { listQuery, listDelete, listSelect } from '/@/comps/page';
 import View from './view.vue';
-import request from '/@/utils/request';
+import req from '/@/utils/req';
 import { ElMessage, ElMessageBox } from 'element-plus';
 
 const drawerRef = ref(null);
@@ -62,9 +62,8 @@ const listDeleteAll = async () => {
 	ElMessageBox.confirm('确认要清空日志吗?', '警告', {
 		confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning',
 	}).then(async () => {
-		await request({
+		await req.dele({
 			url: state.url + '/all',
-			method: 'delete',
 		});
 		await listQuery(state);
 	}).catch(() =>

@@ -82,7 +82,7 @@
 <script lang='ts' setup>
 import { onMounted, reactive, ref, toRefs } from 'vue';
 import { drawerOpen, drawerSave } from '/@/comps/page/edit';
-import request from '/@/utils/request';
+import {get} from '/@/utils/req';
 
 const state = reactive({
 	url: '/sys/coop/corp', show: false, cates: [] as any,
@@ -112,9 +112,8 @@ const confirm = async () => {
 };
 
 const catesInit = async () => {
-	cates.value = await request({
+	cates.value = await get({
 		url: '/sys/coop/cate/treea',
-		method: 'get',
 	});
 };
 onMounted(() => {

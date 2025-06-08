@@ -36,7 +36,7 @@
 <script lang='ts' setup>
 import {defineExpose, onMounted, reactive, ref} from 'vue';
 import {ElMessage} from "element-plus";
-import request from "/@/utils/request";
+import {get} from "/@/utils/req";
 
 const state = reactive({
   loading: true, ids: [],
@@ -54,9 +54,8 @@ onMounted(() => {
 
 
 const listQuery = async () => {
-  const data: any = await request({
+  const data: any = await get({
     url: props.url,
-    method: 'get',
     params: state.form,
   });
   state.list = data.items;

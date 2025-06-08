@@ -129,7 +129,7 @@
 
 <script lang='ts' setup>
 import { computed, onMounted, reactive, ref, toRaw, toRefs } from 'vue';
-import request from '/@/utils/request';
+import {get} from '/@/utils/req';
 // import { useRoute } from 'vue-router';
 // import { store } from '/@/store';
 // const route = useRoute();
@@ -205,9 +205,8 @@ onMounted(async () => {
 
 const bpmInit = async () => {
 	// form.value.proid = props.proid;
-	const result: any = await request({
+	const result: any = await get({
 		url: '/bpm/proc/main/zbpm',
-		method: 'get',
 		params: { proid: props.proid },
 	});
 	audits.value = result.audits;
@@ -217,9 +216,8 @@ const bpmInit = async () => {
 	state.cutag = result.cutag;
 	form.value = result.zbpm;
 	if (state.cutag) {
-		const target: any = await request({
+		const target: any = await get({
 			url: '/bpm/proc/main/target',
-			method: 'get',
 			params: { proid: form.value.proid, facno: form.value.facno,modty:props.modty },
 		});
 		form.value.tarno = target.tarno;
@@ -268,15 +266,13 @@ const bpmInit = async () => {
 	}
 
 
-	// audits.value = await request({
+	// audits.value = await get({
 	// 	url: '/bpm/audit/main/list/' + props.proid,
-	// 	method: 'get',
 	//
 	// });
 
-	// form.value = await request({
+	// form.value = await get({
 	// 	url: '/bpm/proc/main/zbpm/' + props.proid,
-	// 	method: 'get',
 	// });
 
 };
@@ -356,9 +352,8 @@ const bpmSubmit = async () => {
 
 const toggleFlowChart = async () => {
 	if (!state.xml) {
-		const map = await request({
+		const map = await get({
 			url: '/bpm/proc/main/xml',
-			method: 'get',
 			params: { proid: props.proid },
 		}) as any;
 		state.xml = map.xml;
@@ -416,14 +411,19 @@ const toggleFlowChart = async () => {
 				list4.push(item);
 			}
 		});
-		console.log(list4);
+		console.log(list1);
+		console.log(list2);
+		console.log(list3);
 
 
+    console.log(list4);
 		let modeling = BpmnStore.modeler.get('modeling');
 		modeling.setColor(list1, { fill: '#e4feef' });
 		modeling.setColor(list2, { stroke: '#009900' });
 		modeling.setColor(list3, { fill: '#fed6d6' });
-		modeling.setColor(list4, { fill: '#e3f1ff' });
+    if(list4.length>0) {
+      modeling.setColor(list4, { fill: '#e3f1ff' });
+    }
 	}
 };
 
@@ -441,9 +441,8 @@ const refChange = (id: any) => {
 
 const opChange = async (key: any) => {
 	if (key == 'refuse') {
-		state.refNodes = await request({
+		state.refNodes = await get({
 			url: '/bpm/proc/main/refnodes',
-			method: 'get',
 			params: { proid: props.proid, facno: form.value.facno },
 		});
 		state.form.refno = state.refNodes[0].id;
@@ -468,9 +467,8 @@ const opChange = async (key: any) => {
 		// ];
 	}
 	else if(key == 'cacommunicate'){
-		state.ccmen = await request({
+		state.ccmen = await get({
 			url: '/bpm/proc/main/ccmen',
-			method: 'get',
 			params: { proid: props.proid, facno: form.value.facno },
 		});
 	}
@@ -554,9 +552,8 @@ const handlePreview: UploadProps['onPreview'] = (uploadFile) => {
 			type: 'info',
 		},
 	).then(async () => {
-		await request({
+		await get({
 			url: '/gen/oss/download',
-			method: 'get',
 			// params: { name: uploadFile.name, path: uploadFile.addre + '/' + uploadFile.id + '.' + uploadFile.sname },
 			params: { table: 'bpm_audit_att', id: uploadFile.id },
 			responseType: 'blob',
@@ -589,9 +586,8 @@ const handleExceed: UploadProps['onExceed'] = (files, uploadFiles) => {
 };
 
 const downloadAtt=async (id:string)=>{
-	await request({
+	await get({
 		url: '/gen/oss/download',
-		method: 'get',
 		// params: { name: uploadFile.name, path: uploadFile.addre + '/' + uploadFile.id + '.' + uploadFile.sname },
 		params: { table: 'bpm_audit_att', id: id},
 		responseType: 'blob',

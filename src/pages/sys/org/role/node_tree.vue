@@ -49,7 +49,7 @@
 import { onMounted, reactive, ref, watch } from 'vue';
 import type { ElTree } from 'element-plus';
 import { Search, MoreFilled } from '@element-plus/icons-vue';
-import request from '/@/utils/request';
+import req from '/@/utils/req';
 import NodeEdit from './node_medit.vue';
 import { DragEvents } from 'element-plus/es/components/tree/src/model/useDragNode';
 import { useRoute } from 'vue-router';
@@ -197,19 +197,17 @@ onMounted(async () => {
 
 
 const initTreeData = async () => {
-	state.data = await request({
+	state.data = await req.get({
 		url: '/sys/org/rnode/treea',
 		params:{treid:useRoute().query?.id},
-		method: 'get',
 	});
 };
 
 //region -----树拖拽逻辑-----
 const handleDrop = async (draggingNode: any, dropNode: any, dropType: any, ev: DragEvents) => {
-	await request({
+	await req.post({
 		url: '/sys/org/rnode/move',
 		data: { type: dropType, draid: draggingNode.data.id, droid: dropNode.data.id },
-		method: 'post',
 	});
 };
 const allowDrop = (draggingNode: any, dropNode: any, type: any) => {
@@ -228,9 +226,8 @@ const editCate = () => {
 	nodeRef.value.open({ id: currNode.id });
 };
 const deleteCate = async () => {
-	await request({
+	await req.dele({
 		url: '/sys/org/rnode/' + currNode.id,
-		method: 'delete',
 	});
 	treeRef.value!.remove(currNode);
 };

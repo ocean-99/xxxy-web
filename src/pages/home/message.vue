@@ -117,7 +117,7 @@ import Wrap from '/@/comps/page/Wrap.vue';
 import avatar from '/@/assets/avatar.png';
 import GenUpload from '/@/comps/gen/GenUpload.vue';
 import { Session } from '/@/utils/storage';
-import request from '/@/utils/request';
+import {get} from '/@/utils/req';
 
 
 const cropperDialogRef = ref();
@@ -134,7 +134,7 @@ onMounted(async () => {
 });
 
 const userInfoQuery=async ()=>{
-	state.userInfo = await request({
+	state.userInfo = await get({
 		url: '/gen/user/info',
 		method: 'get',
 	});
@@ -160,7 +160,7 @@ const onCropperDialogOpen = () => {
 
 const uploadModal = ref();
 const uploadAvatar=()=>{
-	uploadModal.value.openModal('gen/user/upload');
+	uploadModal.value.openModal('/gen/user/upload');
 }
 
 const uploadFinish=async (data:any)=>{

@@ -70,7 +70,7 @@
 import { Plus, Delete, ArrowDown, ArrowUp,Upload,Download,Lightning } from '@element-plus/icons-vue';
 import {onMounted, reactive, ref} from 'vue';
 import { listQuery, listDelete, tabAdd, listSelect } from '/@/comps/page/index';
-import request from "/@/utils/request";
+import req from "/@/utils/req";
 import GenUpload from '/@/comps/gen/GenUpload.vue';
 import Amap from '/@/comps/ass/amap.vue';
 import {ElMessage} from "element-plus";
@@ -85,9 +85,8 @@ onMounted(() => {
 });
 
 const listExp=async ()=>{
-  await request({
+  await req.get({
     url: state.url+"/exp",
-    method: 'get',
     params: state.form,
     responseType: "blob",
   });
@@ -117,9 +116,8 @@ const closeUploadModal=()=>{
 const dataAsync=async ()=>{
   // ElMessage.warning("演示模式不支持同步操作")
   ElMessage.warning("需要在后台维护高德API的key")
-  await request({
+  await req.put({
     url: state.url+"/addrupdate",
-    method: 'put'
   });
 }
 </script>

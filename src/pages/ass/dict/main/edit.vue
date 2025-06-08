@@ -33,7 +33,7 @@
 <script lang='ts' setup>
 import {defineExpose, reactive, ref, toRefs} from 'vue';
 import {modalSave} from '/@/comps/page/edit';
-import request from "/@/utils/request";
+import {get} from "/@/utils/req";
 
 const state = reactive({
   url: '/ass/dict/main', show: false,
@@ -45,10 +45,7 @@ const {form} = toRefs(state);
 const formRef = ref();
 const openModal = async (data: any) => {
   if (data && data.id) {
-    state.form = await request({
-      url: state.url + '/one/' + data.id,
-      method: 'get',
-    });
+    state.form = await get({url: state.url + '/one/' + data.id});
   } else {
     state.form = {avtag: true};
     // formRef.value.clearValidate();

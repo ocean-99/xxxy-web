@@ -71,7 +71,7 @@ import { computed, getCurrentInstance, onMounted, reactive, ref, toRaw, toRefs }
 import { editInit, tabSave, tabClose } from '/@/comps/page/edit';
 import { useRoute } from 'vue-router';
 import OrgModal from '/@/comps/sys/OrgModal.vue';
-import request from '/@/utils/request';
+import {get} from '/@/utils/req';
 import { FormInstance } from 'element-plus';
 
 const route = useRoute();
@@ -152,7 +152,7 @@ const orgsName = computed(() => {
 
 //region -----b 菜单分配逻辑-----
 async function treeDataInit() {
-	treeData.value = await request({ url: '/sys/api/main/tree', method: 'get' });
+	treeData.value = await get({ url: '/sys/api/main/tree' });
 	const apis = [];
 	for (const api of form.value.apis) {
 		apis.push(api.id);

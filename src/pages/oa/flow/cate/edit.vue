@@ -69,7 +69,7 @@ import { getCurrentInstance, onMounted, reactive, ref, toRefs } from 'vue';
 import { tabSave, tabClose } from '/@/comps/page/edit';
 import { useRoute } from 'vue-router';
 import CateModal from '/@/comps/gen/GenTreeModal.vue';
-import request from '/@/utils/request';
+import {get} from '/@/utils/req';
 import { FormInstance } from 'element-plus';
 
 const route = useRoute();
@@ -94,9 +94,8 @@ const editInitx = async () => {
 	state.params = <any>route;
 	let id = state.params.query?.id;
 	if (id) {
-		state.form = await request({
+		state.form = await get({
 			url: state.url + '/one/' + id,
-			method: 'get',
 		});
 	} else {
 		let pname = state.params.query?.pname;

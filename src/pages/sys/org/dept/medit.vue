@@ -60,7 +60,7 @@ import { Search} from '@element-plus/icons-vue';
 import {defineExpose, reactive, ref, toRefs} from 'vue';
 import {modalSave } from '/@/comps/page/edit';
 import OrgModal from '/@/comps/sys/OrgModal.vue';
-import request from '/@/utils/request';
+import {get} from '/@/utils/req';
 
 const state = reactive({
 	url: '/sys/org/dept', show: false,
@@ -75,10 +75,7 @@ const activeName = ref('tab1');
 const formRef = ref();
 const open = async (data: any) => {
 	if (data && data.id) {
-		state.form = await request({
-			url: state.url + '/one/' + data.id,
-			method: 'get',
-		});
+		state.form = await get({url: state.url + '/one/' + data.id});
 		if(state.form.parent){
 			state.form.pid = state.form.parent.id;
 			form.value.pname = state.form.parent.name;

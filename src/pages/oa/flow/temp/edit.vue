@@ -87,7 +87,7 @@ import { NextLoading } from '/@/utils/loading';
 import CateModal from '/@/comps/gen/GenTreeModal.vue';
 import BpmTempEdit from '/@/comps/bpm/temp/edit.vue';
 import { FormInstance } from 'element-plus';
-import request from '/@/utils/request';
+import {get} from '/@/utils/req';
 
 const route = useRoute();
 const formRef = ref<FormInstance>();
@@ -110,9 +110,8 @@ onMounted(async () => {
 	state.params = <any>route;
 	let id = state.params.query?.id;
 	if (id) {
-		state.form = await request({
+		state.form = await get({
 			url: state.url + '/one/' + id,
-			method: 'get',
 		});
 		vFormRef.value.setFormJson(JSON.parse(state.form.vform));
 	} else {

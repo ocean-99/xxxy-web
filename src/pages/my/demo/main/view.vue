@@ -102,7 +102,7 @@ import { computed, getCurrentInstance, onMounted, reactive, ref, toRefs } from '
 import { viewInit, tabClose, viewToEdit } from '/@/comps/page/view';
 import { useRoute } from 'vue-router';
 import { ElMessageBox, FormInstance } from 'element-plus';
-import request from '/@/utils/request';
+import {get} from '/@/utils/req';
 import Amap from '/@/comps/ass/amap.vue';
 import BpmView from '/@/comps/bpm/view.vue';
 import { tabSave } from '/@/comps/page/edit';
@@ -123,9 +123,8 @@ const { form } = toRefs(state);
 
 onMounted(async () => {
 	await viewInit({ state, route });
-	state.cate = await request({
+	state.cate = await get({
 		url: '/my/demo/cate/one/' + form.value.catid,
-		method: 'get',
 	});
 	await catesInit();
 	await gradesInit();
@@ -217,9 +216,8 @@ const handleAtt = async (id: string) => {
 			type: 'info',
 		},
 	).then(async () => {
-		await request({
+		await get({
 			url: '/gen/oss/download',
-			method: 'get',
 			// params: { name: uploadFile.name, path: uploadFile.addre + '/' + uploadFile.id + '.' + uploadFile.sname },
 			params: { table: 'my_demo_att', id: id },
 			responseType: 'blob',
@@ -233,16 +231,14 @@ const handleAtt = async (id: string) => {
 
 //region-----业务字典-----
 const catesInit = async () => {
-	state.cates = await request({
+	state.cates = await get({
 		url: '/my/demo/cate/treea',
-		method: 'get',
 	});
 };
 
 const gradesInit = async () => {
-	state.grades = await request({
+	state.grades = await get({
 		url: '/ass/dict/data/list?maiid=DEMO_GRADE',
-		method: 'get',
 	});
 };
 //endregion

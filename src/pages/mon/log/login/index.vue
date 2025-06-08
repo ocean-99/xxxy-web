@@ -50,7 +50,7 @@ import { onMounted, reactive, ref } from 'vue';
 import { listQuery, listDelete, listSelect } from '/@/comps/page';
 import DrawerView from './view.vue';
 import { ElMessage, ElMessageBox } from 'element-plus';
-import request from '/@/utils/request';
+import req from '/@/utils/req';
 const drawer = ref();
 
 const state = reactive({
@@ -66,10 +66,7 @@ const listDeleteAll = async () => {
 	ElMessageBox.confirm('确认要清空日志吗?', '警告', {
 		confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning',
 	}).then(async () => {
-		await request({
-			url: state.url + '/all',
-			method: 'delete',
-		});
+		await req.dele({url: state.url + '/all'});
 		await listQuery(state);
 	}).catch(() =>
 		ElMessage.info('已取消清空',

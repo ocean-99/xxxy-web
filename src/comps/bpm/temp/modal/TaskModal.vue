@@ -37,7 +37,7 @@
 <script lang='ts' setup>
 import {defineExpose, reactive, ref} from 'vue';
 import TableTree from './tableTree.vue';
-import request from "/@/utils/request";
+import {get} from "/@/utils/req";
 import {vListQuery} from "/@/comps/vxe";
 
 const state = reactive({
@@ -82,10 +82,9 @@ const nodeClick = async (node: any) => {
 //endregion
 
 const listQuery=async ()=>{
-	state.list = await request({
+	state.list = await get({
 		url: '/bi/model/field/list',
 		params:{tabna:state.tabna,basid:state.basid},
-		method: 'get',
 	});
 }
 

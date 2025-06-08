@@ -133,6 +133,14 @@ export const staticRoutes: Array<RouteRecordRaw> = [
 			title: '登录',
 		},
 	},
+	{
+		path: '/register',
+		name: 'register',
+		component: () => import('/@/views/register/index.vue'),
+		meta: {
+			title: '注册',
+		},
+	},
 	/**
 	 * 提示：写在这里的为全屏界面，不建议写在这里
 	 * 请写在 `dynamicRoutes` 路由数组中
@@ -176,5 +184,5 @@ export const staticRoutes: Array<RouteRecordRaw> = [
 		meta: {
 			title: '流程实例查看',
 		},
-	}
+	},
 ];

@@ -141,7 +141,7 @@ import DeptTree from '/@/comps/sys/DeptTree.vue';
 import RoleTree from '/@/comps/gen/GenTree.vue';
 import GroupTree from '/@/comps/gen/GenTree.vue';
 import CoopTree from '/@/comps/gen/GenTree.vue';
-import request from '/@/utils/request';
+import req from '/@/utils/req';
 import avatar from '/@/assets/avatar.png';
 
 let p_tab_key = 'k1';
@@ -272,9 +272,8 @@ async function tabChange(tab: any) {
 //region x.1 最近使用
 
 async function onSearch() {
-	receItems.value = await request({
+	receItems.value = await req.get({
 		url: '/gen/org/main?type=' + state.p_org_type,
-		method: 'get',
 		params: { name: state.receSearch },
 	});
 	for (const rItem of receItems.value) {
@@ -293,9 +292,8 @@ async function onSearch() {
 }
 
 const receInit = async () => {
-	receItems.value = await request({
+	receItems.value = await req.get({
 		url: '/gen/org/rece?type=' + state.p_org_type,
-		method: 'get',
 	});
 };
 
@@ -342,9 +340,8 @@ function receItemClick(item: any) {
 
 async function nodeClick(node: any) {
 	if (node && node.id) {
-		tierItems.value = await request({
+		tierItems.value = await req.get({
 			url: '/gen/org/main?type=' + state.p_org_type,
-			method: 'get',
 			params: { depid: node.id },
 		});
 		for (const tItem of tierItems.value) {
@@ -399,9 +396,8 @@ function tierItemClick(item: any) {
 //region x.3 常用群组
 async function groupNodeClick(node: any) {
 	if (node && node.id) {
-		groupItems.value = await request({
+		groupItems.value = await req.get({
 			url: '/gen/org/group/list',
-			method: 'get',
 			params: { pid: node.id,type:node.type },
 		});
 		for (const gItem of groupItems.value) {
@@ -456,9 +452,8 @@ function groupItemClick(item: any) {
 
 async function roleNodeClick(node: any) {
 	if (node && node.id) {
-		roleItems.value = await request({
+		roleItems.value = await req.get({
 			url: '/gen/org/role/list',
-			method: 'get',
 			params: { treid: node.id },
 		});
 		for (const rItem of roleItems.value) {
@@ -514,9 +509,8 @@ function roleItemClick(item: any) {
 
 async function coopNodeClick(node: any) {
 	if (node) {
-		coopItems.value = await request({
+		coopItems.value = await req.get({
 			url: '/gen/coop/list',
-			method: 'get',
 			params: { pid: node.id ,type:state.p_coop_type},
 		});
 		for (const rItem of coopItems.value) {
@@ -660,9 +654,8 @@ const closeModal = () => {
 	const rawSeldItems = toRaw(seldItems.value);
 	if (rawSeldItems && rawSeldItems.length > 0) {
 		//更新后台数据库最近使用的ORGS
-		request({
+		req.post({
 			url: '/gen/org/rece',
-			method: 'post',
 			data: rawSeldItems,
 		});
 	}

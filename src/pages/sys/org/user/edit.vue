@@ -81,7 +81,7 @@ import { editInit, tabSave, tabClose } from '/@/comps/page/edit';
 import { useRoute } from 'vue-router';
 import OrgModal from '/@/comps/sys/OrgModal.vue';
 import { ElMessage, FormInstance } from 'element-plus';
-import request from '/@/utils/request';
+import {post} from '/@/utils/req';
 
 const route = useRoute();
 const formRef = ref<FormInstance>();
@@ -154,9 +154,8 @@ const resetPassword=async ()=>{
 		ElMessage.warning("请先填写新密码");
 		return ;
 	}
-	await request({
+	await post({
 		url: state.url + '/pacod',
-		method: 'post',
 		data:{id:state.form.id,pacod:state.pacod}
 	});
 	ElMessage.success("重置密码成功");

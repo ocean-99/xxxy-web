@@ -22,9 +22,9 @@
 								</el-form-item>
 								<el-form-item label='流转方式：' prop='name' v-show='cdata.show1'>
 									<el-radio-group v-model='form.flway'>
-										<el-radio label='1'>串行</el-radio>
-										<el-radio label='2'>并行</el-radio>
-										<el-radio label='3'>会审</el-radio>
+										<el-radio label='1'>顺签</el-radio>
+										<el-radio label='2'>或签</el-radio>
+										<el-radio label='3'>会签</el-radio>
 									</el-radio-group>
 								</el-form-item>
 								<el-form-item label='身份重复跳过配置：' v-show='cdata.show1'>
@@ -188,7 +188,7 @@ import { computed, defineExpose, reactive, ref, toRaw, toRefs } from 'vue';
 import OrgModal from '/@/comps/sys/OrgModal.vue';
 import FuncModal from './func.vue';
 import { uuid } from '/@/utils/xutil';
-import request from '/@/utils/request';
+import {get} from '/@/utils/req';
 
 const state = reactive({
 	isShow: false, basid: '',title:'',cotag:false,name:'节点名称：',notes:'节点备注：',
@@ -274,9 +274,8 @@ const open = async (shape: any) => {
 	state.form.conds = shape.businessObject.$attrs.conds;
 	if (shape.businessObject.$attrs.hamen) {
 		if(state.form.hatyp=="1"){
-			state.form.hamen = await request({
+			state.form.hamen = await get({
 				url: '/gen/org/main/list',
-				method: 'get',
 				params: { ids: shape.businessObject.$attrs.hamen },
 			});
 		}else{

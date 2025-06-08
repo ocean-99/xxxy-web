@@ -1,13 +1,12 @@
-import request from '/@/utils/request';
+import req from '/@/utils/req';
 import { ElMessage, ElMessageBox } from 'element-plus';
 import router from '/@/router';
 import { uuid } from '/@/utils/xutil';
 import { putPage } from '/@/comps/page/store';
 
 export async function listQuery(state: any) {
-	const data: any = await request({
+	const data: any = await req.get({
 		url: state.url,
-		method: 'get',
 		params: state.form,
 	});
 	state.list = data.items;
@@ -34,7 +33,7 @@ export async function listDelete(state: any) {
 	})
 		.then(async () => {
 			// ElMessage.warning('演示模式，禁用了删除');
-			await request({url: state.url + '/' + delIds, method: 'delete',});
+			await req.dele({url: state.url + '/' + delIds});
 			await listQuery(state);
 		})
 		.catch(() => ElMessage.info('已取消删除'));
@@ -48,16 +47,15 @@ export const listItemDelete = async (state: any, id: string) => {
 	})
 		.then(async () => {
 			// ElMessage.warning('演示模式，禁用了删除');
-			await request({url: state.url + '/' + id, method: 'delete',});
+			await req.dele({url: state.url + '/' + id});
 			await listQuery(state);
 		})
 		.catch(() => ElMessage.info('已取消删除'));
 };
 
 export async function treeQuery(state: any) {
-	state.list = await request({
+	state.list = await req.get({
 		url: state.url + '/tree',
-		method: 'get',
 		params: state.form,
 	});
 	state.loading = false;
@@ -83,7 +81,7 @@ export async function treeDelete(state: any) {
 	})
 		.then(async () => {
 			// ElMessage.warning('演示模式，禁用了删除');
-			await request({url: state.url + '/' + delIds, method: 'delete',});
+			await req.dele({url: state.url + '/' + delIds});
 			await treeQuery(state);
 		})
 		.catch(() => ElMessage.info('已取消删除'));
@@ -97,7 +95,7 @@ export const treeItemDelete = async (state: any, id: string) => {
 	})
 		.then(async () => {
 			// ElMessage.warning('演示模式，禁用了删除');
-			await request({url: state.url + '/' + id, method: 'delete',});
+			await req.dele({url: state.url + '/' + id});
 			await treeQuery(state);
 		})
 		.catch(() => ElMessage.info('已取消删除'));

@@ -34,7 +34,7 @@
 
 <script lang='ts' setup>
 import {defineExpose, reactive, ref, toRefs} from 'vue';
-import request from "/@/utils/request";
+import {get} from "/@/utils/req";
 
 const state = reactive({
   url: '/mon/log/oper', show: false,
@@ -46,10 +46,7 @@ const {form} = toRefs(state);
 const formRef = ref();
 const openModal = async (data: any) => {
   if (data && data.id) {
-    state.form = await request({
-      url: state.url + '/one/' + data.id,
-      method: 'get',
-    });
+    state.form = await get({url: state.url + '/one/' + data.id });
   }
   state.show = true;
 };

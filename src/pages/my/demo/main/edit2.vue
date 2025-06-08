@@ -129,7 +129,7 @@ import { computed, getCurrentInstance, onMounted, reactive, ref, toRaw, toRefs }
 import { editInit, tabSave, tabClose } from '/@/comps/page/edit';
 import { useRoute } from 'vue-router';
 import { ElMessage, ElMessageBox, FormInstance } from 'element-plus';
-import request from '/@/utils/request';
+import {get} from '/@/utils/req';
 import OrgModal from '/@/comps/sys/OrgModal.vue';
 import Amap from '/@/comps/ass/amap.vue';
 import { uuid } from '/@/utils/xutil';
@@ -161,9 +161,8 @@ onMounted(async () => {
 		form.value.catid = route.query?.catid;
 	}
 
-	state.cate = await request({
+	state.cate = await get({
 		url: '/my/demo/cate/one/' + form.value.catid,
-		method: 'get',
 	});
 
 	state.tabs = JSON.parse(state.cate.tjson);
@@ -470,9 +469,8 @@ const handlePreview: UploadProps['onPreview'] = (uploadFile) => {
 			type: 'info',
 		},
 	).then(async () => {
-		await request({
+		await get({
 			url: '/gen/oss/download',
-			method: 'get',
 			// params: { name: uploadFile.name, path: uploadFile.addre + '/' + uploadFile.id + '.' + uploadFile.sname },
 			params: { table: 'my_demo_att', id: uploadFile.id },
 			responseType: 'blob',
@@ -508,16 +506,14 @@ const handleExceed: UploadProps['onExceed'] = (files, uploadFiles) => {
 
 //region-----业务字典-----
 const catesInit = async () => {
-	state.cates = await request({
+	state.cates = await get({
 		url: '/my/demo/cate/treea',
-		method: 'get',
 	});
 };
 
 const gradesInit = async () => {
-	state.grades = await request({
+	state.grades = await get({
 		url: '/ass/dict/data/list?maiid=DEMO_GRADE',
-		method: 'get',
 	});
 };
 //endregion

@@ -296,7 +296,7 @@ import { tabSave, tabClose } from '/@/comps/page/edit';
 import { useRoute } from 'vue-router';
 import CateModal from '/@/comps/gen/GenTreeModal.vue';
 import OrgModal from '/@/comps/sys/OrgModal.vue';
-import request from '/@/utils/request';
+import {get} from '/@/utils/req';
 import { ElMessage, FormInstance } from 'element-plus';
 import { uuid } from '/@/utils/xutil';
 import TabEdit from './tab.vue';
@@ -358,9 +358,8 @@ const editInitx = async () => {
 	state.params = <any>route;
 	let id = state.params.query?.id;
 	if (id) {
-		state.form = await request({
+		state.form = await get({
 			url: state.url + '/one/' + id,
-			method: 'get',
 		});
 		state.form.tabs = JSON.parse(state.form.tjson);
 		state.form.links = JSON.parse(state.form.ljson);
@@ -723,7 +722,7 @@ const defxml = '<?xml version="1.0" encoding="UTF-8"?>\n' +
 </script>
 
 <style scoped>
-/*需要放到vboot.scss中才起作用*/
+/*需要放到vben.scss中才起作用*/
 /*.el-select .el-input__inner{*/
 /*	font-family: 'Courier New', Helvetica, Arial, sans-serif !important;*/
 /*}*/

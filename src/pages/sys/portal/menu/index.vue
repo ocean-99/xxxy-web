@@ -63,7 +63,7 @@ import { onMounted, reactive, ref, nextTick } from 'vue';
 import DrawerEdit from './edit.vue';
 import { VXETable, VxeTableInstance, VxeToolbarInstance } from 'vxe-table';
 import XEUtils from 'xe-utils';
-import request from '/@/utils/request';
+import req from '/@/utils/req';
 
 const state = reactive({
 	url: '/sys/portal/menu', ids: [], portals: [] as any,
@@ -96,9 +96,8 @@ const searchEvent = XEUtils.debounce(function() {
 }, 500, { leading: false, trailing: true });
 
 async function fetch() {
-	state.originData = await request({
+	state.originData = await req.get({
 		url: '/sys/portal/menu/tree',
-		method: 'get',
 		params: state.form,
 	});
 	handleSearch();
@@ -117,18 +116,16 @@ onMounted(async () => {
 async function removeEvent(id: string) {
 	const type = await VXETable.modal.confirm('您确定要删除吗？');
 	if (type === 'confirm') {
-		await request({
+		await req.dele({
 			url: '/sys/portal/menu/' + id,
-			method: 'delete',
 		});
 		await fetch();
 	}
 }
 
 const portalsInit = async () => {
-	state.portals = await request({
+	state.portals = await req.get({
 		url: '/sys/portal/main/list',
-		method: 'get',
 	});
 };
 </script>

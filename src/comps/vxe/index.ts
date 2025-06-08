@@ -1,4 +1,4 @@
-import request from '/@/utils/request';
+import req from '/@/utils/req';
 import { VXETable } from 'vxe-table';
 import XEUtils from 'xe-utils';
 import { nextTick } from 'vue';
@@ -15,8 +15,7 @@ export const vListInit = (state: any, gridOptions: any) => {
 				const qparams: any = Object.assign({}, state.form);
 				qparams.page = `${page.currentPage}`;
 				qparams.pageSize = `${page.pageSize}`;
-				return request({
-					method: 'get',
+				return req.get({
 					url: state.url,
 					params: qparams,
 				});
@@ -41,7 +40,7 @@ export const vListDelete = async (gridRef: any, url: string) => {
 	}
 	const type = await VXETable.modal.confirm('您确定要删除吗？');
 	if (type === 'confirm') {
-		await request({ method: 'delete', url: url + '/' + ids.substr(0, ids.length - 1) });
+		await req.dele({ url: url + '/' + ids.substr(0, ids.length - 1) });
 		await gridRef.commitProxy('query');
 	}
 };
@@ -61,9 +60,8 @@ export const vTreeQuery = async (state: any, tableRef: any) => {
 };
 
 export const vTreeFetch = async (state: any, tableRef: any) => {
-	state.odata = await request({
+	state.odata = await req.get({
 		url: state.url + '/tree',
-		method: 'get',
 		params: state.form,
 	});
 	await vTreeQuery(state, tableRef);
@@ -74,9 +72,8 @@ export const vTreeFetch = async (state: any, tableRef: any) => {
 export const vTreeDelete = async (state: any, tableRef: any, id: string) => {
 	const type = await VXETable.modal.confirm('您确定要删除吗？');
 	if (type === 'confirm') {
-		await request({
+		await req.dele({
 			url: state.url + '/' + id,
-			method: 'delete',
 		});
 		await vTreeFetch(state, tableRef);
 	}

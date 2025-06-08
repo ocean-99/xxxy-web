@@ -80,7 +80,7 @@ import { computed, getCurrentInstance, onMounted, reactive, ref, toRaw, toRefs }
 import { tabSave, tabClose } from '/@/comps/page/edit';
 import { useRoute } from 'vue-router';
 import OrgModal from '/@/comps/sys/OrgModal.vue';
-import request from '/@/utils/request';
+import {get} from '/@/utils/req';
 import { FormInstance } from 'element-plus';
 
 const route = useRoute();
@@ -103,18 +103,16 @@ onMounted(async () => {
 	state.params = <any>route;
 	let id = state.params.query?.id;
 	if (id) {
-		state.form = await request({
+		state.form = await get({
 			url: state.url + '/one/' + id,
-			method: 'get',
 		});
 		await treeDataInit();
 	}
 });
 
 const portalsInit = async () => {
-	portals.value = await request({
-		url: '/sys/portal/main/list',
-		method: 'get',
+	portals.value = await get({
+		url: '/sys/portal/main/list'
 	});
 };
 
@@ -183,7 +181,7 @@ const orgsName = computed(() => {
 
 //region -----b 菜单分配逻辑-----
 async function treeDataInit() {
-	treeData.value = await request({ url: '/sys/portal/menu/tree?porid=' + form.value.porid, method: 'get' });
+	treeData.value = await get({ url: '/sys/portal/menu/tree?porid=' + form.value.porid});
 	const menus = [];
 	for (const menu of form.value.menus) {
 		menus.push(menu.id);

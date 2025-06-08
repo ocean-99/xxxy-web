@@ -72,7 +72,7 @@ import {Search} from '@element-plus/icons-vue';
 import {defineExpose, reactive, ref, toRefs} from 'vue';
 import {modalSave} from '/@/comps/page/edit';
 import CorpModal from '/@/comps/gen/GenTreeModal.vue';
-import request from '/@/utils/request';
+import req from '/@/utils/req';
 import {ElMessage} from 'element-plus';
 
 const state = reactive({
@@ -88,9 +88,8 @@ const activeName = ref('tab1');
 const formRef = ref();
 const open = async (data: any) => {
   if (data && data.id) {
-    state.form = await request({
+    state.form = await req.get({
       url: state.url + '/one/' + data.id,
-      method: 'get',
     });
     if (state.form.corp) {
       state.form.corid = state.form.corp.id;
@@ -169,9 +168,8 @@ const resetPassword = async () => {
     ElMessage.warning("请先填写新密码");
     return;
   }
-  await request({
+  await req.post({
     url: state.url + '/pacod',
-    method: 'post',
     data: {id: state.form.id, pacod: state.pacod}
   });
   ElMessage.success("重置密码成功");

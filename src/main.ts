@@ -6,6 +6,8 @@ import { directive } from '/@/directive/index';
 import { i18n } from '/@/i18n/index';
 import other from '/@/utils/other';
 
+//https://blog.csdn.net/LRQQHM/article/details/126355805 谷歌浏览器关于滚动事件警告去除
+import 'default-passive-events'
 import ElementPlus from 'element-plus';
 import VForm3 from 'vform3-builds';
 import 'element-plus/dist/index.css';

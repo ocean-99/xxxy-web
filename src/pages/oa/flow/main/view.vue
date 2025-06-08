@@ -53,7 +53,7 @@ import { getCurrentInstance, nextTick, onMounted, reactive, ref, toRefs } from '
 import { pageSave, pageClose } from '/@/comps/page/view';
 import { useRoute } from 'vue-router';
 import BpmView from '/@/comps/bpm/view.vue';
-import request from '/@/utils/request';
+import {get} from '/@/utils/req';
 import { NextLoading } from '/@/utils/loading';
 import { ElMessage, FormInstance } from 'element-plus';
 import Cookies from 'js-cookie';
@@ -82,14 +82,12 @@ const viewInitx = async (state: any, route: any) => {
 	state.params = <any>route;
 	let id = state.params.query?.id;
 	if (id) {
-		state.form = await request({
+		state.form = await get({
 			url: state.url + '/one/' + id,
-			method: 'get',
 		});
 
-		const data: any = await request({
+		const data: any = await get({
 			url: '/oa/flow/temp/one/' + state.form.temid,
-			method: 'get',
 		});
 		formJson.value = JSON.parse(data.vform);
 		formData.value = JSON.parse(state.form.zform);

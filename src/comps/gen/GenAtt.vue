@@ -10,7 +10,7 @@
 
 <script lang='ts' setup>
 import {ElMessage, ElMessageBox, UploadProps} from "element-plus";
-import request from "/@/utils/request";
+import {get} from "/@/utils/req";
 import {onMounted, reactive, ref, watch} from "vue";
 import {Session} from "/@/utils/storage";
 
@@ -47,9 +47,8 @@ const handlePreview: UploadProps['onPreview'] = (uploadFile) => {
         type: 'info',
       },
   ).then(async () => {
-    await request({
+    await get({
       url: '/gen/oss/upload',
-      method: 'get',
       params: { name: uploadFile.name, path: uploadFile.addre + '/' + uploadFile.id + '.' + uploadFile.sname },
       responseType: 'blob',
     });

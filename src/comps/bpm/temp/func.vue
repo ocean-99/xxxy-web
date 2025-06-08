@@ -65,7 +65,6 @@
 <script lang='ts' setup>
 import { defineExpose, onMounted, reactive, ref } from 'vue';
 import { ElMessage } from 'element-plus';
-import request from '/@/utils/request';
 
 const state = reactive({
 	loading: true, ids: [],

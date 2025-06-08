@@ -62,7 +62,7 @@ import {editInit, tabSave, tabClose} from '/@/comps/page/edit';
 import {useRoute} from 'vue-router';
 import OrgModal from '/@/comps/sys/OrgModal.vue';
 import {FormInstance} from "element-plus";
-import request from '/@/utils/request';
+import {get} from '/@/utils/req';
 
 const route = useRoute();
 const formRef = ref<FormInstance>();
@@ -86,9 +86,8 @@ onMounted(async () => {
 });
 
 const catesInit=async ()=>{
-	state.cates = await request({
+	state.cates = await get({
 		url: '/sys/org/group/cate/treea',
-		method: 'get',
 	});
 }
 

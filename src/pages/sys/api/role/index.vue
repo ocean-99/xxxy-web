@@ -45,7 +45,7 @@ export default { name: 'SysApiRole' };
 import { Search,Plus, Delete,Refresh } from '@element-plus/icons-vue';
 import { onMounted, reactive } from 'vue';
 import { listQuery, listDelete, tabAdd, tabEdit, listSelect } from '/@/comps/page/index';
-import request from '/@/utils/request';
+import {post} from '/@/utils/req';
 import { ElMessage } from 'element-plus';
 
 const state = reactive({
@@ -62,9 +62,8 @@ const flush = async () => {
 };
 
 const flushPerm=async ()=>{
-	await request({
+	await post({
 		url: state.url+'/flush',
-		method: 'post'
 	});
 	ElMessage.success("刷新成功");
 }

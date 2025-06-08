@@ -1,14 +1,14 @@
-<div align="center"><h1 align="center">vboot-vue</h1></div>
-<div align="center"><h3 align="center">一个开箱即用的快速开发平台vue前端</h3></div>
+<div align="center"><h1 align="center">vben-ui</h1></div>
+<div align="center"><h3 align="center">一个开箱即用的快速开发平台</h3></div>
 
 # 🍿 相关地址
-* 体验地址1：[http://zsvg.gitee.io/vue](http://zsvg.gitee.io/vue) （基于Element-Plus）
-* 体验地址2：[http://zsvg.gitee.io/vben](http://zsvg.gitee.io/vben) （基于Ant-Design-Vue）
-* 文档地址 ：[http://zsvg.gitee.io/vn](http://zsvg.gitee.io/vn)
-* QQ交流群：[759521037](http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=ntWCeVyWVN6cw5EhIhaEaPAFm13F9ZMO&authKey=2TIHtcBp3hrgwUUOgI%2BXFJYx5g%2FLdr35C%2FpMXUQ34Z0lIQfOphK6%2FzzBheRkyW0E&noverify=0&group_code=759521037) （欢迎大家一起交流）
-
+* 体验地址1：[http://8.153.168.178/](http://8.153.168.178/)
+* 文档地址 ：[http://8.153.168.178/doc.html](http://8.153.168.178/doc.html)
+* QQ交流群：[795417789](https://jq.qq.com/?_wv=1027&k=yoKKIlIG) 
 
 ### 🍟 概述
+* 特别说明：vben系列项目是由https://gitee.com/zsvg 大哥原vboot项目转移的。
+* 特别说明：目前前端是基于vue-next-admin的，vben5 ui目前正在适配中。
 * 基于JAVA/.NET实现的快速开发平台。模块化插件式开发，前后端分离，开箱即用。
 * JAVA后端基于SpringBoot框架，数据库访问同时集成了Jpa与MyBatis-Plus，即可自动生成数据库表结构，又可灵活编写sql。
 * .NET后端基于Furion框架，数据库访问使用Sqlsugar，codeFirst方式。

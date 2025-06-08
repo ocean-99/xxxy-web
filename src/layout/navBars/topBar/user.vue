@@ -22,22 +22,6 @@
 				/>
 			</el-select>
 		</div>
-		<el-dropdown :show-timeout="70" :hide-timeout="50" trigger="click" @command="onLanguageChange">
-			<div class="layout-navbars-breadcrumb-user-icon">
-				<i
-					class="iconfont"
-					:class="state.disabledI18n === 'en' ? 'icon-fuhao-yingwen' : 'icon-fuhao-zhongwen'"
-					:title="$t('message.user.title1')"
-				></i>
-			</div>
-			<template #dropdown>
-				<el-dropdown-menu>
-					<el-dropdown-item command="zh-cn" :disabled="state.disabledI18n === 'zh-cn'">简体中文</el-dropdown-item>
-					<el-dropdown-item command="en" :disabled="state.disabledI18n === 'en'">English</el-dropdown-item>
-					<el-dropdown-item command="zh-tw" :disabled="state.disabledI18n === 'zh-tw'">繁體中文</el-dropdown-item>
-				</el-dropdown-menu>
-			</template>
-		</el-dropdown>
 		<div class="layout-navbars-breadcrumb-user-icon" @click="onSearchClick">
 			<el-icon :title="$t('message.user.title2')">
 				<ele-Search />
@@ -46,13 +30,7 @@
 <!--		<div class="layout-navbars-breadcrumb-user-icon" @click="onLayoutSetingClick">-->
 <!--			<i class="icon-skin iconfont" :title="$t('message.user.title3')"></i>-->
 <!--		</div>-->
-		<div class="layout-navbars-breadcrumb-user-icon" ref="userNewsBadgeRef" v-click-outside="onUserNewsClick">
-			<el-badge :is-dot="true">
-				<el-icon :title="$t('message.user.title4')">
-					<ele-Bell />
-				</el-icon>
-			</el-badge>
-		</div>
+
 		<el-popover
 			ref="userNewsRef"
 			:virtual-ref="userNewsBadgeRef"
@@ -83,10 +61,6 @@
 			<template #dropdown>
 				<el-dropdown-menu>
 					<el-dropdown-item command="/home">{{ $t('message.user.dropdown1') }}</el-dropdown-item>
-					<el-dropdown-item command="wareHouse">{{ $t('message.user.dropdown6') }}</el-dropdown-item>
-					<el-dropdown-item command="/personal">{{ $t('message.user.dropdown2') }}</el-dropdown-item>
-					<el-dropdown-item command="/404">{{ $t('message.user.dropdown3') }}</el-dropdown-item>
-					<el-dropdown-item command="/401">{{ $t('message.user.dropdown4') }}</el-dropdown-item>
 					<el-dropdown-item divided command="logOut">{{ $t('message.user.dropdown5') }}</el-dropdown-item>
 				</el-dropdown-menu>
 			</template>
@@ -112,7 +86,8 @@ import { useThemeConfig } from '/@/stores/themeConfig';
 import other from '/@/utils/other';
 import mittBus from '/@/utils/mitt';
 import { Session, Local } from '/@/utils/storage';
-import request from "/@/utils/request";
+import Cookies from 'js-cookie';
+import {get} from "/@/utils/req";
 import {initBackEndControlRoutesByPortal} from "/@/router/backEnd";
 
 // 引入组件
@@ -194,13 +169,14 @@ const onHandleCommandClick = (path: string) => {
 		})
 			.then(async () => {
 				// 清除缓存/token等
+        Cookies.set("noAutoLogin","1")
 				Session.clear();
-				// 使用 reload 时，不需要调用 resetRoute() 重置路由
+        // 使用 reload 时，不需要调用 resetRoute() 重置路由
 				window.location.reload();
 			})
 			.catch(() => {});
 	} else if (path === 'wareHouse') {
-		window.open('https://gitee.com/zsvg/vboot-vue');
+		window.open('https://gitee.com/zsvg/vben-vue');
 	} else {
 		router.push(path);
 	}
@@ -239,9 +215,8 @@ onMounted(() => {
 });
 // 门户切换
 const portalChange=async (porid:any)=>{
-	const res= await request({
+	const res= await get({
 		url: 'getMenuList',
-		method: 'get',
 		params:{porid:porid}
 	}) as any;
 	await initBackEndControlRoutesByPortal(res);

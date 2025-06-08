@@ -1,4 +1,4 @@
-import request from '/@/utils/request';
+import req from '/@/utils/req';
 import router from '/@/router';
 import {ElMessage, ElLoading} from "element-plus";
 import mittBus from '/@/utils/mitt';
@@ -15,9 +15,8 @@ export const viewInit = async (data:IviewInit) => {
     data.state.params = <any>data.route;
     let id = data.state.params.query?.id;
     if (id) {
-        data.state.form = await request({
+        data.state.form = await req.get({
             url: data.state.url + '/one/' + id,
-            method: 'get',
         });
     } else {
         data.state.form = {avtag: true};
@@ -83,9 +82,8 @@ export const pageSave = async (data: IviewPageSave) => {
         return false;
     }
 
-    await request({
+    await req.put({
         url: data.state.url,
-        method: 'put',
         data: data.state.form,
     }).catch(() => {
         isSuccess = false;

@@ -52,7 +52,7 @@ draggable :allow-drop='allowDrop' :allow-drag='allowDrag'
 import { onMounted, reactive, ref, watch } from 'vue';
 import type { ElTree } from 'element-plus';
 import { Search,MoreFilled } from '@element-plus/icons-vue';
-import request from '/@/utils/request';
+import req from '/@/utils/req';
 import Tedit from './tedit.vue';
 import { DragEvents } from 'element-plus/es/components/tree/src/model/useDragNode';
 import { DropType } from 'element-plus/es/components/tree/src/tree.type';
@@ -205,9 +205,8 @@ onMounted(async () => {
 
 
 const initTreeData = async () => {
-	state.data = await request({
+	state.data = await req.get({
 		url: '/gen/org/dept/tree',
-		method: 'get',
 	});
 };
 
@@ -228,10 +227,9 @@ const handleDragEnd = async (draggingNode: any, dropNode: any, dropType: DropTyp
 	console.log("DragEnd");
 };
 const handleDrop = async (draggingNode: any, dropNode: any, dropType: DropType, ev: DragEvents,) => {
-	await request({
+	await req.post({
 		url: '/sys/org/dept/move',
 		data: { type:dropType,draid: draggingNode.data.id, droid: dropNode.data.id},
-		method: 'post',
 	});
 	console.log("handleDrop");
 };
@@ -251,9 +249,8 @@ const editCate = () => {
 	editRef.value.open({ id: currNode.id });
 };
 const deleteCate =async () => {
-	await request({
+	await req.dele({
 		url: '/sys/org/dept/'+currNode.id,
-		method: 'delete',
 	});
 	treeRef.value!.remove(currNode);
 };

@@ -35,6 +35,7 @@
 import { defineExpose, onMounted, reactive, ref } from 'vue';
 import { UploadFilled } from '@element-plus/icons-vue'
 import {Session} from "/@/utils/storage";
+import {ElMessage} from "element-plus";
 
 const props = defineProps({
   url: String,
@@ -53,7 +54,7 @@ const dialogVisible = ref(false);
 const openModal = async (url:string) => {
   if(url){
     if(url.startsWith("/")){
-      state.uploadUrl=`${import.meta.env.VITE_API_URL}`+url.substring(1,url.length-1);
+      state.uploadUrl=`${import.meta.env.VITE_API_URL}`+url.substring(1,url.length);
     }else{
       state.uploadUrl=`${import.meta.env.VITE_API_URL}`+url;
     }
@@ -77,6 +78,7 @@ const handleConfirm =async () => {
 
 const uploadSuccess=()=>{
 	dialogVisible.value = false;
+  ElMessage.success("导入成功！");
 	emits('close', { uptag: true });
 }
 

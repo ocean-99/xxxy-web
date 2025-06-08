@@ -47,7 +47,7 @@ import { onMounted, reactive, ref, toRefs } from 'vue';
 import { pageSave, pageClose } from '/@/comps/page/edit';
 import { useRoute } from 'vue-router';
 import BpmEdit from '/@/comps/bpm/edit.vue';
-import request from '/@/utils/request';
+import {get} from '/@/utils/req';
 import { NextLoading } from '/@/utils/loading';
 import { ElMessage, FormInstance } from 'element-plus';
 
@@ -78,15 +78,13 @@ const editInitx = async (state: any, route: any) => {
 	state.params = <any>route;
 	let id = state.params.query?.id;
 	if (id) {
-		state.form = await request({
+		state.form = await get({
 			url: state.url + '/one/' + id,
-			method: 'get',
 		});
 	} else {
 		let temid = state.params.query?.temid;
-		const data: any = await request({
+		const data: any = await get({
 			url: '/oa/flow/temp/one/' + temid,
-			method: 'get',
 		});
 		form.value.protd = data.protd;
 		form.value.temid = temid;

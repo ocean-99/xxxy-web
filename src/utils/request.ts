@@ -7,7 +7,8 @@ import {saveAs} from 'file-saver';
 // 配置新建一个 axios 实例
 const service: AxiosInstance = axios.create({
 	baseURL: import.meta.env.VITE_API_URL,
-	timeout: 50000,
+	timeout: 60000,
+	// withCredentials: true,//可单独加在单点登录的autologin请求上
 	headers: { 'Content-Type': 'application/json' },
 	paramsSerializer: {
 		serialize(params) {
@@ -49,9 +50,10 @@ service.interceptors.response.use(
 						window.location.href = import.meta.env.VITE_PUBLIC_PATH; // 去登录页
 					});
 			} else if (res.code === 402) {
-				ElMessage.error('账号密码错误');
+				ElMessage.error('账号或密码错误');
 			} else if (res.code === 500) {
-				ElMessage.error('服务器内部错误:' + res.msg);
+				// ElMessage.error('服务器内部错误:' + res.msg);
+				ElMessage.error(res.msg);
 			} else if (res.code === 222) {
 				return response.data;
 			} else if (res.code === 202) {
@@ -70,8 +72,9 @@ service.interceptors.response.use(
 			// console.log(response);
 			if (response.data.size) {
 				let blob = new Blob([res], {type: "application/xlsx"});
-				let filename = decodeURI(response.headers['download-filename']);
-				// let filename=decodeURI(response.headers['FileDownloadName']);
+				// let filename = decodeURI(response.headers['download-filename']);
+				let filename=decodeURI(response.headers['FileDownloadName']);
+				// let filename=decodeURI(response.headers['Dfile']);
 				saveAs(blob, filename)
 				// let url = window.URL.createObjectURL(blob);
 				// const link = document.createElement("a"); // 创建a标签
@@ -80,7 +83,7 @@ service.interceptors.response.use(
 				// link.click();
 				// URL.revokeObjectURL(url);
 			} else {
-				return response.data.data;
+				return response.data;
 			}
 		}
 	},

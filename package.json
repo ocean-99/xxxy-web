@@ -46,7 +46,8 @@
 		"vform3-builds": "^3.0.8",
 		"vxe-table": "^4.3.12",
 		"xe-utils": "^3.5.7",
-		"file-saver": "2.0.5"
+		"file-saver": "2.0.5",
+		"default-passive-events": "^2.0.0"
 	},
 	"devDependencies": {
 		"@types/node": "^18.15.11",

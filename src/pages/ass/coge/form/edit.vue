@@ -55,7 +55,7 @@ import {getCurrentInstance, onMounted, onUpdated, reactive, ref, toRefs} from 'v
 import {tabSave, tabClose} from '/@/comps/page/edit';
 import {useRoute} from 'vue-router';
 import {FormInstance} from "element-plus";
-import request from "/@/utils/request";
+import {get} from "/@/utils/req";
 
 const route = useRoute();
 const formRef = ref<FormInstance>();
@@ -83,10 +83,7 @@ onMounted(async () => {
   state.params = <any>route;
   let id = state.params.query?.id;
   if (id) {
-    state.form = await request({
-      url: state.url + '/one/' + id,
-      method: 'get',
-    });
+    state.form = await get({url: state.url + '/one/' + id});
     vFormRef.value.setFormJson(JSON.parse(state.form.vform));
     // state.vformShow=true;
     // console.log(vFormRef.value);
