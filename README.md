@@ -2,7 +2,8 @@
 <div align="center"><h3 align="center">一个开箱即用的快速开发平台</h3></div>
 
 # 🍿 相关地址
-* 体验地址1：[http://8.153.168.178/](http://8.153.168.178/)
+* PC端体验地址：[http://8.153.168.178/](http://8.153.168.178/)
+* 移动端体验地址：[http://8.153.168.178/unibest/](http://8.153.168.178/unibest/) 
 * 文档地址 ：[http://8.153.168.178/doc.html](http://8.153.168.178/doc.html)
 * QQ交流群：[795417789](https://jq.qq.com/?_wv=1027&k=yoKKIlIG) 
 
