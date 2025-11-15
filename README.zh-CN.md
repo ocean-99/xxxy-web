@@ -1,178 +1,216 @@
-[![license](https://img.shields.io/github/license/anncwb/vue-vben-admin.svg)](LICENSE)
+### 🍿 项目简介
 
-## 提示
+[![码云Gitee](https://gitee.com/vben/vben-web/badge/star.svg?theme=blue)](https://gitee.com/vben/vben-web)
+[![License](https://img.shields.io/badge/License-MIT-blue.svg)]()
 
-该仓库使用vben最新版本v5开发
+vben-web 是vben系列框架的统一WEB前端，基于```玲娜贝er```大佬的 [ruoyi-plus-vben5](https://gitee.com/dapppp/ruoyi-plus-vben5) 改造，将Ant Design版本改造成Element Plus版本。
 
-v5版本采用分仓(包)目录结构, 具体开发路径为: `根目录/apps/web-antd`
+vben5 使用了最新前端技术栈，提供丰富的组件和模板以及N种偏好设置组合方案， 应用层可自由选择UI框架（Element Plus，Ant Design Vue，Native UI）
 
-目前对应后端版本: **分布式5.5.0/微服务2.5.0**
+### 🍟 相关地址
 
-V1.1.0版本已支持离线图标
+* QQ交流群：[795417789](https://jq.qq.com/?_wv=1027&k=yoKKIlIG)
 
-V1.2.0版本对接warmflow工作流
+* 前端WEB 体验地址 ：[http://8.153.168.178/](http://8.153.168.178/)
 
-## 简介
+* 移动端APP 体验地址 ：[http://8.153.168.178/unibest/](http://8.153.168.178/unibest/)
 
-基于 [vben5 & ant-design-vue](https://github.com/vbenjs/vue-vben-admin) 的 RuoYi-Vue-Plus 前端项目
+* 文档地址 ：[http://8.153.168.178/doc](http://8.153.168.178/doc)
 
-| 组件/框架      | 版本   |
-| :------------- | :----- |
-| vben           | 5.5.9  |
-| ant-design-vue | 4.2.6  |
-| vue            | 3.5.13 |
+* 前端WEB 项目地址 https://gitee.com/vben/vben-web
 
-对应后端项目: **(分布式 5.X 分支 微服务 2.分支)**
+* 移动端APP 项目地址 https://gitee.com/vben/vben-app
 
-分布式 [RuoYi-Vue-Plus](https://gitee.com/dromara/RuoYi-Vue-Plus/tree/5.X/)
+* java后端API 项目地址 https://gitee.com/vben/vben-java
 
-微服务 [RuoYi-Cloud-Plus](https://gitee.com/dromara/RuoYi-Cloud-Plus/tree/2.X/)
+* .net后端API 项目地址 https://gitee.com/vben/vben-net
 
-## 预览
+* python后端API 项目地址 https://gitee.com/vben/vben-python
 
-admin 账号: admin admin123
+### ⚡ 快速启动
 
-[预览地址点这里](http://vben5.dapdap.top)
+java后端
 
-## WX Group
+* 准备工作：1. 准备java17及以上版本，修改pom.xml对应java.version 2. 根据application-dev.yml配置文件准备一个空的数据库，默认为vben-java的mysql数据库，账号root,密码123456 3. 开启redis 默认密码为空
 
-演示站 - 微信群菜单
+* 数据库初始化：启动VbenSetup，程序会自动创建数据库表与初始化表数据，生成完成后VbenSet应用会自动关闭
 
-## 文档
+* 启动后台API：启动VbenAdmin，也可启动VbenJpa或VbenMybatis查看相应DEMO示例
 
-[本框架文档 强烈建议阅读](https://dapdap.top/)
+.net后端
 
-[Vben V5 文档地址](https://doc.vben.pro/)
+* 准备工作：1. 准备.NET8（.NET10）环境，修改.csproj对应TargetFramework 2. 根据web.Development.json配置文件准备一个空的数据库，默认为vben-net的mysql数据库，账号root,密码123456 3. 开启redis 默认密码为空
 
-[RuoYi-Plus 文档地址](https://plus-doc.dromara.org/#/)
+* 启动后台API：启动VbenAdmin，系统会根据SqlSugar CodeFirst自动生成数据库表结构，另外会根据Init相关服务生成数据库初始化数据。也可启动VbenFurion或VbenNative查看相应DEMO示例
 
-## 预览图
+web前端
 
-![图片](https://gitee.com/dapppp/ruoyi-plus-vben5/raw/main/scripts/preview/1.png) ![图片](https://gitee.com/dapppp/ruoyi-plus-vben5/raw/main/scripts/preview/2.png) ![图片](https://gitee.com/dapppp/ruoyi-plus-vben5/raw/main/scripts/preview/3.png) ![图片](https://gitee.com/dapppp/ruoyi-plus-vben5/raw/main/scripts/preview/4.png) ![图片](https://gitee.com/dapppp/ruoyi-plus-vben5/raw/main/scripts/preview/5.png) ![图片](https://gitee.com/dapppp/ruoyi-plus-vben5/raw/main/scripts/preview/6.png) ![图片](https://gitee.com/dapppp/ruoyi-plus-vben5/raw/main/scripts/preview/7.png) ![图片](https://gitee.com/dapppp/ruoyi-plus-vben5/raw/main/scripts/preview/8.png) ![图片](https://gitee.com/dapppp/ruoyi-plus-vben5/raw/main/scripts/preview/9.png)
+* 准备工作：准备Node.js 20.15.0以上环境，全局安装pnpm：npm install -g pnpm
 
-## 安装使用
+* 启动前台WEB：1. 使用pnpm install安装依赖 2. 使用pnpm dev:ele运行项目 3.访问 http://localhost:5666/ 预览
 
-前置准备环境(只能用pnpm)
+### 🍄 主要特色
 
-```json
-"packageManager": "pnpm",
-"engines": {
-  "node": ">=20.15.0",
-  "pnpm": "latest"
-},
-```
+- 后端项目中抽离并拆分了公共功能，以插件化与扩展包的方式组织，结构解耦且易于扩展。
+- 后端项目业务模块以多基础模块与多应用方式组织，可实现多个应用共用相同基础模块，方便实现基础模块共享
+- 工作流模块不依赖其他工作流引擎，全部自行实现，易于扩展，实现复杂工作流
+- 统一的命名风格，数据库表主键统一用ID命名，表字段采用SAP风格（后端手册里有详细介绍）
 
-- 获取项目代码
+### 🍖 内置功能
 
-```bash
-git clone https://gitee.com/dapppp/ruoyi-plus-vben5.git
-```
+以下表格列出了各后台API功能的支持度。
 
-2. 安装依赖
+<table>
+    <thead>
+    <tr>
+        <th width="150" align="center">业务模块</th>
+        <th width="*">功能说明</th>
+        <th width="150" align="center">JAVA版本</th>
+        <th width="150" align="center">.NET版本</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td align="center">用户管理</td>
+        <td>用户的管理配置 如:新增用户、分配用户所属部门、角色、岗位等</td>
+        <td align="center">√</td>
+        <td align="center">√</td>
+    </tr>
+    <tr>
+        <td align="center">部门管理</td>
+        <td>配置系统组织机构（公司、部门、小组） 树结构展现支持数据权限</td>
+        <td align="center">√</td>
+        <td align="center">√</td>
+    </tr>
+    <tr>
+        <td align="center">岗位管理</td>
+        <td>配置系统用户所属担任职务</td>
+        <td align="center">√</td>
+        <td align="center">√</td>
+    </tr>
+    <tr>
+        <td align="center">菜单管理</td>
+        <td>配置系统菜单、操作权限、按钮权限标识等</td>
+        <td align="center">√</td>
+        <td align="center">√</td>
+    </tr>
+    <tr>
+        <td align="center">角色管理</td>
+        <td>角色根据部门、用户、岗位、群组分配权限</td>
+        <td align="center">√</td>
+        <td align="center">√</td>
+    </tr>
+    <tr>
+        <td align="center">字典管理</td>
+        <td>对系统中经常使用的一些较为固定的数据进行维护</td>
+        <td align="center">√</td>
+        <td align="center">√</td>
+    </tr>
+    <tr>
+        <td align="center">参数管理</td>
+        <td>对系统动态配置常用参数</td>
+        <td align="center">√</td>
+        <td align="center">√</td>
+    </tr>
+    <tr>
+        <td align="center">通知公告</td>
+        <td>系统通知公告信息发布维护</td>
+        <td align="center">√</td>
+        <td align="center">× 待支持</td>
+    </tr>
+    <tr>
+        <td align="center">客户端管理</td>
+        <td>系统内对接的所有客户端管理 如: pc端、小程序端等，支持动态授权登录方式 如: 短信登录、密码登录等 支持动态控制token时效</td>
+        <td align="center">√</td>
+        <td align="center">× 待支持</td>
+    </tr>
+    <tr>
+        <td align="center">操作日志</td>
+        <td>系统正常操作日志记录和查询 系统异常信息日志记录和查询</td>
+        <td align="center">√</td>
+        <td align="center">√</td>
+    </tr>
+    <tr>
+        <td align="center">登录日志</td>
+        <td>系统登录日志记录查询包含登录异常</td>
+        <td align="center">√</td>
+        <td align="center">√</td>
+    </tr>
+    <tr>
+        <td align="center">文件管理</td>
+        <td>同时支持本地文件存储于分布式对象存储。系统文件展示、上传、下载、删除等管理</td>
+        <td align="center">√</td>
+        <td align="center">√</td>
+    </tr>
+    <tr>
+        <td align="center">在线用户管理</td>
+        <td>已登录系统的在线用户信息监控与强制踢出操作</td>
+        <td align="center">√</td>
+        <td align="center">× 待支持</td>
+    </tr>
+    <tr>
+        <td align="center">定时任务</td>
+        <td>运行报表、任务管理(添加、修改、删除)、日志管理、执行器管理等</td>
+        <td align="center">√</td>
+        <td align="center">√</td>
+    </tr>
+    <tr>
+        <td align="center">代码生成</td>
+        <td>前后端代码的生成（c#、vue、sql）支持CRUD下载</td>
+        <td align="center">√</td>
+        <td align="center">×</td>
+    </tr>
+    <tr>
+        <td align="center">系统接口</td>
+        <td>根据业务代码自动生成相关的api接口文档</td>
+        <td align="center">√ 通过Apifox支持</td>
+        <td align="center">√ 通过swagger-ui支持</td>
+    </tr>
+    <tr>
+        <td align="center">服务监控</td>
+        <td>监视系统CPU、内存、磁盘、堆栈、在线日志等</td>
+        <td align="center">√</td>
+        <td align="center">√</td>
+    </tr>
+    <tr>
+        <td align="center">缓存监控</td>
+        <td>对系统的缓存信息查询，命令统计等</td>
+        <td align="center">√</td>
+        <td align="center">√</td>
+    </tr>
+    <tr>
+        <td align="center">在线构建器</td>
+        <td>拖动表单元素生成相应的HTML代码</td>
+        <td align="center">√</td>
+        <td align="center">√</td>
+    </tr>
+    <tr>
+        <td align="center">使用案例</td>
+        <td>系统的一些功能案例</td>
+        <td align="center">√</td>
+        <td align="center">√</td>
+    </tr>
+    <tr>
+        <td align="center">工作流</td>
+        <td>前端流程图采用BPMN.js，表单采用FromCreate（FormDesigner），后端自行实现流程引擎</td>
+        <td align="center">√ 持续扩展</td>
+        <td align="center">× 待java版本稳定</td>
+    </tr>
+    </tbody>
+</table>
 
-```bash
-cd ruoyi-plus-vben5
+### 💐 特别鸣谢
+- 👉 原框架作者：[zsvg](https://gitee.com/zsvg)
+- 👉 Vben-Admin：[https://github.com/vbenjs/vue-vben-admin](https://github.com/vbenjs/vue-vben-admin)
+- 👉 FormCreate：[https://www.form-create.com/](https://www.form-create.com/)
+- 👉 RuoYi-Vue-Plus：[https://gitee.com/dromara/RuoYi-Vue-Plus](https://gitee.com/dromara/RuoYi-Vue-Plus)
+- 👉 ruoyi-plus-vben5：[https://gitee.com/dapppp/ruoyi-plus-vben5](https://gitee.com/dapppp/ruoyi-plus-vben5)
+- 👉 Furion：[https://furion.net/](https://furion.net/)
+- 👉 SqlSugar：[https://www.donet5.com/Home/Doc](https://www.donet5.com/Home/Doc)
+- 👉 Admin.Net：[https://gitee.com/zuohuaijun/Admin.NET](https://gitee.com/zuohuaijun/Admin.NET)
+- 👉 ZrAdmin：[https://gitee.com/izory/ZrAdminNetCore](https://gitee.com/izory/ZrAdminNetCore)
 
-pnpm install
-```
-
-- 菜单图标替换
-
-参考 [菜单图标替换](https://dapdap.top/guide/quick-start.html#%E8%8F%9C%E5%8D%95%E5%9B%BE%E6%A0%87%E5%AF%BC%E5%85%A5)
-
-- 关于代码生成
-
-V5版本代码生成模板为付费功能 [详见](https://dapdap.top/other/template.html)
-
-- 关于一些监控的地址配置(微服务版本可以跳过这一小节)
-
-使用[RuoYi-Vue-Plus](https://gitee.com/dromara/RuoYi-Vue-Plus/tree/5.X/)注意 `已经去除 admin/snailjob 的.env 配置` 可自行修改 有两种方式
-
-1. 修改源码`/views/monitor/admin` `views/monitor/snailjob`
-
-```html
-<!-- 修改地址 -->
-<template>
-  <iframe
-    class="size-full"
-    src="http://localhost:9090/admin/applications"
-  ></iframe>
-</template>
-```
-
-2. **推荐** 使用菜单自行配置 (跟 cloud 版本打开方式一致)
-
-![图片](https://gitee.com/dapppp/ruoyi-plus-vben/raw/main/preview/菜单修改.png)
-
-使用内嵌 iframe 方式需要解决跨域问题 可参考[nginx.conf](https://gitee.com/dromara/RuoYi-Vue-Plus/blob/5.X/script/docker/nginx/conf/nginx.conf#LC87)配置
-
-- 修改.env.development 配置文件
-- **注意 RSA 公私钥一定要修改和后端匹配**
-- RSA 公私钥为两对 `前端请求加密-后端解密是一对` `后端响应加密 前端解密是一对`
-
-```properties
-# 端口号
-VITE_PORT=5666
-# 打包路径
-VITE_BASE=/
-# 是否开启 Nitro Mock服务，true 为开启，false 为关闭
-VITE_NITRO_MOCK=false
-# 是否打开 devtools，true 为打开，false 为关闭
-VITE_DEVTOOLS=false
-# 是否注入全局loading
-VITE_INJECT_APP_LOADING=true
-
-# 后台请求路径 具体在vite.config.mts配置代理
-VITE_GLOB_API_URL=/api
-# 全局加密开关(即开启了加解密功能才会生效 不是全部接口加密 需要和后端对应)
-VITE_GLOB_ENABLE_ENCRYPT=true
-# RSA公钥 请求加密使用 注意这两个是两对RSA公私钥 请求加密-后端解密是一对 响应解密-后端加密是一对
-VITE_GLOB_RSA_PUBLIC_KEY=
-# RSA私钥 响应解密使用 注意这两个是两对RSA公私钥 请求加密-后端解密是一对 响应解密-后端加密是一对
-VITE_GLOB_RSA_PRIVATE_KEY=
-# 客户端id
-VITE_GLOB_APP_CLIENT_ID=e5cd7e4891bf95d1d19206ce24a7b32e
-# 开启WEBSOCKET
-VITE_GLOB_WEBSOCKET_ENABLE=false
-```
-
-- 运行
-
-```bash
-pnpm dev:antd
-```
-
-4. 打包
-
-```bash
-pnpm build:antd
-```
-
-## 这是一个特性 而不是一个bug!
-
-1. 菜单管理可分配 但只有`admin`/`superadmin`角色能访问 其他角色访问会到403页面
-2. 租户相关菜单可分配 但只有`superadmin`角色能访问 其他角色访问会到403页面
-3. 分配的租户管理员无法修改自己的角色的菜单(即管理员角色的菜单) 防止自己把自己权限弄没了
-
-## Git 贡献提交规范
-
-参考 [vue](https://github.com/vuejs/vue/blob/dev/.github/COMMIT_CONVENTION.md) 规范 ([Angular](https://github.com/conventional-changelog/conventional-changelog/tree/master/packages/conventional-changelog-angular))
-
-- `feat` 增加新功能
-- `fix` 修复问题/BUG
-- `style` 代码风格相关无影响运行结果的
-- `perf` 优化/性能提升
-- `refactor` 重构
-- `revert` 撤销修改
-- `test` 测试相关
-- `docs` 文档/注释
-- `chore` 依赖更新/脚手架配置修改等
-- `workflow` 工作流改进
-- `ci` 持续集成
-- `types` 类型定义文件更改
-- `wip` 开发中
-
-## 浏览器支持
+### 🏀 浏览器支持
 
 最低适配应该为`Chrome 88+`以上浏览器 详见 [css - where](https://developer.mozilla.org/en-US/docs/Web/CSS/:where#browser_compatibility)
 
