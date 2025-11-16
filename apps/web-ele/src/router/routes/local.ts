@@ -72,18 +72,18 @@ export const localMenuList: RouteRecordStringComponent[] = [
       //     title: $t('demos.vben.document'),
       //   },
       // },
-      // {
-      //   name: 'V5UpdateLog',
-      //   path: '/changelog',
-      //   component: '/演示使用自行删除/changelog/index',
-      //   meta: {
-      //     icon: 'material-symbols:update-rounded',
-      //     keepAlive: true,
-      //     title: '更新记录',
-      //     badge: `当前: ${version}`,
-      //     badgeVariants: 'bg-primary',
-      //   },
-      // },
+      {
+        name: 'V5UpdateLog',
+        path: '/changelog',
+        component: '/dashboard/changelog/index',
+        meta: {
+          icon: 'material-symbols:update-rounded',
+          keepAlive: true,
+          title: '更新记录',
+          badge: `当前: ${version}`,
+          badgeVariants: 'bg-primary',
+        },
+      },
     ],
   },
   {
