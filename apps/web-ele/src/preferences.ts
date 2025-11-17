@@ -12,7 +12,7 @@ export const overridesPreferences = defineOverridesPreferences({
      * 不要动这里  后端路由模式
      */
     // accessMode: 'frontend',
-    // defaultHomePath: '/wf/bus/main',
+    // defaultHomePath: '/bpm/bus/main',
     accessMode: 'backend',
     /**
      * 不需要refresh token 由后端处理

@@ -67,7 +67,7 @@ const save = async () => {
           <el-form-item label="账号名称" prop="usnam" :rules="[{ required: true, message: '用户名称不能为空' }]">
             <el-input v-model="form.usnam" />
           </el-form-item>
-          <el-form-item label="用户密码" prop="pacod" :rules="[{ required: true, message: '用户密码不能为空' }]">
+          <el-form-item label="用户密码" prop="pacod" :rules="[{ required: true, message: '用户密码不能为空' }]" v-if="!form.id">
             <el-input v-model="form.pacod" type="password" maxlength="32" show-password />
           </el-form-item>
           <el-form-item label="手机号码" prop="monum" :rules="[{ pattern: /^1[3|4|5|6|7|8|9][0-9]\d{8}$/, message: '请输入正确的手机号码', trigger: 'blur' }]">

@@ -3,7 +3,7 @@
 [![码云Gitee](https://gitee.com/vben/vben-web/badge/star.svg?theme=blue)](https://gitee.com/vben/vben-web)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)]()
 
-vben-web 是vben系列框架的统一WEB前端，基于```玲娜贝er```大佬的 [ruoyi-plus-vben5](https://gitee.com/dapppp/ruoyi-plus-vben5) 改造，将Ant Design版本改造成Element Plus版本。
+vben-web 是vben系列框架的统一WEB前端，基于```玲娜贝er```大佬的 [ruoyi-plus-vben5](https://gitee.com/dapppp/ruoyi-plus-vben5) 改造，将Ant Design Vue版本改造成Element Plus版本。
 
 vben5 使用了最新前端技术栈，提供丰富的组件和模板以及N种偏好设置组合方案， 应用层可自由选择UI框架（Element Plus，Ant Design Vue，Native UI）
 
