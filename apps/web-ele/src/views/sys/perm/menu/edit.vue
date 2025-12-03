@@ -19,20 +19,13 @@ const { form } = toRefs(state);
 const open = async (data: any) => {
   if (data && data.id) {
     state.form = await requestClient.get(`${state.url}/info/${data.id}`);
-    if (state.form.pid === 0) {
-      state.form.pid = undefined;
-    }
     rdata.menus = await requestClient.get(`${state.url}/tree?id=${data.id}`);
-    for (let i = 0; i < rdata.menus.length; i++) {
-      if (rdata.menus[i].pid === data.id) {
-        rdata.menus.splice(i, 1);
-        break;
-      }
-    }
   } else {
-    state.form = { avtag: true, shtag: true, catag: false, outag: false };
-    state.form.pid = data && data.pid ? data.pid : null;
+    state.form = { avtag: true, pid: data.pid, shtag: true, catag: false, outag: false };
     rdata.menus = await requestClient.get(`${state.url}/tree`);
+  }
+  if (state.form.pid === 0 || state.form.pid === '0' || state.form.pid === undefined) {
+    delete state.form.pid;
   }
   state.show = true;
   formRef?.value?.clearValidate();

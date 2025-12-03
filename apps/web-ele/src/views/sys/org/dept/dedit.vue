@@ -41,17 +41,17 @@ const save = async () => {
     <template #default>
       <el-form ref="formRef" :model="form" label-width="100px" class="zform">
         <el-form-item label="上级部门">
-          <el-tree-select v-model="form.pid" :data="rdata.depts" :props="{ value: 'id', label: 'name' } as any" value-key="id" placeholder="选择上级部门" check-strictly />
+          <el-tree-select v-model="form.pid" clearable :data="rdata.depts" :props="{ value: 'id', label: 'name' } as any" value-key="id" placeholder="选择上级部门" check-strictly />
         </el-form-item>
         <el-form-item label="部门名称" prop="name" :rules="[{ required: true, message: '部门名称不能为空' }]">
           <el-input v-model="form.name" />
         </el-form-item>
         <el-form-item label="部门类型" style="width: 50%" prop="type" :rules="[{ required: true, message: '部门类型不能为空' }]">
           <el-select v-model="form.type">
-            <el-option :value="1" label="集团" />
-            <el-option :value="2" label="公司" />
-            <el-option :value="4" label="机构" />
-            <el-option :value="8" label="部门" />
+            <el-option :value="1" label="部门" />
+            <el-option :value="2" label="机构" />
+            <el-option :value="4" label="公司" />
+            <el-option :value="8" label="集团" />
           </el-select>
         </el-form-item>
         <el-form-item label="部门标签" prop="label" style="width: 50%">

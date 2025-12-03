@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { Page } from '@vben/common-ui';
 
-import { requestClient } from '#/api/request';
 import { listDelete, listItemDelete, listQuery, listSelect } from '#/utils/page/list';
 
+import DrawerEdit from './edit.vue';
+
 const state = reactive({
-  url: '/sys/perm/role',
+  url: '/demo/single/main',
   loading: false,
   ids: [],
   form: {
@@ -17,18 +18,10 @@ const state = reactive({
   total: 0,
 });
 
-const router = useRouter();
+const editRef = ref() as any;
 
-function handleAdd() {
-  router.push('/sys/perm/role/edit');
-}
-
-function handleEdit(row: any) {
-  router.push({ path: '/sys/perm/role/edit', query: { id: row.id } });
-}
-
-const refreshCache = async () => {
-  await requestClient.putWithMsg(`${state.url}/cache`);
+const editClose = async () => {
+  await listQuery(state);
 };
 
 onMounted(async () => {
@@ -43,11 +36,10 @@ onMounted(async () => {
         <div class="flex justify-between">
           <el-space>
             <el-input style="width: 180px" v-model="state.form.name" placeholder="输入名称回车查询" clearable @keyup.enter="listQuery(state)" />
-            <el-button type="primary" @click="listQuery(state)" icon="Search">查询</el-button>
+            <el-button type="primary" @click="listQuery(state)" icon="Search"> 查询</el-button>
           </el-space>
           <el-space>
-            <el-button icon="Plus" type="success" plain @click="handleAdd">新增</el-button>
-            <el-button icon="Refresh" type="warning" plain @click="refreshCache">刷新缓存</el-button>
+            <el-button icon="Plus" type="success" plain @click="editRef.open()">新增</el-button>
             <el-button icon="Delete" type="danger" plain @click="listDelete(state)" :disabled="state.multiple">删除</el-button>
           </el-space>
         </div>
@@ -65,17 +57,20 @@ onMounted(async () => {
       >
         <el-table-column type="selection" width="44" align="center" />
         <el-table-column label="#" type="index" width="50" align="center" />
-        <el-table-column label="角色名称" prop="name" width="250">
+        <el-table-column label="XX名称">
           <template #default="scope">
-            <span class="link_span" @click="handleEdit({ id: scope.row.id })">{{ scope.row.name }}</span>
+            <span class="link_span" @click="editRef.open({ id: scope.row.id })">{{ scope.row.name }}</span>
           </template>
         </el-table-column>
         <el-table-column label="创建时间" prop="crtim" width="164" />
-        <el-table-column label="备注" prop="notes" />
+        <el-table-column label="创建人" prop="cruna" width="86" align="center" />
+        <el-table-column label="更新时间" prop="uptim" width="164" />
+        <el-table-column label="更新人" prop="upuna" width="86" align="center" />
+        <el-table-column label="XX备注" prop="notes" />
         <el-table-column label="操作" align="center" width="86" class-name="small-padding fixed-width">
           <template #default="scope">
             <el-tooltip content="修改" placement="top">
-              <el-button link type="primary" icon="Edit" @click="handleEdit({ id: scope.row.id })" />
+              <el-button link type="primary" icon="Edit" @click="editRef.open({ id: scope.row.id })" />
             </el-tooltip>
             <el-tooltip content="删除" placement="top">
               <el-button link type="primary" icon="Delete" @click="listItemDelete(state, scope.row.id)" />
@@ -97,5 +92,6 @@ onMounted(async () => {
         layout="total, sizes, prev, pager, next, jumper"
       />
     </el-card>
+    <DrawerEdit ref="editRef" @close="editClose" />
   </Page>
 </template>

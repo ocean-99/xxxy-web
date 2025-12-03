@@ -52,7 +52,7 @@ const save = async () => {
   <el-dialog v-model="state.show" title="部门编辑" draggable width="600px">
     <el-form ref="formRef" :model="form" label-width="140px">
       <el-form-item label="上级分类">
-        <el-tree-select v-model="form.pid" :data="rdata.cates" :props="{ value: 'id', label: 'name' } as any" value-key="id" placeholder="选择上级分类" check-strictly />
+        <el-tree-select v-model="form.pid" clearable :data="rdata.cates" :props="{ value: 'id', label: 'name' } as any" value-key="id" placeholder="选择上级分类" check-strictly />
       </el-form-item>
       <el-form-item label="分类名称" prop="name" :rules="[{ required: true, message: '分类名称不能为空' }]">
         <el-input v-model="form.name" />

@@ -36,7 +36,7 @@ async function loadTenant() {
   }
 }
 
-onMounted(loadTenant);
+// onMounted(loadTenant);
 
 const formSchema = computed((): VbenFormSchema[] => {
   return [
@@ -130,7 +130,7 @@ async function handleLogin(values: LoginCodeParams) {
   <div>
     <ElAlert
       class="mb-4"
-      title="测试手机号: 15888888888 正确验证码: 1234 演示使用不会真的发送"
+      title="测试手机号: 13812345678 正确验证码: 1234 演示使用不会真的发送"
       type="success"
       :closable="false"
     />

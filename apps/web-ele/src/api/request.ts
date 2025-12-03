@@ -165,7 +165,7 @@ function createRequestClient(baseURL: string) {
   // 通用的错误处理, 如果没有进入上面的错误处理逻辑，就会进入这里
   // 主要处理http状态码不为200(如网络异常/离线)的情况 必须放在在下面的响应拦截器之前
   client.addResponseInterceptor(
-    errorMessageResponseInterceptor((msg: string) => message.error(msg)),
+    errorMessageResponseInterceptor((msg: string) => ElMessage.error(msg)),
   );
 
   client.addResponseInterceptor<HttpResponse>({

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Page, VbenAvatar } from "@vben/common-ui";
+import { Page } from '@vben/common-ui';
 
 import { Pane, Splitpanes } from 'splitpanes';
 
@@ -84,6 +84,7 @@ const editOpen = (data: any) => {
 };
 
 const handleStatusChange = async (row: any) => {
+  row.avtag = !(row.avtag === true || row.avtag === 1 || row.avtag === '1');
   const text = row.avtag ? '启用' : '停用';
   ElMessageBox.confirm(`确认要"${text}""${row.name}"用户吗?`, '提示')
     .then(async () => {
@@ -98,11 +99,15 @@ const handleStatusChange = async (row: any) => {
       ElMessage.info('已取消');
     });
 };
+
+const isActive = (value: any) => {
+  return value === true || value === 1 || value === '1';
+};
 </script>
 
 <template>
   <Page auto-content-height>
-    <Splitpanes class="default-theme" v-show='state.pageShow'>
+    <Splitpanes class="default-theme" v-show="state.pageShow">
       <Pane :size="state.leftPaneSize">
         <DeptTree @node-click="nodeClick" url="/sys/org/dept/tree" tip="部门名称" :expand="true" />
       </Pane>
@@ -111,7 +116,7 @@ const handleStatusChange = async (row: any) => {
           <template #header>
             <div class="flex justify-between">
               <el-space>
-<!--                <VbenAvatar alt="测试" src="http://localhost:5666/api/tool/oss/main/show?id=1977195329891160064" class="size-8" dot />-->
+                <!--                <VbenAvatar alt="测试" src="http://localhost:5666/api/tool/oss/main/show?id=1977195329891160064" class="size-8" dot />-->
                 <el-input style="width: 180px" v-model="state.form.name" placeholder="输入用户名称回车查询" clearable @keyup.enter="listQuery(state)" />
                 <el-button type="primary" @click="listQuery(state)" icon="Search"> 查询</el-button>
                 <el-button class="more-button" :icon="moreParams ? 'ArrowUp' : 'ArrowDown'" plain @click="moreParams = !moreParams" />
@@ -161,7 +166,7 @@ const handleStatusChange = async (row: any) => {
             <el-table-column label="手机号码" align="center" prop="monum" width="120" />
             <el-table-column label="状态" align="center" width="82">
               <template #default="scope">
-                <el-switch v-model="scope.row.avtag" @change="handleStatusChange(scope.row)" v-if="scope.row.id !== 'u1'" />
+                <el-switch :model-value="isActive(scope.row.avtag)" :active-value="true" :inactive-value="false" @click="handleStatusChange(scope.row)" v-if="scope.row.id !== 'u1'" />
               </template>
             </el-table-column>
             <el-table-column label="创建时间" align="center" prop="crtim" width="164">

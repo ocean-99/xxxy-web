@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { Page } from '@vben/common-ui';
 
+import EditTree from '#/components/tree/EditTree.vue';
 import { listDelete, listItemDelete, listQuery, listSelect } from '#/utils/page/list';
 
-import CateTree from './cate_tree.vue';
 import DrawerEdit from './edit.vue';
 
 const state = reactive({
-  url: '/sys/org/group',
+  url: '/demo/link/main',
   loading: false,
   ids: [],
   form: {
@@ -25,6 +25,9 @@ onMounted(async () => {
 
 const nodeClick = async (node: any) => {
   state.form.catid = node.id;
+  if (node.id === '') {
+    delete state.form.catid;
+  }
   await listQuery(state);
 };
 
@@ -39,13 +42,13 @@ const editClose = async () => {
   <Page auto-content-height>
     <div class="flex h-full gap-[8px]">
       <div class="w-[260px]">
-        <CateTree @node-click="nodeClick" />
+        <EditTree @node-click="nodeClick" url="/demo/link/cate" tip="XX分类" />
       </div>
       <el-card style="height: 100%" body-style="height: 100%" class="box-card flex-1 overflow-hidden">
         <template #header>
           <div class="flex justify-between">
             <el-space>
-              <el-input style="width: 180px" v-model="state.form.name" placeholder="输入群组名称回车查询" clearable @keyup.enter="listQuery(state)" />
+              <el-input style="width: 180px" v-model="state.form.name" placeholder="输入名称回车查询" clearable @keyup.enter="listQuery(state)" />
               <el-button type="primary" @click="listQuery(state)" icon="Search"> 查询</el-button>
             </el-space>
             <el-space>
@@ -63,11 +66,11 @@ const editClose = async () => {
           v-loading="state.loading"
           :data="state.rows"
           border
-          stripe
+          stripec
         >
           <el-table-column type="selection" width="44" align="center" />
           <el-table-column label="#" type="index" width="50" align="center" />
-          <el-table-column label="群组名称" align="center" prop="name" width="180">
+          <el-table-column label="XX名称" align="center" prop="name" width="180">
             <template #default="scope">
               <span class="link_span" @click="editRef.open({ id: scope.row.id })">{{ scope.row.name }}</span>
             </template>

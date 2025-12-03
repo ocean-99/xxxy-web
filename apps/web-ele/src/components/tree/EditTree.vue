@@ -5,6 +5,7 @@ import { reactive, ref, toRefs } from 'vue';
 
 import { requestClient } from '#/api/request';
 import { modalSave } from '#/utils/page/edit';
+import { listQuery } from '#/utils/page/list';
 
 const props = defineProps({
   url: {
@@ -175,15 +176,23 @@ const allowDrag = (draggingNode: any) => {
 };
 // endregion
 
-const addChildCate =async () => {
+const addChildCate = async () => {
   await openModal({ pid: currNode.id });
 };
 const editCate = async () => {
   await openModal({ id: currNode.id });
 };
 const deleteCate = async () => {
-  await requestClient.delete(`${props.url}/${currNode.id}`);
-  treeRef.value!.remove(currNode);
+  ElMessageBox.confirm('确认要删除吗?', '警告', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning',
+  })
+    .then(async () => {
+      await requestClient.delete(`${props.url}/${currNode.id}`);
+      treeRef.value!.remove(currNode);
+    })
+    .catch(() => ElMessage.info('已取消删除'));
 };
 
 // edit逻辑
@@ -194,12 +203,17 @@ const openModal = async (data: any) => {
   if (data && data.id) {
     state.form = await requestClient.get(`${props.url}/info/${data.id}`);
     state.type = 'edit';
+    if (state.form.pid === 0 || state.form.pid === '0') {
+      delete state.form.pid;
+    }
   } else {
     state.type = 'add';
-    state.form = { avtag: true,children: [] };
-    state.form.pid = data.pid ?? null;
+    state.form = { avtag: true, children: [] };
+    if (data.pid) {
+      state.form.pid = data.pid;
+    }
   }
-  rdata.cates = await requestClient.get(`${props.url}/tree?id=${data?.id}`);
+  rdata.cates = await (data?.id ? requestClient.get(`${props.url}/tree?id=${data?.id}`) : requestClient.get(`${props.url}/tree`));
   state.show = true;
   formRef?.value?.clearValidate();
 };
@@ -221,7 +235,7 @@ const save = async () => {
   state.show = false;
 
   if (state.type === 'add') {
-    if (backNode.pid === 0 || backNode.pid === null) {
+    if (backNode.pid === 0 || backNode.pid === null || backNode.pid === undefined) {
       state.data.push(backNode);
     } else {
       for (const targetNode of state.data) {
@@ -277,7 +291,7 @@ const save = async () => {
         </div>
       </div>
     </template>
-    <div style="margin-bottom: 88px; font-family: 'Courier New', Helvetica, Arial, sans-serif;">
+    <div style="margin-bottom: 88px; font-family: 'Courier New', Helvetica, Arial, sans-serif">
       <el-tree
         highlight-current
         @node-contextmenu="rightClick"

@@ -25,11 +25,7 @@ const treeProps = reactive({
 
 onMounted(async () => {
   const id = useRoute().query?.id;
-  if (id) {
-    state.form = await requestClient.get(`${state.url}/info/${id}`);
-  } else {
-    state.form = { avtag: true };
-  }
+  state.form = id ? await requestClient.get(`${state.url}/info/${id}`) : { avtag: true, type: 1 };
   formRef?.value?.clearValidate();
   const perms = await requestClient.get(`/sys/perm/role/perms`);
   rdata.perms = handleTree(perms);
@@ -68,7 +64,7 @@ const orgModal = ref();
 
 const openOrgsModal = () => {
   orgModal.value.open({
-    orgType: 31,
+    orgType: 15,
     selectMode: 2,
     orgs: toRaw(form.value.orgs),
   });
@@ -115,21 +111,40 @@ const orgsName = computed(() => {
               <el-form-item label="是否可用：" style="width: 25%">
                 <el-switch v-model="form.avtag" />
               </el-form-item>
-              <el-form-item label="权限成员：">
+              <el-form-item label="包含成员：">
                 <el-input type="textarea" placeholder="这里可以选择用户，部门，岗位，群组。权限都会生效" :rows="4" v-model="orgsName" readonly @click="openOrgsModal" />
+              </el-form-item>
+              <el-form-item label="角色类型：" style="width: 50%">
+                <el-select v-model="form.type">
+                  <el-option :value="1" label="综合角色" />
+                  <el-option :value="2" label="数据权限角色" />
+                  <el-option :value="3" label="菜单角色" />
+                  <el-option :value="4" label="接口角色" />
+                  <el-option :value="5" label="菜单与接口角色" />
+                </el-select>
+              </el-form-item>
+              <el-form-item label="数据权限：" style="width: 50%">
+                <el-select v-model="form.scope" clearable>
+                  <el-option :value="1" label="全部数据权限" />
+                  <el-option :value="2" label="自定数据权限" />
+                  <el-option :value="3" label="本部门数据权限" />
+                  <el-option :value="4" label="本部门及以下数据权限" />
+                  <el-option :value="5" label="仅本人数据权限" />
+                  <el-option :value="6" label="部门及以下或本人数据权限" />
+                </el-select>
               </el-form-item>
               <el-form-item label="备注：" style="width: 100%">
                 <el-input style="font-family: 'Courier New', Helvetica, Arial, sans-serif; font-size: 16px" type="textarea" :rows="3" v-model="form.notes" />
               </el-form-item>
               <div v-show="form.crtim">
                 <el-form-item label="创建人：" style="width: 50%">
-                  <div class="zinput">{{ form.crman ? form.crman.name : '' }}</div>
+                  <div class="zinput">{{ form.cruna }}</div>
                 </el-form-item>
                 <el-form-item label="创建时间：" style="width: 50%">
                   <div class="zinput">{{ form.crtim }}</div>
                 </el-form-item>
                 <el-form-item label="更新人：" style="width: 50%">
-                  <div class="zinput">{{ form.upman ? form.upman.name : '' }}</div>
+                  <div class="zinput">{{ form.upuna }}</div>
                 </el-form-item>
                 <el-form-item label="更新时间：" style="width: 50%">
                   <div class="zinput">{{ form.uptim }}</div>
@@ -142,7 +157,7 @@ const orgsName = computed(() => {
                 <el-table-column prop="name" label="菜单名称" width="160" />
                 <el-table-column label="图标" prop="icon" width="55" align="center">
                   <template #default="scope">
-                    <div style="display: flex; justify-content: center; align-items: center;">
+                    <div style="display: flex; justify-content: center; align-items: center">
                       <VbenIcon :icon="scope.row.icon" />
                     </div>
                   </template>

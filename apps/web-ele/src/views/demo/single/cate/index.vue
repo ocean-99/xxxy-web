@@ -1,46 +1,26 @@
 <script setup lang="tsx">
 import { Page } from '@vben/common-ui';
-import { VbenIcon } from '@vben/icons';
 
 import { treeItemDelete, treeQuery } from '#/utils/page/tree';
 
 import DrawerEdit from './edit.vue';
 
 const state = reactive({
-  url: '/sys/perm/menu',
+  url: '/demo/single/cate',
   list: [] as any,
   form: { name: '' } as any,
 });
 
 const columns = [
   { key: 'id', dataKey: 'id', title: 'ID', width: 120, hidden: true },
-  { key: 'name', dataKey: 'name', title: '菜单名称', width: 180 },
-  {
-    align: 'center',
-    key: 'icon',
-    title: '图标',
-    width: 60,
-    cellRenderer: (row: any) => <VbenIcon icon={row.rowData.icon} />,
-  },
-  {
-    align: 'center',
-    key: 'icon',
-    title: '类型',
-    width: 60,
-    cellRenderer: (row: any) => (
-      <>
-        <el-button icon="Folder" link type="primary" v-show={row.rowData.type === '1'} />
-        <el-button icon="Menu" link style="margin-left: 0" type="success" v-show={row.rowData.type === '2'} />
-      </>
-    ),
-  },
   { key: 'pid', dataKey: 'pid', title: '父ID', width: 100, hidden: true },
+  { key: 'name', dataKey: 'name', title: 'XX名称', width: 180 },
   { key: 'ornum', dataKey: 'ornum', title: '排序', width: 50 },
   { key: 'crtim', dataKey: 'crtim', title: '创建时间', width: 180 },
   { key: 'cruna', dataKey: 'cruna', title: '创建人', width: 100 },
   { key: 'uptim', dataKey: 'uptim', title: '更新时间', width: 180 },
   { key: 'upuna', dataKey: 'upuna', title: '更新人', width: 100 },
-  { key: 'notes', dataKey: 'notes', title: '备注', width: 150 },
+  { key: 'notes', dataKey: 'notes', title: '备注', width: 300 },
   {
     align: 'center',
     key: 'operate',
