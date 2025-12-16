@@ -67,16 +67,17 @@ const kick = async (row: any) => {
           <el-space>
             <el-input style="width: 180px" v-model="state.form.name" placeholder="输入名称回车查询" clearable @keyup.enter="listQuery()" />
             <el-button type="primary" @click="listQuery()" icon="Search"> 查询</el-button>
+            <div>.NET版本需要在.env中开启SignalR</div>
           </el-space>
         </div>
       </template>
 
       <el-table style="height: calc(100% - 90px)" :cell-style="{ padding: '2px' }" :row-style="{ height: '36px' }" v-loading="state.loading" :data="state.rows" border stripe>
         <el-table-column label="#" type="index" width="50" align="center" />
-        <el-table-column label="用户账号" prop="userName" width="110" min-width="110" />
-        <el-table-column label="登录平台" prop="deviceType" width="86">PC</el-table-column>
-        <el-table-column label="部门名称" prop="deptName" width="150" min-width="150" />
-        <el-table-column label="IP地址" prop="ipaddr" />
+        <el-table-column label="用户账号" prop="usena" width="110" min-width="110" />
+        <el-table-column label="登录平台" prop="detyp" width="86">PC</el-table-column>
+        <el-table-column label="部门名称" prop="depna" width="150" min-width="150" />
+        <el-table-column label="IP地址" prop="ip" />
         <el-table-column label="IP地点" prop="loginLocation" />
         <el-table-column label="系统" prop="os" width="150">
           <template #default="scope">

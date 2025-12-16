@@ -11,6 +11,7 @@ import dayjs from 'dayjs';
 import { defineStore } from 'pinia';
 
 import { useSseMessage } from '#/utils/message';
+import { useSignalR } from './signalR';
 
 export const useNotifyStore = defineStore(
   'app-notify',
@@ -41,6 +42,11 @@ export const useNotifyStore = defineStore(
       //   return;
       // }
       // const { data } = websocketReturnData;
+
+      const SignalR_Enable = `${import.meta.env.VITE_GLOB_SIGNALR_ENABLE}`;
+      if (SignalR_Enable === 'true') {
+        useSignalR();
+      }
 
       const sseReturnData = useSseMessage();
       if (!sseReturnData) {

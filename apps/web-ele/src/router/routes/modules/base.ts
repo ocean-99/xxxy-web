@@ -1,5 +1,6 @@
 import type { RouteRecordRaw } from 'vue-router';
-import { $t } from "@vben/locales";
+
+import { $t } from '@vben/locales';
 
 const routes: RouteRecordRaw[] = [
   {
@@ -223,7 +224,37 @@ const routes: RouteRecordRaw[] = [
         path: '/tool/form',
         component: () => import('#/views/tool/form/index.vue'),
         meta: {
-          title: '表单工具',
+          title: '在线表单',
+        },
+      },
+      {
+        name: 'ToolFormEdit',
+        path: '/tool/form/edit',
+        component: () => import('#/views/tool/form/edit.vue'),
+        meta: {
+          title: '在线表单',
+          hideInMenu: true,
+          keepAlive: true,
+          activePath: '/tool/form',
+        },
+      },
+      {
+        name: 'ToolCode',
+        path: '/tool/code',
+        component: () => import('#/views/tool/code/index.vue'),
+        meta: {
+          title: '代码生成',
+        },
+      },
+      {
+        name: 'ToolCodeEdit',
+        path: '/tool/code/edit',
+        component: () => import('#/views/tool/code/edit.vue'),
+        meta: {
+          title: '代码生成',
+          hideInMenu: true,
+          keepAlive: true,
+          activePath: '/tool/code',
         },
       },
     ],

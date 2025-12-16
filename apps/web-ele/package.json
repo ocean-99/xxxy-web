@@ -64,7 +64,10 @@
     "diagram-js": "^7.8.2",
     "diagram-js-direct-editing": "^1.6.3",
     "min-dash": "^3.5.2",
-    "tiny-svg": "^2.2.2"
+    "tiny-svg": "^2.2.2",
+    "@microsoft/signalr": "^8.0.0",
+    "codemirror": "^5.59.2",
+    "codemirror-editor-vue3": "^2.1.7"
   },
   "devDependencies": {
     "@types/lodash-es": "^4.17.12",
