@@ -33,9 +33,10 @@ export function userProfileUpdate(data: any) {
  * @returns void
  */
 export function userUpdatePassword(data: UpdatePasswordParam) {
-  return requestClient.putWithMsg<void>(Api.updatePassword, data, {
-    encrypt: true,
-  });
+  return requestClient.putWithMsg<void>(Api.updatePassword, data);
+  // return requestClient.putWithMsg<void>(Api.updatePassword, data, {
+  //   encrypt: true,
+  // });
 }
 
 /**

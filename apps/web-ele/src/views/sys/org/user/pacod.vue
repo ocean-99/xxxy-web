@@ -27,9 +27,10 @@ const save = async () => {
     id: form.value.id,
     pacod: form.value.pacod,
   };
-  await requestClient.putWithMsg(`${state.url}/pacod`, data,{
-    encrypt: true,
-  });
+  await requestClient.putWithMsg(`${state.url}/pacod`, data);
+  // await requestClient.putWithMsg(`${state.url}/pacod`, data,{
+  //   encrypt: true,
+  // });
   state.show = false;
 };
 // endregion
