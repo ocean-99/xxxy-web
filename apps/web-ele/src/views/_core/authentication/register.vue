@@ -2,14 +2,51 @@
 import type { VbenFormSchema } from '@vben/common-ui';
 import type { Recordable } from '@vben/types';
 
-import { computed, h, ref } from 'vue';
+import type { CaptchaResponse } from '#/api/core/captcha';
+
+import { computed, h, onMounted, ref } from 'vue';
 
 import { AuthenticationRegister, z } from '@vben/common-ui';
 import { $t } from '@vben/locales';
 
+import { ElMessage } from 'element-plus';
+
+import { captchaImage } from '#/api/core/captcha';
+import { requestClient } from '#/api/request';
+import {useRouter} from "vue-router";
+
 defineOptions({ name: 'Register' });
 
 const loading = ref(false);
+
+const captchaInfo = ref<CaptchaResponse>({
+  captchaEnabled: true,
+  img: '',
+  uuid: '',
+});
+
+// 验证码loading
+const captchaLoading = ref(false);
+async function loadCaptcha() {
+  try {
+    captchaLoading.value = true;
+
+    const resp = await captchaImage();
+    if (resp.captchaEnabled) {
+      resp.img = `data:image/png;base64,${resp.img}`;
+    }
+    captchaInfo.value = resp;
+  } catch (error) {
+    console.error(error);
+  } finally {
+    captchaLoading.value = false;
+  }
+}
+
+onMounted(async () => {
+  // await Promise.all([loadCaptcha(), loadTenant()]);
+  await Promise.all([loadCaptcha()]);
+});
 
 const formSchema = computed((): VbenFormSchema[] => {
   return [
@@ -58,6 +95,25 @@ const formSchema = computed((): VbenFormSchema[] => {
       label: $t('authentication.confirmPassword'),
     },
     {
+      component: 'VbenInputCaptcha',
+      componentProps: {
+        captcha: captchaInfo.value.img,
+        class: 'focus:border-primary',
+        onCaptchaClick: loadCaptcha,
+        placeholder: $t('authentication.code'),
+        loading: captchaLoading.value,
+      },
+      dependencies: {
+        if: () => captchaInfo.value.captchaEnabled,
+        triggerFields: [''],
+      },
+      fieldName: 'code',
+      label: $t('authentication.code'),
+      rules: z
+        .string()
+        .min(1, { message: $t('authentication.verifyRequiredTip') }),
+    },
+    {
       component: 'VbenCheckbox',
       fieldName: 'agreePolicy',
       renderComponentContent: () => ({
@@ -81,8 +137,21 @@ const formSchema = computed((): VbenFormSchema[] => {
   ];
 });
 
-function handleSubmit(value: Recordable<any>) {
+const router = useRouter();
+async function handleSubmit(value: Recordable<any>) {
   console.log('register submit:', value);
+  const body = {
+    clientId: import.meta.env.VITE_GLOB_APP_CLIENT_ID,
+    username: value.username,
+    password: value.password,
+    grantType: 'password',
+    userType: 'sys_user',
+    code: value.code,
+    uuid: captchaInfo.value.uuid,
+  } as any;
+  await requestClient.post('/auth/register', body);
+  ElMessage.success('注册成功');
+  router.push('/auth/login');
 }
 </script>
 

@@ -44,8 +44,8 @@ const save = async () => {
           <el-radio-button label="关闭" :value="false" />
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="公告内容" prop="content" style="width: 100%" :rules="[{ required: true, message: '公告内容不能为空' }]">
-        <Tinymce v-model="form.content" />
+      <el-form-item label="公告内容" prop="cont" style="width: 100%" :rules="[{ required: true, message: '公告内容不能为空' }]">
+        <Tinymce v-model="form.cont" />
       </el-form-item>
     </el-form>
     <template #footer>

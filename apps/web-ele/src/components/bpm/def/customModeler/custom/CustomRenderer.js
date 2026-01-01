@@ -91,7 +91,7 @@ export default function CustomRenderer(eventBus, styles, textRenderer) {
           dy: '15',
           'text-anchor': 'middle',
         });
-        // tableName.innerHTML="测试一下 [sys_org_dept]";
+        // tableName.innerHTML="测试一下 [sys_dept]";
         tableName.innerHTML = data.tabna;
         svgAppend(parentNode, tableName);
 

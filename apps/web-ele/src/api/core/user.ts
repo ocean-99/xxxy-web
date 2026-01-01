@@ -23,7 +23,7 @@ export interface User {
   phonenumber: string;
   remark: string;
   roles: Role[];
-  sex: string;
+  gender: string;
   status: string;
   tenantId: string;
   userId: number;

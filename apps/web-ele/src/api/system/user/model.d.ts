@@ -54,7 +54,7 @@ export interface User {
   userType: string;
   email: string;
   phonenumber: string;
-  sex: string;
+  gender: string;
   avatar?: string;
   status: string;
   loginIp: string;

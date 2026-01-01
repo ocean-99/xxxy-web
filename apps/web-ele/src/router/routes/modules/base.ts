@@ -12,32 +12,40 @@ const routes: RouteRecordRaw[] = [
     path: '/sys',
     children: [
       {
-        name: 'SysOrgDept',
-        path: '/sys/org/dept',
-        component: () => import('#/views/sys/org/dept/index.vue'),
+        name: 'SysCorp',
+        path: '/sys/corp',
+        component: () => import('#/views/sys/corp/index.vue'),
+        meta: {
+          title: '公司管理',
+        },
+      },
+      {
+        name: 'SysDept',
+        path: '/sys/dept',
+        component: () => import('#/views/sys/dept/index.vue'),
         meta: {
           // affixTab: true,
           title: '部门管理',
         },
       },
       {
-        name: 'SysOrgUser',
-        path: '/sys/org/user',
-        component: () => import('#/views/sys/org/user/index.vue'),
+        name: 'SysUser',
+        path: '/sys/user',
+        component: () => import('#/views/sys/user/index.vue'),
         meta: {
           title: '用户管理',
           keepAlive: true,
         },
       },
       {
-        name: 'SysOrgUserEdit',
-        path: '/sys/org/user/edit',
-        component: () => import('#/views/sys/org/user/tedit.vue'),
+        name: 'SysUserEdit',
+        path: '/sys/user/edit',
+        component: () => import('#/views/sys/user/tedit.vue'),
         meta: {
           title: '用户编辑',
           hideInMenu: true,
           keepAlive: true,
-          activePath: '/sys/org/user',
+          activePath: '/sys/user',
         },
       },
       {
@@ -52,54 +60,54 @@ const routes: RouteRecordRaw[] = [
         },
       },
       {
-        name: 'SysOrgPost',
-        path: '/sys/org/post',
-        component: () => import('#/views/sys/org/post/index.vue'),
+        name: 'SysPost',
+        path: '/sys/post',
+        component: () => import('#/views/sys/post/index.vue'),
         meta: {
           title: '岗位管理',
         },
       },
       {
-        name: 'SysOrgGroup',
-        path: '/sys/org/group',
-        component: () => import('#/views/sys/org/group/index.vue'),
+        name: 'SysGroup',
+        path: '/sys/group',
+        component: () => import('#/views/sys/group/index.vue'),
         meta: {
           title: '群组管理',
         },
       },
       {
-        name: 'SysPermMenu',
-        path: '/sys/perm/menu',
-        component: () => import('#/views/sys/perm/menu/index.vue'),
+        name: 'SysMenu',
+        path: '/sys/menu',
+        component: () => import('#/views/sys/menu/index.vue'),
         meta: {
           title: '菜单管理',
         },
       },
       {
-        name: 'SysPermApi',
-        path: '/sys/perm/api',
-        component: () => import('#/views/sys/perm/api/index.vue'),
+        name: 'SysApi',
+        path: '/sys/api',
+        component: () => import('#/views/sys/api/index.vue'),
         meta: {
           title: '接口管理',
         },
       },
       {
-        name: 'SysPermRole',
-        path: '/sys/perm/role',
-        component: () => import('#/views/sys/perm/role/index.vue'),
+        name: 'SysRole',
+        path: '/sys/role',
+        component: () => import('#/views/sys/role/index.vue'),
         meta: {
           title: '角色管理',
         },
       },
       {
-        name: 'SysPermRoleEdit',
-        path: '/sys/perm/role/edit',
-        component: () => import('#/views/sys/perm/role/edit.vue'),
+        name: 'SysRoleEdit',
+        path: '/sys/role/edit',
+        component: () => import('#/views/sys/role/edit.vue'),
         meta: {
           title: '角色编辑',
           hideInMenu: true,
           keepAlive: true,
-          activePath: '/sys/perm/role',
+          activePath: '/sys/role',
         },
       },
       {

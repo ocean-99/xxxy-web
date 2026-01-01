@@ -8,7 +8,7 @@ import { requestClient } from '#/api/request';
 const props = defineProps<{ profile: UserProfile }>();
 
 onMounted(() => {
-  state.form = pick(props.profile.user, ['userId', 'nickName', 'email', 'phonenumber', 'sex']);
+  state.form = pick(props.profile.user, ['userId', 'nickName', 'email', 'phonenumber', 'gender']);
 });
 
 const state = reactive({
@@ -63,7 +63,7 @@ const submit = () => {
         <el-input v-model="form.email" maxlength="50" />
       </el-form-item>
       <el-form-item label="性别">
-        <el-radio-group v-model="form.sex">
+        <el-radio-group v-model="form.gender">
           <el-radio value="0">男</el-radio>
           <el-radio value="1">女</el-radio>
         </el-radio-group>

@@ -33,6 +33,9 @@ const save = async () => {
         <el-form-item label="XX名称" prop="name" :rules="[{ required: true, message: 'XX名称不能为空' }]">
           <el-input v-model="form.name" />
         </el-form-item>
+        <el-form-item label="XX时间" prop="aaa">
+          <el-date-picker v-model="form.aaa" type="date" value-format="YYYY-MM-DD HH:mm:ss" />
+        </el-form-item>
         <el-form-item label="备注" prop="notes">
           <el-input v-model="form.notes" :rows="3" type="textarea" />
         </el-form-item>

@@ -66,7 +66,7 @@ const osShow = (os: any) => {
         stripe
       >
         <el-table-column type="selection" width="46" align="center" />
-        <el-table-column label="用户账号" prop="usnam" width="110" />
+        <el-table-column label="用户账号" prop="username" width="110" />
         <el-table-column label="登录平台" prop="clkey" width="86" align="center"> PC </el-table-column>
         <el-table-column label="IP地址" prop="loip" />
         <el-table-column label="IP地点" prop="loloc" />

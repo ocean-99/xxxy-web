@@ -42,7 +42,7 @@ defineExpose({ open });
           <template #label>
             <div class="cell-item">账号信息</div>
           </template>
-          {{ `账号: ${form.usnam} / ${form.loip} / ${form.loloc}` }}
+          {{ `账号: ${form.username} / ${form.loip} / ${form.loloc}` }}
         </el-descriptions-item>
         <el-descriptions-item>
           <template #label>

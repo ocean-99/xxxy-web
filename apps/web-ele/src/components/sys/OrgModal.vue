@@ -563,7 +563,7 @@ const clearAndcloseModal = () => {
               <el-row>
                 <el-col :span="12">
                   <div style="height: 390px">
-                    <SelectTree url="/sys/org/dept/tree" @node-click="nodeClick" :ma-init="true" ref="deptTreeRef" tip="部门名称" />
+                    <SelectTree url="/sys/dept/tree" @node-click="nodeClick" :ma-init="true" ref="deptTreeRef" tip="部门名称" />
                   </div>
                 </el-col>
                 <el-col :span="12">

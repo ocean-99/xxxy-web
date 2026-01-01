@@ -169,7 +169,7 @@ async function handleAccountLogin(values: LoginAndRegisterParams) {
     ref="loginFormRef"
     :form-schema="formSchema"
     :loading="authStore.loginLoading"
-    :show-register="false"
+    :show-register="true"
     :show-third-party-login="true"
     @submit="handleAccountLogin"
   >

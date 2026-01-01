@@ -68,6 +68,16 @@ function handleEdit(row: any) {
       </div>
       <el-card style="height: 100%" body-style="height: 100%" class="box-card flex-1 overflow-hidden">
         <template #header>
+          <div v-show="moreParams" ref="moreParamsDiv" class="more-params">
+            <el-form :inline="true" label-width="100px">
+              <el-form-item label="更多参数1">
+                <el-input v-model="state.form.xxx" placeholder="更多参数1" />
+              </el-form-item>
+              <el-form-item label="更多参数2">
+                <el-input v-model="state.form.yyy" placeholder="更多参数2" />
+              </el-form-item>
+            </el-form>
+          </div>
           <div class="flex justify-between">
             <el-space>
               <el-input style="width: 180px" v-model="state.form.name" placeholder="输入名称回车查询" clearable @keyup.enter="listQuery(state)" />
@@ -78,16 +88,6 @@ function handleEdit(row: any) {
               <el-button icon="Plus" type="success" plain @click="handleAdd">新增</el-button>
               <el-button icon="Delete" type="danger" plain @click="listDelete(state)" :disabled="state.multiple">删除 </el-button>
             </el-space>
-          </div>
-          <div v-show="moreParams" ref="moreParamsDiv" class="more-params">
-            <el-form :inline="true" label-width="100px">
-              <el-form-item label="更多参数1">
-                <el-input v-model="state.form.xxx" placeholder="更多参数1" />
-              </el-form-item>
-              <el-form-item label="更多参数2">
-                <el-input v-model="state.form.yyy" placeholder="更多参数2" />
-              </el-form-item>
-            </el-form>
           </div>
         </template>
 
