@@ -4,7 +4,7 @@ export async function listQuery(state: any) {
   state.loading = true;
   try {
     const data = await requestClient.get(`${state.url}`, { params: state.form });
-    state.rows = data.rows;
+    state.rows = data.rows ?? data.records;
     state.total = data.total;
   } finally {
     state.loading = false;
