@@ -7,50 +7,82 @@ const state = reactive({
   url: '/fish-task',
   show: false,
   form: {} as any,
+  accountList: [] as any[],
+  paramsKvList: [] as { key: string; value: string }[],
+  jsonPreviewVisible: false,
+  jsonPreviewContent: '',
 });
 const formRef = ref();
 const { form } = toRefs(state);
 
+const getAccountList = async () => {
+  try {
+    state.accountList = await requestClient.get('account-info/available');
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 const open = async (data: any) => {
+  await getAccountList();
   if (data && data.id) {
     state.form = await requestClient.get(`${state.url}/info/${data.id}`);
-    // 如果 params 是对象，转换为 JSON 字符串
-    if (state.form.params && typeof state.form.params === 'object') {
-      state.form.paramsStr = JSON.stringify(state.form.params, null, 2);
+    state.paramsKvList = [];
+    if (state.form.taskParams && typeof state.form.taskParams === 'object') {
+      Object.entries(state.form.taskParams).forEach(([key, value]) => {
+        state.paramsKvList.push({ key, value: String(value) });
+      });
+    }
+    if (state.paramsKvList.length === 0) {
+      state.paramsKvList.push({ key: '', value: '' });
     }
   } else {
     state.form = {
       status: 0,
       retryCount: 0,
-      paramsStr: '{}',
     };
+    state.paramsKvList = [{ key: '', value: '' }];
   }
   await reset({ formRef: formRef.value, state });
 };
 defineExpose({ open });
 
 const save = async () => {
-  // 将 paramsStr 转换回 JSON 对象
-  if (state.form.paramsStr) {
-    try {
-      state.form.params = JSON.parse(state.form.paramsStr);
-    } catch {
-      ElMessage.error('任务参数格式错误，请输入有效的 JSON');
-      return;
+  const params: Record<string, any> = {};
+  state.paramsKvList.forEach((item) => {
+    if (item.key) {
+      params[item.key] = item.value;
     }
-  }
+  });
+  state.form.taskParams = params;
 
   await drawerSave({ formRef: formRef.value, state });
   emits('close');
 };
 
-// 格式化 JSON
-const formatJson = () => {
-  try {
-    const obj = JSON.parse(state.form.paramsStr || '{}');
-    state.form.paramsStr = JSON.stringify(obj, null, 2);
-  } catch {
-    ElMessage.error('JSON 格式错误');
+const addParam = () => {
+  state.paramsKvList.push({ key: '', value: '' });
+};
+
+const removeParam = (index: number) => {
+  state.paramsKvList.splice(index, 1);
+};
+
+const showJson = () => {
+  const params: Record<string, any> = {};
+  state.paramsKvList.forEach((item) => {
+    if (item.key) {
+      params[item.key] = item.value;
+    }
+  });
+  state.jsonPreviewContent = JSON.stringify(params, null, 2);
+  state.jsonPreviewVisible = true;
+};
+
+const handleAccountChange = (val: any) => {
+  const account = state.accountList.find((item) => item.id === val);
+  if (account) {
+    state.form.accountName = `${account.nickName || account.phone || account.id} - ${account.platform}`;
   }
 };
 </script>
@@ -70,8 +102,14 @@ const formatJson = () => {
           </el-select>
         </el-form-item>
 
-        <el-form-item label="关联账号ID" prop="accountId" :rules="[{ required: true, message: '账号ID不能为空' }]">
-          <el-input-number v-model="form.accountId" :min="1" style="width: 100%" />
+        <el-form-item label="关联账号" prop="accountId" :rules="[{ required: form.taskType === 'collect_info', message: '请选择关联账号', trigger: 'change' }]">
+          <el-select v-model="form.accountId" style="width: 100%" filterable placeholder="请选择关联账号" @change="handleAccountChange">
+            <el-option v-for="item in state.accountList" :key="item.id" :label="`${item.nickName || item.phone || item.id} - ${item.platform}`" :value="item.id" />
+          </el-select>
+        </el-form-item>
+
+        <el-form-item label="账号名称" prop="accountName">
+          <el-input v-model="form.accountName" placeholder="自动填充账号名称" readonly />
         </el-form-item>
 
         <el-form-item label="任务状态" prop="status">
@@ -89,8 +127,15 @@ const formatJson = () => {
 
         <el-form-item label="任务参数">
           <div style="width: 100%">
-            <el-input v-model="form.paramsStr" :rows="8" type="textarea" placeholder='请输入 JSON 格式参数，例如: {"key": "value"}' />
-            <el-button size="small" style="margin-top: 5px" @click="formatJson"> 格式化 JSON </el-button>
+            <div v-for="(item, index) in state.paramsKvList" :key="index" class="mb-2 flex gap-2">
+              <el-input v-model="item.key" placeholder="Key" />
+              <el-input v-model="item.value" placeholder="Value" />
+              <el-button type="danger" icon="Delete" @click="removeParam(index)" circle />
+            </div>
+            <div class="flex gap-2">
+              <el-button type="primary" plain class="w-full" @click="addParam">添加参数</el-button>
+              <el-button class="w-full" @click="showJson">展示JSON</el-button>
+            </div>
             <div style="margin-top: 5px; font-size: 12px; color: #999">提示：不同任务类型需要不同的参数结构</div>
           </div>
         </el-form-item>
@@ -111,4 +156,7 @@ const formatJson = () => {
       </div>
     </template>
   </el-drawer>
+  <el-dialog v-model="state.jsonPreviewVisible" title="JSON预览" width="500px" append-to-body>
+    <pre>{{ state.jsonPreviewContent }}</pre>
+  </el-dialog>
 </template>

@@ -75,18 +75,14 @@ onMounted(async () => {
         <el-table-column label="项目ID" prop="projectId" width="180" />
         <el-table-column label="用户名" prop="username" width="120" />
         <el-table-column label="余额" prop="balance" width="100" align="right" />
-        <el-table-column label="信用分" prop="creditScore" width="100" align="right">
-          <template #default="scope">
-            <span :style="{ color: scope.row.creditScore >= 80 ? '#67c23a' : scope.row.creditScore >= 60 ? '#e6a23c' : '#f56c6c' }">
-              {{ scope.row.creditScore }}
-            </span>
-          </template>
-        </el-table-column>
         <el-table-column label="创建时间" prop="createTime" width="164" />
-        <el-table-column label="操作" align="center" width="86" class-name="small-padding fixed-width">
+        <el-table-column label="操作" align="center" width="126" class-name="small-padding fixed-width">
           <template #default="scope">
             <el-tooltip content="修改" placement="top">
               <el-button link type="primary" icon="Edit" @click="editRef.open({ id: scope.row.id })" />
+            </el-tooltip>
+            <el-tooltip content="复制" placement="top">
+              <el-button link type="primary" icon="CopyDocument" @click="editRef.open({ id: scope.row.id, copy: true })" />
             </el-tooltip>
             <el-tooltip content="删除" placement="top">
               <el-button link type="primary" icon="Delete" @click="listItemDelete(state, scope.row.id)" />

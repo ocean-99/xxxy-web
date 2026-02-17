@@ -7,12 +7,28 @@ const state = reactive({
   url: '/codeApi',
   show: false,
   form: {} as any,
+  platforms: [] as any[], // Add platforms array to state
 });
 const formRef = ref();
 const { form } = toRefs(state);
 
 const open = async (data: any) => {
-  state.form = data && data.id ? await requestClient.get(`${state.url}/info/${data.id}`) : { enable: true, creditScore: 100 };
+  // Fetch platform options
+  if (state.platforms.length === 0) {
+    state.platforms = await requestClient.get(`${state.url}/platform`);
+  }
+  if (data && data.id) {
+    const info = await requestClient.get(`${state.url}/info/${data.id}`);
+    if (data.copy) {
+      delete info.id;
+    }
+    state.form = info;
+  } else if (data) {
+    state.form = { ...data };
+    delete state.form.id;
+  } else {
+    state.form = { enable: true, creditScore: 100 };
+  }
   await reset({ formRef: formRef.value, state });
 };
 defineExpose({ open });
@@ -32,6 +48,11 @@ const save = async () => {
       <el-form ref="formRef" :model="form" label-width="100px">
         <el-form-item label="名称" prop="name" :rules="[{ required: true, message: '名称不能为空' }]">
           <el-input v-model="form.name" />
+        </el-form-item>
+        <el-form-item label="平台" prop="platform" :rules="[{ required: true, message: '平台不能为空' }]">
+          <el-select v-model="form.platform" placeholder="请选择平台">
+            <el-option v-for="item in state.platforms" :key="item.value" :label="item.label" :value="item.value" />
+          </el-select>
         </el-form-item>
         <el-form-item label="是否启用" prop="enable">
           <el-switch v-model="form.enable" />
@@ -53,9 +74,6 @@ const save = async () => {
         </el-form-item>
         <el-form-item label="余额" prop="balance">
           <el-input v-model="form.balance" />
-        </el-form-item>
-        <el-form-item label="信用分" prop="creditScore">
-          <el-input-number v-model="form.creditScore" :min="0" :max="100" :precision="2" style="width: 100%" />
         </el-form-item>
       </el-form>
     </template>

@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { Page } from '@vben/common-ui';
 
+import { ElMessage, ElMessageBox } from 'element-plus';
+
+import { requestClient } from '#/api/request';
 import { listDelete, listItemDelete, listQuery, listSelect } from '#/utils/page/list';
 
 import DrawerEdit from './edit.vue';
@@ -22,6 +25,52 @@ const editRef = ref() as any;
 
 const editClose = async () => {
   await listQuery(state);
+};
+
+const handleEditCookie = async (row: any) => {
+  try {
+    const { value } = await ElMessageBox.prompt('请输入Cookie', '修改Cookie', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      inputType: 'textarea',
+      inputValue: row.cookie2 || '',
+      inputPlaceholder: '请输入新的Cookie内容',
+    });
+
+    if (value !== null) {
+      await requestClient.put(`${state.url}`, {
+        id: row.id,
+        cookie2: value,
+      });
+      ElMessage.success('修改成功');
+      await listQuery(state);
+    }
+  } catch (error) {
+    if (error !== 'cancel') {
+      console.error(error);
+    }
+  }
+};
+
+const handleStatusChange = async (val: any, row: any) => {
+  try {
+    await ElMessageBox.confirm('确认修改认证状态吗？', '提示', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning',
+    });
+
+    await requestClient.put(`${state.url}`, {
+      id: row.id,
+      status: val,
+    });
+    row.status = val;
+    ElMessage.success('修改成功');
+  } catch (error) {
+    if (error !== 'cancel') {
+      console.error(error);
+    }
+  }
 };
 
 onMounted(async () => {
@@ -76,16 +125,25 @@ onMounted(async () => {
         <el-table-column label="账号名称" prop="accountName" width="140" />
         <el-table-column label="平台" prop="platform" width="100" />
         <el-table-column label="项目ID" prop="projectId" width="180" />
-        <el-table-column label="账号状态" prop="accountStatus" width="100" align="center">
+        <el-table-column label="认证状态" prop="status" width="120" align="center">
           <template #default="scope">
-            <el-tag :type="scope.row.accountStatus === 'normal' ? 'success' : 'danger'">{{ scope.row.accountStatus || '未知' }}</el-tag>
+            <el-select :model-value="scope.row.status" size="small" placeholder="请选择" @change="(val) => handleStatusChange(val, scope.row)">
+              <el-option label="未检查" :value="0" />
+              <el-option label="检查中" :value="1" />
+              <el-option label="已认证" :value="2" />
+              <el-option label="未认证" :value="3" />
+            </el-select>
           </template>
         </el-table-column>
-        <el-table-column label="认证状态" prop="status" width="100" align="center">
+        <el-table-column label="Cookie" prop="cookie2" width="200">
           <template #default="scope">
-            <el-tag :type="scope.row.status === 2 ? 'success' : scope.row.status === 3 ? 'danger' : 'warning'">
-              {{ scope.row.status === 0 ? '未检查' : scope.row.status === 1 ? '检查中' : scope.row.status === 2 ? '已认证' : '未认证' }}
-            </el-tag>
+            <div class="flex items-center">
+              <span class="truncate" style="display: inline-block; max-width: 140px" v-if="scope.row.cookie2">
+                {{ scope.row.cookie2 }}
+              </span>
+              <span v-else>-</span>
+              <el-button link type="primary" icon="Edit" @click="handleEditCookie(scope.row)" style="margin-left: 8px" />
+            </div>
           </template>
         </el-table-column>
         <el-table-column label="原因" prop="reason" width="140" show-overflow-tooltip />

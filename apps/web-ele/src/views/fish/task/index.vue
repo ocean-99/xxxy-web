@@ -191,7 +191,8 @@ onMounted(async () => {
             <span>
               队列任务: <el-tag size="small" type="warning">{{ state.executorStatus.queueSize }}</el-tag>
             </span>
-            <span>已完成: <el-tag size="small" type="info">{{ state.executorStatus.completedTaskCount }}</el-tag></span
+            <span
+              >已完成: <el-tag size="small" type="info">{{ state.executorStatus.completedTaskCount }}</el-tag></span
             >
           </el-space>
         </div>
@@ -217,7 +218,7 @@ onMounted(async () => {
             </el-tag>
           </template>
         </el-table-column>
-        <el-table-column label="账号ID" prop="accountId" width="100" align="center" />
+        <el-table-column label="账号名称" prop="accountName" width="200" align="center" />
         <el-table-column label="任务状态" prop="status" width="100" align="center">
           <template #default="scope">
             <el-tag :type="getStatusType(scope.row.status)">
