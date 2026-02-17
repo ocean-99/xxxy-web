@@ -179,21 +179,21 @@ onMounted(async () => {
         <!-- 线程池状态 -->
         <div v-if="state.executorStatus" style="margin-top: 10px; font-size: 12px; color: #666">
           <el-space>
-            <span
-              >活跃线程: <el-tag size="small" type="success">{{ state.executorStatus.activeCount }}</el-tag></span
-            >
-            <span
-              >核心线程: <el-tag size="small">{{ state.executorStatus.corePoolSize }}</el-tag></span
-            >
-            <span
-              >最大线程: <el-tag size="small">{{ state.executorStatus.maximumPoolSize }}</el-tag></span
-            >
+            <span>
+              活跃线程: <el-tag size="small" type="success">{{ state.executorStatus.activeCount }}</el-tag>
+            </span>
+            <span>
+              核心线程: <el-tag size="small">{{ state.executorStatus.corePoolSize }}</el-tag>
+            </span>
+            <span>
+              最大线程: <el-tag size="small">{{ state.executorStatus.maximumPoolSize }}</el-tag>
+            </span>
             <span>
               队列任务: <el-tag size="small" type="warning">{{ state.executorStatus.queueSize }}</el-tag>
             </span>
-            <span
-              >已完成: <el-tag size="small" type="info">{{ state.executorStatus.completedTaskCount }}</el-tag></span
-            >
+            <span>
+              已完成: <el-tag size="small" type="info">{{ state.executorStatus.completedTaskCount }}</el-tag>
+            </span>
           </el-space>
         </div>
       </template>
@@ -211,6 +211,7 @@ onMounted(async () => {
         <el-table-column type="selection" width="44" align="center" />
         <el-table-column label="#" type="index" width="50" align="center" />
         <el-table-column label="任务ID" prop="id" width="80" align="center" />
+        <el-table-column label="任务名称" prop="taskName" width="200" align="center" show-overflow-tooltip />
         <el-table-column label="任务类型" prop="taskType" width="120" align="center">
           <template #default="scope">
             <el-tag :type="scope.row.taskType === 'collect_info' ? 'primary' : scope.row.taskType === 'comment' ? 'success' : 'warning'">

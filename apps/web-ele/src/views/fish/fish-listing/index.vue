@@ -65,7 +65,7 @@ onMounted(async () => {
         <el-table-column label="#" type="index" width="50" align="center" />
         <el-table-column label="商品图片" prop="picUrl" width="80" align="center">
           <template #default="scope">
-            <el-image v-if="scope.row.picUrl" :src="scope.row.picUrl" :preview-src-list="[scope.row.picUrl]" fit="cover" style="width: 60px; height: 60px; border-radius: 4px" />
+            <el-image v-if="scope.row.picUrl" :src="scope.row.picUrl" :preview-src-list="[scope.row.picUrl]" preview-teleported />
             <span v-else>-</span>
           </template>
         </el-table-column>

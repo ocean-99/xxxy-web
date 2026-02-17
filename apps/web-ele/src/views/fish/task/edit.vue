@@ -94,6 +94,10 @@ const handleAccountChange = (val: any) => {
     </template>
     <template #default>
       <el-form ref="formRef" :model="form" label-width="100px">
+        <el-form-item label="任务名称" prop="taskName" :rules="[{ required: true, message: '任务名称不能为空' }]">
+          <el-input v-model="form.taskName" placeholder="请输入任务名称" />
+        </el-form-item>
+
         <el-form-item label="任务类型" prop="taskType" :rules="[{ required: true, message: '任务类型不能为空' }]">
           <el-select v-model="form.taskType" style="width: 100%" placeholder="请选择任务类型">
             <el-option label="采集信息" value="collect_info" />
